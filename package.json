@@ -13,7 +13,6 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.13",
-    "react-dark-mode-switcher": "github:dorukwagle/react-dark-mode-switcher",
     "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^5.16.1",
     "@mui/material": "^5.16.1",

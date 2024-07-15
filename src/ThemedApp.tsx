@@ -1,9 +1,11 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import App from "./App";
 import { createContext, useMemo, useState } from "react";
-import { PaletteMode } from "@mui/material";
 
-export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+
+type ColorMode = "dark" | "light";
+
+export const ColorModeContext = createContext({ toggleColorMode: (_: ColorMode) => {} });
 
 
 const getStoredTheme = () => {
@@ -15,10 +17,10 @@ const getStoredTheme = () => {
 }
 
 export default function ThemedApp() {
-  const [mode, setMode] = useState<"light" | "dark">(getStoredTheme());
+  const [mode, setMode] = useState<ColorMode>(getStoredTheme());
   const colorMode = useMemo(
     () => ({
-      toggleColorMode: (mode: "light" | "dark") => {
+      toggleColorMode: (mode: ColorMode) => {
         setMode(mode);
       },
     }),

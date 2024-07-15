@@ -2,13 +2,15 @@ import { useState } from "react";
 import ToggleSwitch from "./ToggleSwitch";
 
 
+type Theme = "light" | "dark";
+
 interface Props {
     size?: number,
-    onChange?: (theme?: string) => void;
+    onChange?: (theme: Theme) => void;
 }
 
 const Toggle = ({size=32, onChange}: Props) => {
-    const [theme, setTheme] = useState<"light" | "dark">(localStorage.getItem("theme")  === "light" ? "light" : "dark");
+    const [theme, setTheme] = useState<Theme>(localStorage.getItem("theme")  === "light" ? "light" : "dark");
     const onThemeChange = () => {
         const newTheme = theme == "dark" ? "light" : "dark";
         setTheme(newTheme);
