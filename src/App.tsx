@@ -9,7 +9,7 @@ const  App = () => {
 
   return (
     <>
-      <Button variant="contained" 
+      <Button variant="contained"  color="secondary"
       endIcon={<Toggle onChange={colorMode.toggleColorMode} size={100}/>}
       >Hello test</Button>
     </>
