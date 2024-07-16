@@ -1,18 +1,20 @@
-import { Button} from "@mui/material";
+import { Box, Button, Paper} from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext } from "./ThemedApp";
-import Toggle from "./components/DarkModeToggle";
+import NavBar from "./components/NavBar";
+import DemoCard from "./components/DemoCard";
 
 
 const  App = () => {
   const colorMode = useContext(ColorModeContext);
 
   return (
-    <>
-      <Button variant="contained"  color="secondary"
-      endIcon={<Toggle onChange={colorMode.toggleColorMode} size={100}/>}
+    <Box>
+    <NavBar toggleOnChange={colorMode.toggleColorMode}/>
+      <Button variant="contained"  color="primary"  sx={{mx: 5, my: 5}}
       >Hello test</Button>
-    </>
+      <DemoCard />
+    </Box>
   );
 }
 

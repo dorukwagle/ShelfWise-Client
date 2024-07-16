@@ -1,3 +1,3 @@
-import Toggle from "./Toggle";
+import DarkModeToggle from "./DarkModeToggle";
 
-export default Toggle;
+export default DarkModeToggle;
