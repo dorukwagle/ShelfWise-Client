@@ -1,21 +1,23 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import App from "./App";
+import App from "./pages/Layout";
 import { createContext, useMemo, useState } from "react";
 import { CssBaseline } from "@mui/material";
-
+import { RouterProvider } from "react-router-dom";
+import router from "./routes";
 
 type ColorMode = "dark" | "light";
 
-export const ColorModeContext = createContext({ toggleColorMode: (_: ColorMode) => {} });
-
+export const ColorModeContext = createContext({
+  toggleColorMode: (_: ColorMode) => {},
+});
 
 const getStoredTheme = () => {
   const storedTheme = localStorage.getItem("theme");
-  const theme = (storedTheme && storedTheme  === "light") ? "light" : "dark";
+  const theme = storedTheme && storedTheme === "light" ? "light" : "dark";
 
   localStorage.setItem("theme", theme);
-  return theme;  
-}
+  return theme;
+};
 
 export default function ThemedApp() {
   const [mode, setMode] = useState<ColorMode>(getStoredTheme());
@@ -63,7 +65,7 @@ export default function ThemedApp() {
       primary: "rgba(0, 0, 0, 0.87)",
       secondary: "rgba(0, 0, 0, 0.54)",
       disabled: "rgba(0, 0, 0, 0.38)",
-      hint: "rgba(0, 0, 0, 0.38)"
+      hint: "rgba(0, 0, 0, 0.38)",
     },
     divider: "rgba(0, 0, 0, 0.22)",
   };
@@ -78,11 +80,11 @@ export default function ThemedApp() {
         typography: {
           button: {
             textTransform: "none",
-            fontWeight: "bold"
+            fontWeight: "bold",
           },
         },
         shape: {
-          borderRadius: 20
+          borderRadius: 20,
         },
       }),
     [mode]
@@ -92,7 +94,7 @@ export default function ThemedApp() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <App />
+        <RouterProvider router={router} />
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
