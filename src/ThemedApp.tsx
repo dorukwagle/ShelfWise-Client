@@ -1,8 +1,7 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import App from "./App";
 import { createContext, useMemo, useState } from "react";
-import { grey } from "@mui/material/colors";
-import { AppBar, CssBaseline } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 
 
 type ColorMode = "dark" | "light";

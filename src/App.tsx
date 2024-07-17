@@ -1,4 +1,4 @@
-import { Box, Button, Paper} from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext } from "./ThemedApp";
 import NavBar from "./components/NavBar";
