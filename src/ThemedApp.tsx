@@ -1,5 +1,4 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import App from "./pages/Layout";
 import { createContext, useMemo, useState } from "react";
 import { CssBaseline } from "@mui/material";
 import { RouterProvider } from "react-router-dom";
@@ -47,7 +46,7 @@ export default function ThemedApp() {
       disabled: "rgba(255, 255, 255, 0.5)",
       hint: "rgba(255, 255, 255, 0.5)",
     },
-    divider: "rgba(0, 0, 0, 0.7)",
+    divider: "rgba(128, 128, 128, 1)",
   };
 
   const light = {
