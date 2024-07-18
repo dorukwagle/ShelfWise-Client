@@ -8,26 +8,34 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { BookOnline, Home, Info } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
 interface Props {
   isOpen?: boolean;
+  onNavigate?: () => void;
 }
 
-const SideDrawer = ({isOpen=false}: Props) => {
+const SideDrawer = ({isOpen=false, onNavigate}: Props) => {
+  const navigate = useNavigate();
+
   const publicPages = [
-    {text: "Home", icon: <Home />}, 
-    {text: "Online Books", icon: <BookOnline />},
-    {text: "About", icon: <Info />}
+    {text: "Home", link: "/", icon: <Home /> }, 
+    {text: "Online Books", link: "/online-books", icon: <BookOnline />},
+    {text: "About", link: "/about", icon: <Info />}
   ];
 
 const privatePages = [
-    {text: "Home", icon: <Home />}, 
-    {text: "Online Books", icon: <BookOnline />},
-    {text: "About", icon: <Info />}
+    {text: "Home", link: "", icon: <Home />}, 
+    {text: "Online Books", link: "", icon: <BookOnline />},
+    {text: "About", link: "", icon: <Info />}
   ];
 
+  const onLinkClick = (link: string) => {
+    navigate(link);
+    onNavigate && onNavigate();
+  }
 
   return (
       <Drawer
@@ -46,9 +54,9 @@ const privatePages = [
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
           <List>
-            {privatePages.map(({text, icon}, index) => (
+            {privatePages.map(({text, icon, link}, index) => (
               <ListItem key={index} disablePadding>
-                <ListItemButton>
+                <ListItemButton  onClick={() => onLinkClick(link)}>
                   <ListItemIcon>
                     {icon}
                   </ListItemIcon>
@@ -59,9 +67,9 @@ const privatePages = [
           </List>
           <Divider />
           <List>
-            {publicPages.map(({text, icon}, index) => (
+            {publicPages.map(({text, icon, link}, index) => (
               <ListItem key={index} disablePadding>
-                <ListItemButton>
+                <ListItemButton onClick={() => onLinkClick(link)} >
                   <ListItemIcon>
                     {icon}
                   </ListItemIcon>

@@ -5,6 +5,8 @@ import RegistrationPage from "./pages/RegistrationPage";
 import PrivateRoutes from "./pages/PrivateRoutes";
 import DashboardBranch from "./pages/DashboardBranch";
 import ErrorPage from "./pages/ErrorPage";
+import AboutPage from "./pages/AboutPage";
+import OnlineBooksPage from "./pages/OnlineBooksPage";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "/registration", element: <RegistrationPage /> },
+      { path: "/about", element: <AboutPage />},
+      { path: "/online-books", element: <OnlineBooksPage />},
       {
         element: <PrivateRoutes />,
         children: [{ path: "dashboard", element: <DashboardBranch /> }],

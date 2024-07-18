@@ -1,9 +1,9 @@
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { useContext, useState } from "react";
 import { ColorModeContext } from "../ThemedApp";
 import NavBar from "../components/NavBar";
-import DemoCard from "../components/DemoCard";
 import SideDrawer from "../components/SideDrawer";
+import { Outlet } from "react-router-dom";
 
 const Layout = () => {
   const colorMode = useContext(ColorModeContext);
@@ -15,11 +15,8 @@ const Layout = () => {
       toggleOnChange={colorMode.toggleColorMode} 
       onMenuBtnClick={() => setDrawerOpen(!isDrawserOpen)}
       />
-      <SideDrawer isOpen={isDrawserOpen}/>
-      <Button variant="contained" color="primary" sx={{ mx: 5, my: 5 }}>
-        Hello test
-      </Button>
-      <DemoCard />
+      <SideDrawer isOpen={isDrawserOpen} onNavigate={() => setDrawerOpen(false)}/>
+      <Outlet />
     </Box>
   );
 };
