@@ -9,11 +9,12 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Badge, Paper } from "@mui/material";
+import { Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useState } from "react";
 import DarkModeToggle from "./DarkModeToggle";
 import Logo from "../assets/shelfwise-logo-fancy.png";
+import useMe from "../hooks/useMe";
 
 
 interface Props {
@@ -24,27 +25,37 @@ interface Props {
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const NavBar = ({toggleOnChange, onMenuBtnClick}: Props) => {
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
-    null
-  );
+  const {data: user} = useMe();
+
+
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
     null
   );
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const UserButtons = () => {
+    return (
+      <>
+        <IconButton size="large" color="inherit" sx={{ pr: 0 }}>
+          <Badge badgeContent={17} color="error">
+            <NotificationsIcon fontSize="large" />
+          </Badge>
+        </IconButton>
+        <Tooltip title="User Info">
+          <IconButton onClick={handleOpenUserMenu} size="large" sx={{ pr: 0 }}>
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          </IconButton>
+        </Tooltip>
+      </>
+    );
+  }
 
   return (
       <AppBar
@@ -96,20 +107,7 @@ const NavBar = ({toggleOnChange, onMenuBtnClick}: Props) => {
                   onChange={toggleOnChange}
                 />
               </IconButton>
-              <IconButton size="large" color="inherit" sx={{ pr: 0 }}>
-                <Badge badgeContent={17} color="error">
-                  <NotificationsIcon fontSize="large" />
-                </Badge>
-              </IconButton>
-              <Tooltip title="User Info">
-                <IconButton
-                  onClick={handleOpenUserMenu}
-                  size="large"
-                  sx={{ pr: 0 }}
-                >
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
+              {user?.userId && <UserButtons />}
               <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"

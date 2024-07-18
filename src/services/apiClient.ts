@@ -14,15 +14,27 @@ const defaultOption = {
 };
 
 class APIClient<R={}, S={}, F={}> {
-    endpoint: string;
+    route: string;
+    subRoute: string = "";
 
-    constructor(endpoint: string) {
-        this.endpoint = endpoint;
+    constructor(route: string) {
+        this.route = route;
+    }
+
+    setSubroute = (subRoute: string) => {
+        this.subRoute = subRoute;
+        return this;
+    }
+
+    endpoint = () => {
+        const url = this.route + this.subRoute;
+        this.subRoute = "";
+        return url;
     }
 
     get = (routerParam?: string | number, queryParam?: F) => {
         return client
-            .get<R>(`${this.endpoint}${routerParam ? "/" + routerParam : ""}`, {
+            .get<R>(`${this.endpoint()}${routerParam ? "/" + routerParam : ""}`, {
                 params: queryParam,
             })
             .then((res) => res.data);
@@ -30,19 +42,19 @@ class APIClient<R={}, S={}, F={}> {
 
     post = (body?: S , option = defaultOption) => {
         return client
-            .post<R>(this.endpoint, body, option)
+            .post<R>(this.endpoint(), body, option)
             .then((res) => res.data);
     };
 
     put = (routerParam: string | number, body?: S, option = defaultOption) => {
         return client
-            .put<R>(`${this.endpoint}/${routerParam}`, body, option)
+            .put<R>(`${this.endpoint()}/${routerParam}`, body, option)
             .then((res) => res.data);
     };
 
     delete = (routerParam: string | number, body?: S) => {
         return client
-            .delete<R>(this.endpoint + "/" + routerParam, {data: body})
+            .delete<R>(this.endpoint() + "/" + routerParam, {data: body})
             .then((res) => res.data);
     };
 }

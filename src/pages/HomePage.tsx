@@ -1,17 +1,23 @@
-import { Button, Card, CardActions, CardContent, CircularProgress, Container, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
 import useMe from "../hooks/useMe";
 import LoadingProgress from "../components/LoadingProgress";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const {data: user, isLoading} = useMe();
+  const navigate = useNavigate();
 
   const Actions = () => {
     return (
       <>
-        <Button size="small" variant="contained">
+        <Button size="small" variant="contained"
+        onClick={() => navigate("/registration")}
+        >
           Get Started
         </Button>
-        <Button size="small" variant="contained">
+        <Button size="small" variant="contained"
+        onClick={() => navigate("/sign-in")}
+        >
           Sign In
         </Button>
       </>

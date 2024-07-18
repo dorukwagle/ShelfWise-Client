@@ -13,8 +13,8 @@ const queryClient = new QueryClient({
       onError: (error) => {
         if (!(error instanceof AxiosError)) return;
         if (error.response?.status === 401)return;
-        if (!error.response) {
-          // return alert("Network Error!. Please connect to the internet");
+        if (error.code && error.code === "ERR_NETWORK") {
+          return alert("Network Error!. Please connect to the internet");
         }
       },
       retry: 1,
@@ -26,8 +26,8 @@ const queryClient = new QueryClient({
       throwOnError: (error) => {
         if (!(error instanceof AxiosError)) return true;
         if (error.response?.status === 401) return false;
-        if (!error.response) {
-          // alert("Network Error!. Please connect to the internet");
+        if (error.code && error.code === "ERR_NETWORK") {
+          alert("Network Error!. Please connect to the internet");
         }
         // if (error.response?.status === 401)
           // queryClient.setQueryData(USER_CACHE_KEY, () => ({}));

@@ -7,6 +7,7 @@ import DashboardBranch from "./pages/DashboardBranch";
 import ErrorPage from "./pages/ErrorPage";
 import AboutPage from "./pages/AboutPage";
 import OnlineBooksPage from "./pages/OnlineBooksPage";
+import SignInPage from "./pages/SignInPage";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "/registration", element: <RegistrationPage /> },
+      { path: "/sign-in", element: <SignInPage /> },
       { path: "/about", element: <AboutPage />},
       { path: "/online-books", element: <OnlineBooksPage />},
       {
