@@ -1,4 +1,4 @@
-import { UserRoles } from "./UserRoles";
+import  UserRoles from "./UserRoles";
 import Membership  from "./Membership";
 
 interface User {

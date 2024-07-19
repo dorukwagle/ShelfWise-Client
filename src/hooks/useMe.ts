@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import meService from "../services/meService";
-import { User } from "../entities/User";
+import User  from "../entities/User";
 import { HOUR } from "../entities/constants";
 
 const useMe = () => {
