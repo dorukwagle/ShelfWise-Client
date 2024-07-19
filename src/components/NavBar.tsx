@@ -15,25 +15,34 @@ import { useState, MouseEvent } from "react";
 import DarkModeToggle from "./DarkModeToggle";
 import Logo from "../assets/shelfwise-logo-fancy.png";
 import useMe from "../hooks/useMe";
-
+import useUserRoles from "../hooks/useUserRoles";
+import { EUserRoles } from "../entities/constants";
 
 interface Props {
   toggleOnChange?: (theme: "light" | "dark") => void;
   onMenuBtnClick?: () => void;
 }
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+let settings = ["Profile", "Account", "Logout"];
 
-const NavBar = ({toggleOnChange, onMenuBtnClick}: Props) => {
-  const {data: user} = useMe();
+const NavBar = ({ toggleOnChange, onMenuBtnClick }: Props) => {
+  const { data: user } = useMe();
   
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
-    null
-  );
+  const { data: userRoles } = useUserRoles();
+
+  if (
+    user?.role &&
+    userRoles &&
+    user.role.precedence >= userRoles[EUserRoles.Manager]
+  )
+    settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+  // if (userRoles.)
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-    console.log(event.target)
+    console.log(event.target);
   };
 
   const handleCloseUserMenu = () => {
@@ -124,7 +133,7 @@ const NavBar = ({toggleOnChange, onMenuBtnClick}: Props) => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={handleCloseUserMenu} hidden>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
@@ -147,5 +156,5 @@ const NavBar = ({toggleOnChange, onMenuBtnClick}: Props) => {
       </Container>
     </AppBar>
   );
-}
+};
 export default NavBar;
