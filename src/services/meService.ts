@@ -1,5 +1,5 @@
 import APIClient from "./apiClient";
-import { User } from "../entities/User";
+import User from "../entities/User";
 
 const meService = new APIClient<User, User>("/me");
 

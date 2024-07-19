@@ -11,7 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { useRef, useState, MouseEvent } from "react";
+import { useState, MouseEvent } from "react";
 import DarkModeToggle from "./DarkModeToggle";
 import Logo from "../assets/shelfwise-logo-fancy.png";
 import useMe from "../hooks/useMe";
@@ -26,7 +26,6 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const NavBar = ({toggleOnChange, onMenuBtnClick}: Props) => {
   const {data: user} = useMe();
-  const menuPos = useRef<HTMLElement | null>(null);
   
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
     null

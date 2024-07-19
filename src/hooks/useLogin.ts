@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { User } from "../entities/User";
+import User from "../entities/User";
 import { AxiosError } from "axios";
 import authService, { AuthRequest } from "../services/authService";
 import { ErrorRes } from "../entities/ErrorRes";
