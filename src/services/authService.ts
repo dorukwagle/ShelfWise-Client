@@ -1,10 +1,9 @@
 import APIClient from "./apiClient";
-import { User } from "./meService";
-
+import { User } from "../entities/User";
 
 export interface AuthRequest {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 }
 
 const authService = new APIClient<User, AuthRequest>("/auth");

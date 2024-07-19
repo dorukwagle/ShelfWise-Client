@@ -11,7 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { useState } from "react";
+import { useRef, useState, MouseEvent } from "react";
 import DarkModeToggle from "./DarkModeToggle";
 import Logo from "../assets/shelfwise-logo-fancy.png";
 import useMe from "../hooks/useMe";
@@ -26,127 +26,127 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const NavBar = ({toggleOnChange, onMenuBtnClick}: Props) => {
   const {data: user} = useMe();
-
-
+  const menuPos = useRef<HTMLElement | null>(null);
+  
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
     null
   );
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
+    console.log(event.target)
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
-  const UserButtons = () => {
-    return (
-      <>
-        <IconButton size="large" color="inherit" sx={{ pr: 0 }}>
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon fontSize="large" />
-          </Badge>
-        </IconButton>
-        <Tooltip title="User Info">
-          <IconButton onClick={handleOpenUserMenu} size="large" sx={{ pr: 0 }}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-          </IconButton>
-        </Tooltip>
-      </>
-    );
-  }
-
   return (
-      <AppBar
-        position="sticky"
-        color="secondary"
-        enableColorOnDark
-      >
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
+    <AppBar position="sticky" color="secondary" enableColorOnDark>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={onMenuBtnClick}
+          >
+            <MenuIcon />
+          </IconButton>
+          <IconButton size="large" sx={{ p: 0 }}>
+            <Avatar src={Logo} />
+          </IconButton>
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            sx={{
+              mr: 2,
+              display: { xs: "flex" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".1rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            ShelfWise
+          </Typography>
+          <Box sx={{ flexGrow: 0 }}>
             <IconButton
               size="large"
-              edge="start"
               color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={onMenuBtnClick}
+              sx={{ pr: 0, display: { xs: "none", md: "inline" } }}
             >
-              <MenuIcon />
+              <DarkModeToggle
+                lightColor="white"
+                darkColor="white"
+                onChange={toggleOnChange}
+              />
             </IconButton>
-            <IconButton size="large" sx={{ p: 0 }}>
-              <Avatar src={Logo} />
-            </IconButton>
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              sx={{
-                mr: 2,
-                display: { xs: "flex" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".1rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              ShelfWise
-            </Typography>
-            <Box sx={{ flexGrow: 0 }}>
-              <IconButton
-                size="large"
-                color="inherit"
-                sx={{ pr: 0, display: { xs: "none", md: "inline" } }}
-              >
-                <DarkModeToggle
-                  lightColor="white"
-                  darkColor="white"
-                  onChange={toggleOnChange}
-                />
-              </IconButton>
-              {user?.userId && <UserButtons />}
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-                <MenuItem>
+            {user?.userId && (
+              <>
+                <IconButton size="large" color="inherit" sx={{ pr: 0 }}>
+                  <Badge badgeContent={17} color="error">
+                    <NotificationsIcon fontSize="large" />
+                  </Badge>
+                </IconButton>
+                <Tooltip title="User Info">
                   <IconButton
+                    onClick={handleOpenUserMenu}
                     size="large"
-                    color="inherit"
-                    sx={{ pr: 0, display: { xs: "inline", md: "none" } }}
+                    sx={{ pr: 0 }}
                   >
-                    <DarkModeToggle
-                      lightColor="white"
-                      darkColor="white"
-                      onChange={toggleOnChange}
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/2.jpg"
                     />
                   </IconButton>
+                </Tooltip>
+              </>
+            )}
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
-              </Menu>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
+              ))}
+              <MenuItem>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  sx={{ pr: 0, display: { xs: "inline", md: "none" } }}
+                >
+                  <DarkModeToggle
+                    lightColor="white"
+                    darkColor="white"
+                    onChange={toggleOnChange}
+                  />
+                </IconButton>
+              </MenuItem>
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 }
 export default NavBar;
