@@ -1,5 +1,5 @@
-import UserRolesRes from "../entities/UserRolesRes";
 import APIClient from "./apiClient";
 
-const roleService = new APIClient<UserRolesRes>("/roles");
+const roleService = <T>() => new APIClient<T>("/roles");
+
 export default roleService;
