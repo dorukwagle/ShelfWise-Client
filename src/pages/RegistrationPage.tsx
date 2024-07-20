@@ -4,6 +4,8 @@ import {
   Card,
   CardContent,
   Container,
+  FormControl,
+  InputLabel,
   MenuItem,
   Select,
   Stack,
@@ -14,12 +16,10 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useLogin from "../hooks/useLogin";
-import useMe from "../hooks/useMe";
 import useDetailedUserRoles from "../hooks/useDetailedUserRoles";
 
 const RegistrationPage = () => {
   const navigate = useNavigate();
-  const {data: user} = useMe();
   const {data: detailedRoles} = useDetailedUserRoles();
   
   const {
@@ -41,7 +41,7 @@ const RegistrationPage = () => {
       <Card>
         <CardContent>
           <Box
-            component="form"
+          component="form"
             sx={{
               "& .MuiTextField-root": { m: 1 },
             }}
@@ -85,14 +85,21 @@ const RegistrationPage = () => {
               />
             </div>
             <div>
-              <Select label="Gender" {...register("gender")}>
+              <InputLabel id="gender-label">Gender</InputLabel>
+              <Select
+                labelId="gender-label"
+                id="select-gender"
+                label="Gender"
+                {...register("gender")}
+              >
                 <MenuItem value="Male">Male</MenuItem>
                 <MenuItem value="Female">Female</MenuItem>
                 <MenuItem value="Others">Others</MenuItem>
               </Select>
             </div>
             <div>
-              <Select label="Preferred Role" {...register("roleId")}>
+              <InputLabel id="role-label">Preferred Role</InputLabel>
+              <Select {...register("roleId")} label="Preferred Role" labelId="role-label">
                 {detailedRoles?.map(({ roleId, role }) => (
                   <MenuItem key={roleId} value={roleId}>
                     {role}
@@ -122,6 +129,13 @@ const RegistrationPage = () => {
               />
             </div>
             <div>
+              <TextField
+                {...register("confirm_password", { required: true })}
+                label="Confirm Password"
+                type="password"
+              />
+            </div>
+            <div>
               {isError && (
                 <Typography variant="body1" color="red">
                   {error.response && error.response.data.error}
@@ -136,11 +150,6 @@ const RegistrationPage = () => {
                 Register
               </Button>
             </Stack>
-            <div>
-              <Link to="/">
-                <Typography color="blue">Forgot Password</Typography>
-              </Link>
-            </div>
           </Box>
         </CardContent>
       </Card>

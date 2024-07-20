@@ -1,6 +1,7 @@
 const BASE_URL = "http://localhost:8080/api";
 const USER_CACHE_KEY = ["me"];
 const USER_ROLES_KEY = ["roles"];
+const DETAILED_USER_ROLES_KEY = ["roles_detailed"];
 
 enum EUserRoles {
     Manager = "Manager",
@@ -15,6 +16,7 @@ const DAY = 24 * HOUR;
 export {
     USER_CACHE_KEY,
     USER_ROLES_KEY,
+    DETAILED_USER_ROLES_KEY,
     EUserRoles,
     BASE_URL,
     HOUR,
