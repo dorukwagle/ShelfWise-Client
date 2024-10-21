@@ -23,6 +23,7 @@ const SignInPage = () => {
   const {register,  handleSubmit } = useForm();
 
   const onSubmit = (data: any) => {
+    throw new Error("hello error");
       login(data);
   } 
 
