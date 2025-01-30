@@ -12,7 +12,6 @@ import MenuItem from "@mui/material/MenuItem";
 import { Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useState, MouseEvent } from "react";
-import DarkModeToggle from "./DarkModeToggle";
 import Logo from "../assets/shelfwise-logo-fancy.png";
 import useMe from "../hooks/useMe";
 import useUserRoles from "../hooks/useUserRoles";
@@ -25,7 +24,7 @@ interface Props {
 
 let settings = ["Profile", "Account", "Logout"];
 
-const NavBar = ({ toggleOnChange, onMenuBtnClick }: Props) => {
+const NavBar = ({ onMenuBtnClick }: Props) => {
   const { data: user } = useMe();
   
   const { data: userRoles } = useUserRoles();
@@ -84,17 +83,6 @@ const NavBar = ({ toggleOnChange, onMenuBtnClick }: Props) => {
             ShelfWise
           </Typography>
           <Box sx={{ flexGrow: 0 }}>
-            <IconButton
-              size="large"
-              color="inherit"
-              sx={{ pr: 0, display: { xs: "none", md: "inline" } }}
-            >
-              <DarkModeToggle
-                lightColor="white"
-                darkColor="white"
-                onChange={toggleOnChange}
-              />
-            </IconButton>
             {user?.userId && (
               <>
                 <IconButton size="large" color="inherit" sx={{ pr: 0 }}>
@@ -137,19 +125,6 @@ const NavBar = ({ toggleOnChange, onMenuBtnClick }: Props) => {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
-              <MenuItem>
-                <IconButton
-                  size="large"
-                  color="inherit"
-                  sx={{ pr: 0, display: { xs: "inline", md: "none" } }}
-                >
-                  <DarkModeToggle
-                    lightColor="white"
-                    darkColor="white"
-                    onChange={toggleOnChange}
-                  />
-                </IconButton>
-              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

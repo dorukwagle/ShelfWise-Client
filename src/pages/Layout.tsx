@@ -4,6 +4,7 @@ import { ColorModeContext } from "../ThemedApp";
 import NavBar from "../components/NavBar";
 import SideDrawer from "../components/SideDrawer";
 import { Outlet } from "react-router-dom";
+import NetErrorDialog from "../components/NetErrorDialog";
 
 const Layout = () => {
   const colorMode = useContext(ColorModeContext);
@@ -17,6 +18,7 @@ const Layout = () => {
       />
       <SideDrawer isOpen={isDrawserOpen} onNavigate={() => setDrawerOpen(false)}/>
       <Outlet />
+      <NetErrorDialog />
     </Box>
   );
 };
