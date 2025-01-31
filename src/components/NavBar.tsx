@@ -36,12 +36,10 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
   )
     settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-  // if (userRoles.)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-    console.log(event.target);
   };
 
   const handleCloseUserMenu = () => {
@@ -49,7 +47,7 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
   };
 
   return (
-    <AppBar position="sticky" color="secondary" enableColorOnDark>
+    <AppBar position="sticky" sx={{ backgroundColor: "#00308F" }} enableColorOnDark>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <IconButton
@@ -74,7 +72,7 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
               display: { xs: "flex" },
               flexGrow: 1,
               fontFamily: "monospace",
-              fontWeight: 700,
+              fontWeight: 500,
               letterSpacing: ".1rem",
               color: "inherit",
               textDecoration: "none",
@@ -121,7 +119,7 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu} hidden>
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
@@ -132,4 +130,5 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
     </AppBar>
   );
 };
+
 export default NavBar;
