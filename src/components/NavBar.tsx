@@ -53,7 +53,7 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
   };
 
   const logoutMutation = useLogout(() => {
-    navigate("/login"); // Redirect user after logout
+    navigate("/sign-in"); // Redirect user after logout
   });
 
   const handleLogout = () => {
