@@ -16,6 +16,8 @@ import Logo from "../assets/shelfwise-logo-fancy.png";
 import useMe from "../hooks/useMe";
 import useUserRoles from "../hooks/useUserRoles";
 import { EUserRoles } from "../entities/constants";
+import useLogout from "../hooks/useLogout";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   toggleOnChange?: (theme: "light" | "dark") => void;
@@ -28,6 +30,8 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
   const { data: user } = useMe();
   
   const { data: userRoles } = useUserRoles();
+  const navigate = useNavigate();
+
 
   if (
     user?.role &&
@@ -46,6 +50,21 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const logoutMutation = useLogout(() => {
+    navigate("/login"); // Redirect user after logout
+  });
+
+  const handleLogout = () => {
+    logoutMutation.mutate(); // Call logout mutation
+  };
+
+  const menuActions: Record<string, () => void> = {
+    Profile: () => navigate("/profile"),
+    Account: () => navigate("/account"),
+    Dashboard: () => navigate("/dashboard"),
+    Logout: handleLogout,
   };
 
   return (
@@ -121,7 +140,7 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu} hidden>
+                <MenuItem key={setting} onClick={menuActions[setting]}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
