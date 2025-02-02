@@ -54,7 +54,7 @@ class APIClient<R={}, S={}, F={}> {
 
     delete = (routerParam?: string | number, body?: S) => {
         return client
-            .delete<R>(this.endpoint() + "/" + routerParam, {data: body})
+            .delete<R>(this.endpoint() + "/" + (routerParam || ""), {data: body})
             .then((res) => res.data);
     };
 }
