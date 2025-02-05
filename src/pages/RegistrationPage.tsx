@@ -18,16 +18,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useLogin from "../hooks/useLogin";
 import useDetailedUserRoles from "../hooks/useDetailedUserRoles";
+import { useContext } from "react";
+import { ColorModeContext } from "../ThemedApp"; 
 
 const RegistrationPage = () => {
   const navigate = useNavigate();
   const { data: detailedRoles } = useDetailedUserRoles();
-
   const { mutate: login, isError, error } = useLogin(() => {
     navigate("/");
   });
 
   const { register, handleSubmit } = useForm();
+  const { mode } = useContext(ColorModeContext); 
 
   const onSubmit = (data: any) => {
     login(data);
@@ -37,12 +39,10 @@ const RegistrationPage = () => {
     <Container
       sx={{
         height: "100vh",
-        backgroundImage: "url('your-background-image.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        bgcolor: "background.default", 
       }}
     >
       <Card
@@ -50,38 +50,29 @@ const RegistrationPage = () => {
           width: 600,
           p: 4,
           boxShadow: 5,
-          borderRadius: 3,
+          borderRadius: 2,
+          bgcolor: "background.paper", 
         }}
       >
         <CardContent>
-          {/* Logo */}
           <Box component="img" src="your-logo.png" alt="Logo" sx={{ width: 80, mb: 2, mx: "auto", display: "block" }} />
-
-          {/* Title */}
           <Typography variant="h5" fontWeight="bold" textAlign="center" mb={3}>
             Create Your Account
           </Typography>
-
-          {/* Registration Form */}
           <Box component="form" noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2}>
-              {/* Full Name & DOB */}
               <Grid item xs={12} sm={6}>
                 <TextField {...register("name", { required: true })} label="Full Name" fullWidth variant="outlined" />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField {...register("dob", { required: true })} label="Date of Birth" type="date" fullWidth InputLabelProps={{ shrink: true }} variant="outlined" />
               </Grid>
-
-              {/* Address & Contact Number */}
               <Grid item xs={12} sm={6}>
                 <TextField {...register("address", { required: true })} label="Address" fullWidth variant="outlined" />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField {...register("contactNo", { required: true })} label="Contact Number" fullWidth variant="outlined" />
               </Grid>
-
-              {/* Enrollment Year & Gender */}
               <Grid item xs={12} sm={6}>
                 <TextField {...register("enrollmentYear", { required: true })} label="Enrollment Year" fullWidth variant="outlined" />
               </Grid>
@@ -95,8 +86,6 @@ const RegistrationPage = () => {
                   </Select>
                 </FormControl>
               </Grid>
-
-              {/* Preferred Role & Roll Number */}
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>Preferred Role</InputLabel>
@@ -112,8 +101,6 @@ const RegistrationPage = () => {
               <Grid item xs={12} sm={6}>
                 <TextField {...register("rollNumber", { required: true })} label="Roll Number" fullWidth variant="outlined" />
               </Grid>
-
-              {/* Email & Password */}
               <Grid item xs={12} sm={6}>
                 <TextField {...register("email", { required: true })} label="Email" type="email" fullWidth variant="outlined" />
               </Grid>
@@ -121,25 +108,19 @@ const RegistrationPage = () => {
                 <TextField {...register("password", { required: true })} label="Password" type="password" fullWidth variant="outlined" />
               </Grid>
             </Grid>
-
-            {/* Error Handling */}
             {isError && (
-              <Typography variant="body1" color="red" textAlign="center" mt={2}>
+              <Typography variant="body1" color="error" textAlign="center" mt={2}>
                 {error.response?.data.error}
               </Typography>
             )}
-
-            {/* Register Button */}
             <Stack direction="row" justifyContent="center" mt={3}>
               <Button variant="contained" type="submit" size="large">
                 Register
               </Button>
             </Stack>
-
-            {/* Sign In Option */}
             <Typography variant="body2" textAlign="center" mt={3}>
               Already have an account?{" "}
-              <Link to="/sign-in" style={{ textDecoration: "none", color: "#1976d2", fontWeight: "bold" }}>
+              <Link to="/sign-in" style={{ textDecoration: "none", color: "primary.main", fontWeight: "bold" }}>
                 Sign In
               </Link>
             </Typography>
