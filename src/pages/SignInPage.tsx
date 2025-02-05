@@ -31,9 +31,18 @@ const SignInPage = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        bgcolor: "background.default", 
       }}
     >
-      <Card sx={{width: 450, p: 4, boxShadow: 5, borderRadius: 4}}>
+      <Card
+        sx={{
+          width: 450,
+          p: 4,
+          boxShadow: 5,
+          borderRadius: 4,
+          bgcolor: "background.paper", 
+        }}
+      >
         <CardContent>
           <Typography variant="h5" fontWeight="bold" textAlign="center" mb={2}>
             Welcome Back!
@@ -83,11 +92,11 @@ const SignInPage = () => {
           <Stack direction="column" spacing={1} mt={2} alignItems="center">
             <Typography variant="body2">
               Don't have an account?{" "}
-              <Link to="/registration" style={{ textDecoration: "none", color: "#1976d2" }}>
+              <Link to="/registration" style={{ textDecoration: "none", color: "primary.main" }}>
                 Register
               </Link>
             </Typography>
-            <Link to="/" style={{ textDecoration: "none", color: "#1976d2" }}>
+            <Link to="/" style={{ textDecoration: "none", color: "primary.main" }}>
               <Typography variant="body2">Forgot Password?</Typography>
             </Link>
           </Stack>

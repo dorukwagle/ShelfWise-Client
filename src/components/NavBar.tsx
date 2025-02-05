@@ -11,12 +11,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, useContext } from "react";
 import Logo from "../assets/shelfwise-logo-fancy.png";
 import useMe from "../hooks/useMe";
 import useUserRoles from "../hooks/useUserRoles";
 import { EUserRoles } from "../entities/constants";
-
+import ThemeToggleButton from "./ThemeToggleButton"; 
+import { ColorModeContext } from "../ThemedApp"; 
 interface Props {
   toggleOnChange?: (theme: "light" | "dark") => void;
   onMenuBtnClick?: () => void;
@@ -26,7 +27,7 @@ let settings = ["Profile", "Account", "Logout"];
 
 const NavBar = ({ onMenuBtnClick }: Props) => {
   const { data: user } = useMe();
-  
+  const { mode } = useContext(ColorModeContext); // Get the current theme mode
   const { data: userRoles } = useUserRoles();
 
   if (
@@ -47,7 +48,13 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
   };
 
   return (
-    <AppBar position="sticky" sx={{ backgroundColor: "#00308F" }} enableColorOnDark>
+    <AppBar
+      position="sticky"
+      sx={{
+        backgroundColor: mode === "light" ? "#ADD8E6" : "#001f3f", 
+      }}
+      enableColorOnDark
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <IconButton
@@ -58,7 +65,7 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
             sx={{ mr: 2 }}
             onClick={onMenuBtnClick}
           >
-            <MenuIcon />
+            <MenuIcon sx={{ color: "text.primary" }} />
           </IconButton>
           <IconButton size="large" sx={{ p: 0 }}>
             <Avatar src={Logo} />
@@ -74,18 +81,19 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
               fontFamily: "monospace",
               fontWeight: 500,
               letterSpacing: ".1rem",
-              color: "inherit",
+              color: "text.primary", 
               textDecoration: "none",
             }}
           >
             ShelfWise
           </Typography>
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
             {user?.userId && (
               <>
+                <ThemeToggleButton /> 
                 <IconButton size="large" color="inherit" sx={{ pr: 0 }}>
                   <Badge badgeContent={17} color="error">
-                    <NotificationsIcon fontSize="large" />
+                    <NotificationsIcon sx={{ color: "text.primary" }} fontSize="large" />
                   </Badge>
                 </IconButton>
                 <Tooltip title="User Info">
