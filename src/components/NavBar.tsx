@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 
 import ThemeToggleButton from "./ThemeToggleButton"; 
 import { ColorModeContext } from "../ThemedApp"; 
+
 interface Props {
   toggleOnChange?: (theme: "light" | "dark") => void;
   onMenuBtnClick?: () => void;
@@ -30,7 +31,7 @@ let settings = ["Profile", "Account", "Logout"];
 
 const NavBar = ({ onMenuBtnClick }: Props) => {
   const { data: user } = useMe();
-  const { mode } = useContext(ColorModeContext); // Get the current theme mode
+  const { mode } = useContext(ColorModeContext);
   const { data: userRoles } = useUserRoles();
   const navigate = useNavigate();
 
@@ -108,9 +109,9 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
             ShelfWise
           </Typography>
           <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
+            <ThemeToggleButton /> 
             {user?.userId && (
               <>
-                <ThemeToggleButton /> 
                 <IconButton size="large" color="inherit" sx={{ pr: 0 }}>
                   <Badge badgeContent={17} color="error">
                     <NotificationsIcon sx={{ color: "text.primary" }} fontSize="large" />
@@ -122,10 +123,7 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
                     size="large"
                     sx={{ pr: 0 }}
                   >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/2.jpg"
-                    />
+                    <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
                   </IconButton>
                 </Tooltip>
               </>
