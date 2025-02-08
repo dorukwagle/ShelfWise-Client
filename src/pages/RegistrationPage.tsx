@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import {
   Box,
   Button,
@@ -16,24 +16,24 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import useLogin from "../hooks/useLogin";
 import useDetailedUserRoles from "../hooks/useDetailedUserRoles";
 import { ColorModeContext } from "../ThemedApp";
 import FlipCard from "../components/FlipCard";
+import useRegistration from "../hooks/useRegistration";
 
 const RegistrationPage = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const navigate = useNavigate();
   const { data: detailedRoles } = useDetailedUserRoles();
-  const { mutate: login, isError, error } = useLogin(() => {
-    navigate("/");
+  const { mutate: registration, isError, error } = useRegistration(() => {
+    navigate("/sign-in");
   });
 
   const { register, handleSubmit } = useForm();
   const { mode } = useContext(ColorModeContext);
 
   const onSubmit = (data: any) => {
-    login(data);
+    registration(data);
   };
 
   const handleSignInClick = () => {
