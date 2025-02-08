@@ -1,40 +1,27 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
+import { Box, TextField, Button, Paper, Typography } from "@mui/material";
+import usePublisher from "../hooks/usePublisher";
 
-export default function PublisherForm() {
+export default function PublisherForm({ onClose }: { onClose: () => void }) {
   const [formData, setFormData] = useState({
     publisherName: "",
     address: "",
   });
-  
-  const navigate = useNavigate();
+
+  const addPublisher = usePublisher(onClose); // Call the mutation with onSuccess to close modal
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    
-    const response = await fetch("/api/searchBooks", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-    
-    const result = await response.json();
-    console.log("Search Results:", result);
-    
-    navigate("/publisher-form");
+    addPublisher.mutate(formData);
   };
 
   return (
-    <Box sx={{ mt: 8, display: "flex", justifyContent: "center" }}>
+    <Box sx={{ mt: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <Typography variant="h6" sx={{ mb: 2 }}>Add Publisher</Typography>
       <Paper elevation={3} sx={{ width: 400, p: 4 }}>
         <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <TextField
@@ -43,6 +30,7 @@ export default function PublisherForm() {
             value={formData.publisherName}
             onChange={handleChange}
             fullWidth
+            required
           />
           <TextField
             label="Address"
@@ -50,10 +38,18 @@ export default function PublisherForm() {
             value={formData.address}
             onChange={handleChange}
             fullWidth
+            required
           />
-          <Button type="submit" variant="contained" fullWidth>Search Books</Button>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <Button type="submit" variant="contained" fullWidth disabled={addPublisher.isPending}>
+              {addPublisher.isPending ? "Saving..." : "Save"}
+            </Button>
+            <Button variant="outlined" fullWidth onClick={onClose}>
+              Cancel
+            </Button>
+          </Box>
         </Box>
       </Paper>
     </Box>
-  ); 
+  );
 }
