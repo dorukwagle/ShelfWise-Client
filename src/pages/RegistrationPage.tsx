@@ -71,7 +71,7 @@ const RegistrationPage = () => {
                 <Box component="form" noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                      <TextField {...register("name", { required: true })} label="Full Name" fullWidth variant="outlined" />
+                      <TextField {...register("fullName", { required: true })} label="Full Name" fullWidth variant="outlined" />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField {...register("dob", { required: true })} label="Date of Birth" type="date" fullWidth InputLabelProps={{ shrink: true }} variant="outlined" />
