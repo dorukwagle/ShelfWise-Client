@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, TextField, InputAdornment, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Box, Typography, Button, TextField, InputAdornment, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import AddBookForm from '../components/AddBookForm'; 
+import AddBookForm from '../components/AddBookForm';
 
-const OnlineBooksPage = () => {
+interface OnlineBooksPageProps {}
+
+const OnlineBooksPage: React.FC<OnlineBooksPageProps> = () => {
   const [open, setOpen] = useState(false); 
 
-  // Function to open the dialog
+  // Open the dialog to add a new book
   const handleOpen = () => {
     setOpen(true);
   };
 
-  // Function to close the dialog
+  // Close the dialog
   const handleClose = () => {
     setOpen(false);
   };
@@ -23,20 +25,21 @@ const OnlineBooksPage = () => {
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
         <Typography variant="h5">Book Management</Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          {/* Search Field */}
           <TextField
             variant="outlined"
             placeholder="Search for a book..."
             sx={{
-              width: 350, 
+              width: 350,
               height: 40,
               '& .MuiOutlinedInput-root': {
-                height: 40, 
-                '& fieldset': { borderColor: '#ccc' }, 
+                height: 40,
+                '& fieldset': { borderColor: '#ccc' },
                 '&:hover fieldset': { borderColor: '#555' },
-                '&.Mui-focused fieldset': { borderColor: '#000' }, 
+                '&.Mui-focused fieldset': { borderColor: '#000' },
               },
               '& .MuiInputBase-input': {
-                padding: '10px 12px', 
+                padding: '10px 12px',
               },
             }}
             InputProps={{
@@ -47,39 +50,30 @@ const OnlineBooksPage = () => {
               ),
             }}
           />
+          {/* Add Book Button */}
           <Button
             variant="contained"
             sx={{
               backgroundColor: '#00308F',
-              color: '#ffffff',
-              '&:hover': { backgroundColor: '#333333' },
+              color: 'primary',
+              '&:hover': { backgroundColor: 'paper' },
               height: 40,
-              display: 'flex', 
-              alignItems: 'center', 
+              display: 'flex',
+              alignItems: 'center',
             }}
             startIcon={<AddIcon />}
-            onClick={handleOpen} 
+            onClick={handleOpen}
           >
             Add Book
           </Button>
         </Box>
       </Box>
 
-
-
       {/* Dialog for Add Book Form */}
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-          <AddBookForm />
+          <AddBookForm onClose={handleClose} />
         </DialogContent>
-        {/* <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Save
-          </Button>
-        </DialogActions> */}
       </Dialog>
     </Box>
   );

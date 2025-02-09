@@ -9,6 +9,7 @@ import AboutPage from "./pages/AboutPage";
 import OnlineBooksPage from "./pages/OnlineBooksPage";
 import SignInPage from "./pages/SignInPage";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: "/sign-in", element: <SignInPage /> },
       { path: "/about", element: <AboutPage />},
       { path: "/online-books", element: <OnlineBooksPage />},
+
       {
         element: <PrivateRoutes />,
         children: [{ path: "dashboard", element: <DashboardBranch /> }],
