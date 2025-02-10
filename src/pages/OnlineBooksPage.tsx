@@ -35,6 +35,7 @@ const OnlineBooksPage = () => {
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
         <Typography variant="h5">Book Management</Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          {/* Search Field */}
           <TextField
             variant="outlined"
             placeholder="Search for a book..."
@@ -59,12 +60,13 @@ const OnlineBooksPage = () => {
               ),
             }}
           />
+          {/* Add Book Button */}
           <Button
             variant="contained"
             sx={{
               backgroundColor: '#00308F',
-              color: '#ffffff',
-              '&:hover': { backgroundColor: '#333333' },
+              color: 'primary',
+              '&:hover': { backgroundColor: 'paper' },
               height: 40,
               display: 'flex',
               alignItems: 'center',

@@ -8,6 +8,8 @@ import ErrorPage from "./pages/ErrorPage";
 import AboutPage from "./pages/AboutPage";
 import OnlineBooksPage from "./pages/OnlineBooksPage";
 import SignInPage from "./pages/SignInPage";
+import AttributesPage from "./pages/AttributesPage";
+
 
 const router = createBrowserRouter([
   {
@@ -20,9 +22,12 @@ const router = createBrowserRouter([
       { path: "/sign-in", element: <SignInPage /> },
       { path: "/about", element: <AboutPage />},
       { path: "/online-books", element: <OnlineBooksPage />},
+
       {
         element: <PrivateRoutes />,
-        children: [{ path: "dashboard", element: <DashboardBranch /> }],
+        children: [{ path: "dashboard", element: <DashboardBranch /> },
+          {path: "attributes", element: <AttributesPage />}
+        ],
       },
     ],
   },
