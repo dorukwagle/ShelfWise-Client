@@ -7,11 +7,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { BookOnline, Home, Info } from "@mui/icons-material";
+import { BookOnline, Home, Info, Category } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { ColorModeContext } from "../ThemedApp"; // Import the context to get the current theme mode
-
+import { ColorModeContext } from "../ThemedApp"; 
 const drawerWidth = 240;
 
 interface Props {
@@ -33,6 +32,7 @@ const SideDrawer = ({ isOpen = false, onNavigate }: Props) => {
     { text: "Home", link: "", icon: <Home /> },
     { text: "Online Books", link: "", icon: <BookOnline /> },
     { text: "About", link: "", icon: <Info /> },
+    { text: "Attributes", link: "/attributes", icon: <Category /> }, 
   ];
 
   const onLinkClick = (link: string) => {

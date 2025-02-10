@@ -3,11 +3,10 @@ import { Box, Typography, Button, TextField, InputAdornment, Dialog, DialogConte
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import AddBookForm from '../components/AddBookForm';
-import PublisherForm from '../pages/PublisherForm';
+
 
 const OnlineBooksPage = () => {
   const [openBookDialog, setOpenBookDialog] = useState(false);
-  const [openPublisherDialog, setOpenPublisherDialog] = useState(false);
 
   // Function to open book dialog
   const handleOpenBookDialog = () => {
@@ -19,15 +18,7 @@ const OnlineBooksPage = () => {
     setOpenBookDialog(false);
   };
 
-  // Function to open publisher dialog
-  const handleOpenPublisherDialog = () => {
-    setOpenPublisherDialog(true);
-  };
 
-  // Function to close publisher dialog
-  const handleClosePublisherDialog = () => {
-    setOpenPublisherDialog(false);
-  };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
@@ -76,21 +67,6 @@ const OnlineBooksPage = () => {
           >
             Add Book
           </Button>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: '#00308F',
-              color: '#ffffff',
-              '&:hover': { backgroundColor: '#333333' },
-              height: 40,
-              display: 'flex',
-              alignItems: 'center',
-            }}
-            startIcon={<AddIcon />}
-            onClick={handleOpenPublisherDialog} // Open the publisher popup
-          >
-            Add Publisher
-          </Button>
         </Box>
       </Box>
 
@@ -101,12 +77,7 @@ const OnlineBooksPage = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog for Publisher Form */}
-      <Dialog open={openPublisherDialog} onClose={handleClosePublisherDialog}>
-        <DialogContent>
-          <PublisherForm onClose={handleClosePublisherDialog} /> {/* Pass close function */}
-        </DialogContent>
-      </Dialog>
+      
     </Box>
   );
 };
