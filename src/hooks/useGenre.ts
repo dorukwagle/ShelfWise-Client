@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import { ErrorRes } from "../entities/ErrorRes";
 import Genre from "../entities/Genre";
 import genreService from "../services/genreService";
-import { GENRES_CACHE_KEY, USER_CACHE_KEY } from "../entities/constants";
+import { GENRES_CACHE_KEY } from "../entities/constants";
 
 const useGenre = (onSuccess?: () => void) => {
     const queryClient = useQueryClient();
