@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import User from "../entities/User";
 import { AxiosError } from "axios";
 import { ErrorRes } from "../entities/ErrorRes";
