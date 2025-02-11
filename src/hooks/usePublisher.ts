@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import User from "../entities/User";
 import { AxiosError } from "axios";
 import { ErrorRes } from "../entities/ErrorRes";
-import { USER_CACHE_KEY } from "../entities/constants";
+import { PUBLISHERS_CACHE_KEY } from "../entities/constants";
 import Publisher from "../entities/Publisher";
 import publisherService from "../services/publisherService";
 
@@ -13,7 +13,7 @@ const usePublisher = (onSuccess?: () => void) => {
     mutationFn: (body: Publisher) =>
       publisherService.setSubroute("/publishers").post(body),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: USER_CACHE_KEY });
+      queryClient.invalidateQueries({ queryKey: PUBLISHERS_CACHE_KEY });
       onSuccess && onSuccess();
     },
   });
