@@ -39,7 +39,7 @@ class APIClient<R={}, S={}, F={}> {
             })
             .then((res) => res.data);
     };
-
+    
     post = (body?: S , option = defaultOption) => {
         return client
             .post<R>(this.endpoint(), body, option)

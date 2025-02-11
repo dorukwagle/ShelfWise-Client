@@ -1,28 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Tabs, Tab, Box, Typography, Paper } from '@mui/material';
+import { useNavigate, useLocation } from 'react-router-dom';
 import GenreForm from '../components/GenreForm';
 import AuthorForm from '../components/AuthorForm';
 import PublisherForm from '../components/PublisherForm';
 
-const AttributesPage = () => {
-  const [activeTab, setActiveTab] = useState('genre');
 
-  const handleClose = () => {
-    console.log('Modal closed');
+
+const AttributesPage: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const getDefaultTab = () => {
+    const params = new URLSearchParams(location.search);
+    return params.get('tab') || 'genre';
   };
 
+  const [activeTab, setActiveTab] = useState<string>(getDefaultTab);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get('tab') || 'genre';
+    if (tab !== activeTab) {
+      setActiveTab(tab);
+    }
+  }, [location.search, activeTab]);
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setActiveTab(newValue);
+    navigate(`/attributes?tab=${newValue}`);
   };
 
   const renderContent = () => {
     switch (activeTab) {
       case 'genre':
-        return <GenreForm onClose={handleClose} />;
+        return <GenreForm />;
       case 'publisher':
-        return <PublisherForm onClose={handleClose} />;
+        return <PublisherForm />;
       case 'author':
-        return <AuthorForm onClose={handleClose} />;
+        return <AuthorForm />;
       default:
         return <Typography>Select a tab</Typography>;
     }

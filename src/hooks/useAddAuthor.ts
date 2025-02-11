@@ -3,21 +3,23 @@ import User from "../entities/User";
 import { AxiosError } from "axios";
 import { ErrorRes } from "../entities/ErrorRes";
 import Author from "../entities/Author";
-import authService from "../services/authService";
 import authorService from "../services/authorServices";
-import { USER_CACHE_KEY } from "../entities/constants";
+import { AUTHORS_CACHE_KEY } from "../entities/constants";
 
-const useAuthor = (onSuccess?: () => void) => {
+const useAddAuthor = (onSuccess?: () => void) => {
     const queryClient = useQueryClient();
 
-    return useMutation<User, AxiosError<ErrorRes>, Author>({
+    return useMutation<Author, AxiosError<ErrorRes>, Author>({
         mutationFn: (body: Author) =>
-            authorService.setSubroute("/authors").post(body),
+            authorService.post(body),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: USER_CACHE_KEY });
+            queryClient.invalidateQueries({ queryKey: AUTHORS_CACHE_KEY });
             onSuccess && onSuccess()
         }
     })
 }
 
-export default useAuthor;
+export default useAddAuthor;
+
+
+

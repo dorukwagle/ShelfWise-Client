@@ -1,7 +1,7 @@
 import APIClient from "./apiClient";
-import User from "../entities/User";
 import Publisher from "../entities/Publisher";
 
-const publisherService = new APIClient<User, Publisher>("/attributes");
+const publisherService = new APIClient<any, Publisher>("/attributes/publishers");
 
 export default publisherService;
+

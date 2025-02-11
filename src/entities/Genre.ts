@@ -1,5 +1,8 @@
 interface Genre {
-    genreName: string
+  genreId?: string;
+  genreName: string
 }
 
 export default Genre;
+
+  

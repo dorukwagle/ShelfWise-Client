@@ -1,7 +1,11 @@
 import Genre from "../entities/Genre";
-import User from "../entities/User";
 import APIClient from "./apiClient";
 
- const genreService = new APIClient<User, Genre>("/attributes");
+ const genreService = new APIClient<any, Genre>("/attributes/genres");
 
 export default genreService;
+
+
+
+
+
