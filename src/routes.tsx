@@ -8,7 +8,8 @@ import ErrorPage from "./pages/ErrorPage";
 import AboutPage from "./pages/AboutPage";
 import OnlineBooksPage from "./pages/OnlineBooksPage";
 import SignInPage from "./pages/SignInPage";
-import PublisherForm from "./pages/PublisherForm";
+// import PublisherForm from "./pages/PublisherForm";
+// import MultiPageForm from "./pages/MultiPageForm";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
       { path: "/sign-in", element: <SignInPage /> },
       { path: "/about", element: <AboutPage />},
       { path: "/online-books", element: <OnlineBooksPage />},
-      {path: "/publisher-form", element: <PublisherForm/>},
+      // { path: "/add-books", element: <MultiPageForm/>},
       {
         element: <PrivateRoutes />,
         children: [{ path: "dashboard", element: <DashboardBranch /> }],
