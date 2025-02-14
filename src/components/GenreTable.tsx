@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper, IconButton, TextField, Box, CircularProgress, Alert } from "@mui/material";
-import { Edit, Delete, Save, Cancel } from "@mui/icons-material";
+import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper, IconButton, TextField, Box, CircularProgress, Alert, Typography } from "@mui/material";
+import { Edit, Delete, Save, Cancel, SearchOff } from "@mui/icons-material";
 import useTodos from "../hooks/useGenres";
 import useDeleteGenre from "../hooks/useDeleteGenre";
 import useUpdateGenre from "../hooks/useUpdateGenre";
 
 const GenreTable: React.FC = () => {
-  const { data, isLoading, error } = useTodos({ });
+  const { data, isLoading, error } = useTodos({});
   const deleteGenreMutation = useDeleteGenre();
   const updateGenreMutation = useUpdateGenre();
 
   const [editingGenreId, setEditingGenreId] = useState<string | null>(null);
   const [updatedGenre, setUpdatedGenre] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   if (isLoading) return <CircularProgress />;
   if (error) return <Alert severity="error">An error occurred: {error.message}</Alert>;
@@ -46,9 +47,27 @@ const GenreTable: React.FC = () => {
     }
   };
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredGenres = data?.data.filter((genre) =>
+    genre.genre.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <Table>
-      <TableHead>
+    <Box>
+      <TextField
+        label="Search Genre"
+        variant="outlined"
+        size="small"
+        value={searchTerm}
+        onChange={handleSearch}
+        sx={{ marginBottom: 2 }}
+      />
+      {filteredGenres && filteredGenres.length > 0 ? (
+        <Table>
+          <TableHead>
             <TableRow>
               <TableCell>Genre ID</TableCell>
               <TableCell>Genre</TableCell>
@@ -56,7 +75,7 @@ const GenreTable: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.data.map((genre) => (
+            {filteredGenres.map((genre) => (
               <TableRow key={genre.genreId}>
                 <TableCell>{genre.genreId}</TableCell>
                 <TableCell>
@@ -97,11 +116,23 @@ const GenreTable: React.FC = () => {
               </TableRow>
             ))}
           </TableBody>
-    </Table>
+        </Table>
+      ) : (
+        <Box display="flex" flexDirection="column" alignItems="center" marginTop={4}>
+          <SearchOff fontSize="large" color="disabled" />
+          <Typography variant="h6" align="center">
+            Sorry, no genres found.
+          </Typography>
+        </Box>
+      )}
+    </Box>
   );
 };
 
 export default GenreTable;
+
+
+
 
 
 
