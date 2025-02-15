@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, IconButton, Box, TextField } from '@mui/material';
-import { Edit, Delete, Save, Cancel } from '@mui/icons-material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, IconButton, Box, TextField, Typography } from '@mui/material';
+import { Edit, Delete, Save, Cancel, SearchOff } from '@mui/icons-material';
 import { Alert } from '@mui/material';
 import useAuthors from '../hooks/useAuthors';
 import useDeleteAuthor from '../hooks/useDeleteAuthor';
@@ -14,6 +14,7 @@ const AuthorTable: React.FC = () => {
 
   const [editingAuthorId, setEditingAuthorId] = useState<string | null>(null);
   const [updatedAuthor, setUpdatedAuthor] = useState<Author | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   if (isLoading) return <CircularProgress />;
   if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -45,76 +46,104 @@ const AuthorTable: React.FC = () => {
     setUpdatedAuthor(null);
   };
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredAuthors = data?.data.filter((author) =>
+    author.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Author ID</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>Full Name</TableCell>
-            <TableCell align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data?.data.map((author) => (
-            <TableRow key={author.authorId}>
-              <TableCell>{author.authorId}</TableCell>
-              <TableCell>
-                {editingAuthorId === author.authorId ? (
-                  <TextField
-                    fullWidth
-                    value={updatedAuthor?.title || ''}
-                    onChange={(e) => setUpdatedAuthor({ ...updatedAuthor!, title: e.target.value })}
-                    select
-                    SelectProps={{ native: true }}
-                  >
-                    <option value="Mr">Mr</option>
-                    <option value="Ms">Ms</option>
-                    <option value="Mrs">Mrs</option>
-                  </TextField>
-                ) : (
-                  author.title
-                )}
-              </TableCell>
-              <TableCell>
-                {editingAuthorId === author.authorId ? (
-                  <TextField
-                    fullWidth
-                    value={updatedAuthor?.fullName || ''}
-                    onChange={(e) => setUpdatedAuthor({ ...updatedAuthor!, fullName: e.target.value })}
-                  />
-                ) : (
-                  author.fullName
-                )}
-              </TableCell>
-              <TableCell align="right">
-                <Box display="flex" justifyContent="flex-end">
-                  {editingAuthorId === author.authorId ? (
-                    <>
-                      <IconButton onClick={handleSaveEdit} size="small" disabled={updateAuthorMutation.isLoading}>
-                        <Save fontSize="small" />
-                      </IconButton>
-                      <IconButton onClick={handleCancelEdit} size="small">
-                        <Cancel fontSize="small" />
-                      </IconButton>
-                    </>
-                  ) : (
-                    <>
-                      <IconButton onClick={() => handleEdit(author)} size="small">
-                        <Edit fontSize="small" />
-                      </IconButton>
-                      <IconButton onClick={() => handleDelete(author.authorId || '')} size="small" disabled={deleteAuthorMutation.isLoading}>
-                        <Delete fontSize="small" />
-                      </IconButton>
-                    </>
-                  )}
-                </Box>
-              </TableCell>
+    <Box>
+      <TextField
+        label="Search Author"
+        variant="outlined"
+        size="small"
+        value={searchTerm}
+        onChange={handleSearch}
+        sx={{ marginBottom: 2 }}
+      />
+      {filteredAuthors && filteredAuthors.length > 0 ? (
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Author ID</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>Full Name</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {filteredAuthors.map((author) => (
+              <TableRow key={author.authorId}>
+                <TableCell>{author.authorId}</TableCell>
+                <TableCell>
+                  {editingAuthorId === author.authorId ? (
+                    <TextField
+                      fullWidth
+                      value={updatedAuthor?.title || ''}
+                      onChange={(e) => setUpdatedAuthor({ ...updatedAuthor!, title: e.target.value })}
+                      select
+                      SelectProps={{ native: true }}
+                    >
+                      <option value="Mr">Mr</option>
+                      <option value="Ms">Ms</option>
+                      <option value="Mrs">Mrs</option>
+                    </TextField>
+                  ) : (
+                    author.title
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingAuthorId === author.authorId ? (
+                    <TextField
+                      fullWidth
+                      value={updatedAuthor?.fullName || ''}
+                      onChange={(e) => setUpdatedAuthor({ ...updatedAuthor!, fullName: e.target.value })}
+                    />
+                  ) : (
+                    author.fullName
+                  )}
+                </TableCell>
+                <TableCell align="right">
+                  <Box display="flex" justifyContent="flex-end">
+                    {editingAuthorId === author.authorId ? (
+                      <>
+                        <IconButton onClick={handleSaveEdit} size="small" disabled={updateAuthorMutation.isLoading}>
+                          <Save fontSize="small" />
+                        </IconButton>
+                        <IconButton onClick={handleCancelEdit} size="small">
+                          <Cancel fontSize="small" />
+                        </IconButton>
+                      </>
+                    ) : (
+                      <>
+                        <IconButton onClick={() => handleEdit(author)} size="small">
+                          <Edit fontSize="small" />
+                        </IconButton>
+                        <IconButton onClick={() => handleDelete(author.authorId || '')} size="small" disabled={deleteAuthorMutation.isLoading}>
+                          <Delete fontSize="small" />
+                        </IconButton>
+                      </>
+                    )}
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      ) : (
+        <Box display="flex" flexDirection="column" alignItems="center" marginTop={4}>
+          <SearchOff fontSize="large" color="disabled" />
+          <Typography variant="h6" align="center">
+            Sorry, no authors found.
+          </Typography>
+        </Box>
+      )}
+    </Box>
   );
 };
 
 export default AuthorTable;
+
