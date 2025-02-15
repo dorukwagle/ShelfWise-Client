@@ -9,6 +9,7 @@ import AboutPage from "./pages/AboutPage";
 import OnlineBooksPage from "./pages/OnlineBooksPage";
 import SignInPage from "./pages/SignInPage";
 import AttributesPage from "./pages/AttributesPage";
+import BookList from "./components/BookList";
 
 
 const router = createBrowserRouter([
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: "/sign-in", element: <SignInPage /> },
       { path: "/about", element: <AboutPage />},
       { path: "/online-books", element: <OnlineBooksPage />},
+      { path: "/book-list", element: <BookList />},
 
       {
         element: <PrivateRoutes />,
