@@ -1,5 +1,5 @@
-import React from 'react';
-import { 
+import React from "react";
+import {
   Paper,
   Grid,
   TextField,
@@ -9,9 +9,13 @@ import {
   MenuItem,
   Box,
   debounce,
-  SelectChangeEvent
-} from '@mui/material';
-import { BookSortType, FilterState } from '../entities/BookType';
+  SelectChangeEvent,
+  CircularProgress,
+} from "@mui/material";
+import { BookSortType, FilterState } from "../entities/BookType";
+import useAuthors from "../hooks/useAuthors"; // Import the custom hook
+import Author from "../entities/Author";
+import useGenres from "../hooks/useGenres";
 
 interface FilterProps {
   filters: FilterState;
@@ -19,14 +23,23 @@ interface FilterProps {
 }
 
 export const BookFilters: React.FC<FilterProps> = ({ filters, onFilterChange }) => {
+  // Fetch authors
+  const { data: authors, isLoading, error } = useAuthors({ 
+    seed: filters.seed || "",  // Ensure it's a string
+    page: 1, 
+    pageSize: 15 
+  });
+  const { data: genres, isLoading: genresLoading, error: genresError } = useGenres({ seed: filters.seed });
+
   // Debounce text field changes
   const debouncedFilterChange = React.useMemo(
-    () => debounce((key: keyof FilterState, value: string) => {
-      onFilterChange({
-        ...filters,
-        [key]: value
-      });
-    }, 300),
+    () =>
+      debounce((key: keyof FilterState, value: string) => {
+        onFilterChange({
+          ...filters,
+          [key]: value,
+        });
+      }, 300),
     [filters, onFilterChange]
   );
 
@@ -37,16 +50,28 @@ export const BookFilters: React.FC<FilterProps> = ({ filters, onFilterChange }) 
     };
   }, [debouncedFilterChange]);
 
-  const handleTextChange = (key: keyof FilterState) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleTextChange = (key: keyof FilterState) => (event: React.ChangeEvent<HTMLInputElement>) => {
     debouncedFilterChange(key, event.target.value);
   };
 
   const handleSortChange = (event: SelectChangeEvent<BookSortType>) => {
     onFilterChange({
       ...filters,
-      sort: event.target.value as BookSortType
+      sort: event.target.value as BookSortType,
+    });
+  };
+
+  const handleAuthorChange = (event: SelectChangeEvent<string>) => {
+    onFilterChange({
+      ...filters,
+      author: event.target.value || "",
+    });
+  };
+
+  const handleGenreChange = (event: SelectChangeEvent<string>) => {
+    onFilterChange({
+      ...filters,
+      genre: event.target.value || "", // Reset when "None" is selected
     });
   };
 
@@ -59,45 +84,77 @@ export const BookFilters: React.FC<FilterProps> = ({ filters, onFilterChange }) 
               fullWidth
               label="Search"
               placeholder="Search books..."
-              defaultValue={filters.seed || ''}
-              onChange={handleTextChange('seed')}
+              defaultValue={filters.seed || ""}
+              onChange={handleTextChange("seed")}
               variant="outlined"
               size="small"
             />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <TextField
-              fullWidth
-              label="Genre"
-              placeholder="Filter by genre"
-              defaultValue={filters.genre || ''}
-              onChange={handleTextChange('genre')}
-              variant="outlined"
-              size="small"
-            />
+          <FormControl fullWidth size="small">
+              <InputLabel>Genre</InputLabel>
+              <Select
+                value={filters.genre || ""}
+                label="Genre"
+                onChange={handleGenreChange}
+                disabled={genresLoading || !!genresError}
+              >
+                {/* Reset Option */}
+                <MenuItem value="">None</MenuItem>
+
+                {/* Loading/Error Handling */}
+                {genresLoading ? (
+                  <MenuItem disabled>
+                    <CircularProgress size={20} />
+                  </MenuItem>
+                ) : genresError ? (
+                  <MenuItem disabled>Error loading genres</MenuItem>
+                ) : (
+                  genres?.data.map((genre) => (
+                    <MenuItem key={genre.genreId} value={genre.genreId}>
+                      {genre.genre}
+                    </MenuItem>
+                  ))
+                )}
+              </Select>
+            </FormControl>
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <TextField
-              fullWidth
-              label="Author"
-              placeholder="Filter by author"
-              defaultValue={filters.author || ''}
-              onChange={handleTextChange('author')}
-              variant="outlined"
-              size="small"
-            />
+            <FormControl fullWidth size="small">
+              <InputLabel>Author</InputLabel>
+              <Select
+                value={filters.author || ""}
+                label="Author"
+                onChange={handleAuthorChange}
+                disabled={isLoading || !!error}
+              >
+                {/* Reset Option */}
+                <MenuItem value="">None</MenuItem>
+
+                {/* Show loading or error state */}
+                {isLoading ? (
+                  <MenuItem disabled>
+                    <CircularProgress size={20} />
+                  </MenuItem>
+                ) : error ? (
+                  <MenuItem disabled>Error loading authors</MenuItem>
+                ) : (
+                  authors?.data.map((author: Author) => (
+                    <MenuItem key={author.authorId} value={author.authorId}>
+                      {author.fullName}
+                    </MenuItem>
+                  ))
+                )}
+              </Select>
+            </FormControl>
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
             <FormControl fullWidth size="small">
               <InputLabel>Sort By</InputLabel>
-              <Select<BookSortType>
-                value={filters.sort || ''}
-                label="Sort By"
-                onChange={handleSortChange}
-              >
+              <Select<BookSortType> value={filters.sort || ""} label="Sort By" onChange={handleSortChange}>
                 <MenuItem value="ratings_desc">Rating (High to Low)</MenuItem>
                 <MenuItem value="ratings_asc">Rating (Low to High)</MenuItem>
                 <MenuItem value="pub_date_desc">Newest First</MenuItem>
