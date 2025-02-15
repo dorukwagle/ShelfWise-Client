@@ -4,15 +4,26 @@ import LoadingProgress from "../components/LoadingProgress";
 import { useNavigate } from "react-router-dom";
 import TagsInput from "../components/TagInputs"; // Import TagsInput
 import { useState } from "react";
+import { FilterState } from "../entities/BookType";
 
 const HomePage = () => {
   const { data: user, isLoading } = useMe();
   const navigate = useNavigate();
-  const [tags, setTags] = useState<string[]>([]); // State to store entered tags
+  const [tags, setTags] = useState<string[]>([]);
+
+  const initialFilter: FilterState = {
+    page: 1,
+    pageSize: 10,
+    seed: '',
+    genre: '',
+    author: '',
+    publisher: '',
+    sort: undefined,
+  };
 
   const handleTagsChange = (newTags: string[]) => {
     setTags(newTags);
-    console.log("Updated Tags:", newTags); // Logs the entered tags
+    console.log("Updated Tags:", newTags);
   };
 
   const Actions = () => (
@@ -45,6 +56,7 @@ const HomePage = () => {
           <TagsInput placeholder="Enter tags..." onChange={handleTagsChange} />
         </CardContent>
       </Card>
+
     </Container>
   );
 };
