@@ -1,9 +1,9 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { Book, FilterState } from '../entities/BookType';
+import { BookInfo, FilterState } from '../entities/BookType';
 import { BookService } from '../services/bookService';
 
 export interface UseBooksReturn {
-  books: Book[];
+  books: BookInfo[];
   isLoading: boolean;
   isError: boolean;
   error: Error | null;
@@ -14,7 +14,7 @@ export interface UseBooksReturn {
   isRefetching: boolean;
 }
 
-export const useBooks = (filters: FilterState): UseBooksReturn => {
+export const useBookList = (filters: FilterState): UseBooksReturn => {
   const {
     data,
     fetchNextPage,

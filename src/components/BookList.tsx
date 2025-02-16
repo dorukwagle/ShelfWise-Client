@@ -12,7 +12,7 @@ import {
   Skeleton
 } from '@mui/material';
 import { FilterState } from '../entities/BookType';
-import { useBooks } from '../hooks/useBook';
+import { useBookList } from '../hooks/useBookList';
 import { BookFilters } from './BookFIlters';
 
 const LoadingSkeleton = () => (
@@ -50,7 +50,7 @@ const BookList: React.FC = () => {
     fetchNextPage,
     totalItems,
     isRefetching
-  } = useBooks(filters);
+  } = useBookList(filters);
 
   if (isLoading) {
     return (
@@ -96,7 +96,7 @@ const BookList: React.FC = () => {
 
         <Grid container spacing={3}>
           {books.map((book) => (
-            <Grid item xs={12} sm={6} md={4} key={book.id}>
+            <Grid item xs={12} sm={6} md={4} key={book.bookInfoId}>
               <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
@@ -118,7 +118,7 @@ const BookList: React.FC = () => {
                       Publisher: {book.publisher.publisherName}
                     </Typography>
                     <Typography variant="body2">
-                      Score: {book.score}
+                      Score: 98
                     </Typography>
                   </Box>
                 </CardContent>

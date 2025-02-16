@@ -1,10 +1,6 @@
 import axios from 'axios';
 import { ApiResponse, FilterState } from '../entities/BookType';
-
-const api = axios.create({
-  baseURL: 'http://localhost:8080/api',
-  withCredentials: true,
-});
+import APIClient from './apiClient';
 
 export const BookService = {
   getBooks: async ({ 
@@ -23,16 +19,11 @@ export const BookService = {
       }
     });
     
-    // Add page parameter
     params.append('page', pageParam.toString());
 
     try {
-      console.log('yes');
-      
-      const { data } = await api.get<ApiResponse>(`/books?${params}`);
-      console.log(data);
-      
-      // const { data } = new APIClient<any, Genre>("/attributes/genres");
+      const api = new APIClient<any, ApiResponse>("/books");
+      const data = await api.get('',filters);
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

@@ -62,6 +62,7 @@ export interface Author {
 
 export interface Publishers {
   publisherId: string;
+  publisherName: string;
   name: string;
 }
 
@@ -110,6 +111,7 @@ export interface Ratings {
 
 export interface BookRatingScore {
   scoreId: string;
+  score: number;
   averageScore: number;
 }
 
