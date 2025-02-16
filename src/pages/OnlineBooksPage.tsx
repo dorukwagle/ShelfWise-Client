@@ -3,10 +3,11 @@ import { Box, Typography, Button, TextField, InputAdornment, Dialog, DialogConte
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import AddBookForm from '../components/AddBookForm';
-
+import AddExistingBook from "../components/AddExistingBook";
 
 const OnlineBooksPage = () => {
   const [openBookDialog, setOpenBookDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   // Function to open book dialog
   const handleOpenBookDialog = () => {
@@ -67,6 +68,11 @@ const OnlineBooksPage = () => {
           >
             Add Book
           </Button>
+          <Button variant="contained" color="primary" onClick={() => setOpenDialog(true)}>
+            Add Existing Book
+          </Button>
+
+          <AddExistingBook open={openDialog} onClose={() => setOpenDialog(false)} />
         </Box>
       </Box>
 

@@ -1,26 +1,15 @@
-import { Button, Card, CardActions, CardContent, Container, Typography, Box } from "@mui/material";
+import { Button, Card, CardActions, CardContent, Container, Typography, } from "@mui/material";
 import useMe from "../hooks/useMe";
 import LoadingProgress from "../components/LoadingProgress";
 import { useNavigate } from "react-router-dom";
-import TagsInput from "../components/TagInputs"; // Import TagsInput
+import TagsInput from "../components/TagInputs";
 import { useState } from "react";
-import { FilterState } from "../entities/BookType";
 import BookList from "../components/BookList";
 
 const HomePage = () => {
   const { data: user, isLoading } = useMe();
   const navigate = useNavigate();
   const [tags, setTags] = useState<string[]>([]);
-
-  const initialFilter: FilterState = {
-    page: 1,
-    pageSize: 10,
-    seed: '',
-    genre: '',
-    author: '',
-    publisher: '',
-    sort: undefined,
-  };
 
   const handleTagsChange = (newTags: string[]) => {
     setTags(newTags);

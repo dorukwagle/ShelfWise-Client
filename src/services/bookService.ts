@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ApiResponse, FilterState } from '../entities/BookType';
 import APIClient from './apiClient';
+import { BookAddition } from "../entities/BookAddition";
 
 export const BookService = {
   getBooks: async ({ 
@@ -32,4 +33,11 @@ export const BookService = {
       throw error;
     }
   }
+};
+
+
+export const addExistingBook = async (bookData: BookAddition) => {
+  const api = new APIClient<any, BookAddition>(`/books/add-existing/${bookData.bookInfoId}`);
+  const data = await api.post(bookData);
+  return data;
 };
