@@ -1,23 +1,24 @@
-
 import React from "react";
 import { TextField, Grid } from "@mui/material";
 
-// Define props using type instead of interface
+interface BookFormData {
+  title: string;
+  subtitle: string;
+  editionStatement: string;
+  seriesStatement: string;
+  numberOfPages: string;
+  publicationYear: string;
+}
+
 const BookInfoForm: React.FC<{
-  formData: {
-    title: string;
-    subtitle: string;
-    editionStatement: string;
-    seriesStatement: string;
-    numberOfPages: string;
-    publicationYear: string;
-    addedDate: string;
-    isbn: string;
-  };
-  onChange: (newData: Partial<typeof formData>) => void;
+  formData: BookFormData;
+  onChange: (newData: Partial<BookFormData>) => void;
 }> = ({ formData, onChange }) => {
+  const currentYear = new Date().getFullYear(); // Get the current year
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange({ [event.target.name]: event.target.value });
+    const { name, value, type } = event.target;
+    onChange({ [name]: type === "number" ? String(Number(value) || "") : value });
   };
 
   return (
@@ -79,31 +80,10 @@ const BookInfoForm: React.FC<{
           label="Publication Year"
           name="publicationYear"
           type="number"
-          value={formData.publicationYear}
+          value={formData.publicationYear || String(currentYear)} // Default to current year
           onChange={handleChange}
           variant="outlined"
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <TextField
-          fullWidth
-          label="Added Date"
-          name="addedDate"
-          type="date"
-          InputLabelProps={{ shrink: true }}
-          value={formData.addedDate}
-          onChange={handleChange}
-          variant="outlined"
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <TextField
-          fullWidth
-          label="ISBN"
-          name="isbn"
-          value={formData.isbn}
-          onChange={handleChange}
-          variant="outlined"
+          inputProps={{ min: "0", max: currentYear.toString(), step: "1" }}
         />
       </Grid>
     </Grid>

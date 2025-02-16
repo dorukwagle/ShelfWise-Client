@@ -1,30 +1,39 @@
-
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Button, Card, CardMedia } from "@mui/material";
 
-interface CoverImageFormProps {
-  formData: {
-    coverPhoto: string | null;
-  };
-  onChange: (newData: Partial<typeof formData>) => void;
-}
+const CoverImageForm: React.FC<{
+  formData: { coverPhoto: File | null };
+  onChange: (data: Partial<{ coverPhoto: File | null }>) => void;
+}> = ({ formData, onChange }) => {
+  const [preview, setPreview] = useState<string | null>(null);
 
-const CoverImageForm: React.FC<CoverImageFormProps> = ({ formData, onChange }) => {
+  // Generate preview when formData.coverPhoto changes
+  useEffect(() => {
+    if (formData.coverPhoto) {
+      console.log(formData)
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(formData.coverPhoto);
+    } else {
+      setPreview(null); // Reset preview if no image is selected
+    }
+  }, [formData.coverPhoto]);
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        onChange({ coverPhoto: reader.result as string }); // Update parent state with the image data
-      };
-      reader.readAsDataURL(file);
+      onChange({ coverPhoto: file });
+      console.log('asdasdasdasd')
     }
   };
 
   return (
     <Grid container spacing={2} alignItems="center" justifyContent="center">
       <Grid item xs={12}>
-        {formData.coverPhoto && (
+        {preview && (
           <Card
             style={{
               maxWidth: 300,
@@ -34,7 +43,7 @@ const CoverImageForm: React.FC<CoverImageFormProps> = ({ formData, onChange }) =
               boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
             }}
           >
-            <CardMedia component="img" image={formData.coverPhoto} alt="Cover Preview" />
+            <CardMedia component="img" image={preview} alt="Cover Preview" />
           </Card>
         )}
       </Grid>

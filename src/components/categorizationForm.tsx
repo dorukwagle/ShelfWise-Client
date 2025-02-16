@@ -1,53 +1,21 @@
-
-import React, { useState } from "react";
-import { TextField, Grid, MenuItem, Select, InputLabel, FormControl, OutlinedInput, Chip, CircularProgress } from "@mui/material";
+import React from "react";
+import { TextField, Grid, Chip, CircularProgress, Autocomplete } from "@mui/material";
 import useGenres from "../hooks/useGenres";
 import useAuthors from "../hooks/useAuthors";
-import usePublishers from "../hooks/usePublishers"; // Import the usePublishers hook
+import usePublishers from "../hooks/usePublishers";
 
-const CategorizationForm: React.FC = () => {
-  const [formData, setFormData] = useState({
-    classNumber: "",
-    bookNumber: "",
-    genre: [],
-    publisher: "",
-    author: [],
-  });
+const CategorizationForm: React.FC<{ formData: any; onChange: (data: any) => void }> = ({ formData, onChange }) => {
+  // Fetch data
+  const { data: genresData, isLoading: genresLoading } = useGenres({});
+  const { data: authorsData, isLoading: authorsLoading } = useAuthors({});
+  const { data: publishersData, isLoading: publishersLoading } = usePublishers({});
 
-  // Fetch genres, authors, and publishers using the custom hooks
-  const { data: genresData, isLoading: genresLoading, isError: genresError } = useGenres({});
-  const { data: authorsData, isLoading: authorsLoading, isError: authorsError } = useAuthors({});
-  const { data: publishersData, isLoading: publishersLoading, isError: publishersError } = usePublishers({});
-
-  // Get genres, authors, and publishers from the data or default to empty arrays
   const genres = genresData?.data || [];
   const authors = authorsData?.data || [];
   const publishers = publishersData?.data || [];
 
-  const handleChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name as string]: value,
-    }));
-  };
-
-  // Add or remove selected genre or author when the cross button is clicked
-  const handleChipRemove = (type: "genre" | "author", value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [type]: prev[type].filter((item) => item !== value), 
-    }));
-  };
-
-  // Show loading spinner if data is still being fetched
   if (genresLoading || authorsLoading || publishersLoading) {
     return <CircularProgress />;
-  }
-
-  // Show error message if there is an issue loading the genres, authors, or publishers
-  if (genresError || authorsError || publishersError) {
-    return <div>Error loading genres, authors, or publishers</div>;
   }
 
   return (
@@ -56,96 +24,62 @@ const CategorizationForm: React.FC = () => {
         <TextField
           fullWidth
           label="Class Number"
-          name="classNumber"
           value={formData.classNumber}
-          onChange={handleChange}
+          onChange={(e) => onChange({ classNumber: e.target.value })}
           variant="outlined"
         />
       </Grid>
+
       <Grid item xs={12}>
         <TextField
           fullWidth
           label="Book Number"
-          name="bookNumber"
           value={formData.bookNumber}
-          onChange={handleChange}
+          onChange={(e) => onChange({ bookNumber: e.target.value })}
           variant="outlined"
         />
       </Grid>
+
       <Grid item xs={12}>
-        <FormControl fullWidth>
-          <InputLabel>Genre</InputLabel>
-          <Select
-            multiple
-            name="genre"
-            value={formData.genre}
-            onChange={handleChange}
-            input={<OutlinedInput label="Genre" />}
-            renderValue={(selected) => (
-              <div>
-                {(selected as string[]).map((value) => (
-                  <Chip
-                    key={value}
-                    label={value}
-                    onDelete={() => handleChipRemove("genre", value)} // Remove tag when cross is clicked
-                  />
-                ))}
-              </div>
-            )}
-          >
-            {genres.map((g) => (
-              <MenuItem key={g.genreId} value={g.genre}>
-                {g.genre}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Autocomplete
+          multiple
+          options={genres}
+          getOptionLabel={(option) => option.genre}
+          value={genres.filter((g) => formData.genre.includes(g.genreId))} // Match IDs to objects
+          onChange={(event, newValue) => onChange({ genre: newValue.map((g) => g.genreId) })}
+          renderTags={(selected, getTagProps) =>
+            selected.map((option, index) => (
+              <Chip key={option.genreId} label={option.genre} {...getTagProps({ index })} />
+            ))
+          }
+          renderInput={(params) => <TextField {...params} label="Genre" variant="outlined" />}
+        />
       </Grid>
+
       <Grid item xs={12}>
-        <FormControl fullWidth>
-          <InputLabel>Publisher</InputLabel>
-          <Select
-            name="publisher"
-            value={formData.publisher}
-            onChange={handleChange}
-            input={<OutlinedInput label="Publisher" />}
-          >
-            {publishers.map((publisher) => (
-              <MenuItem key={publisher.publisherId} value={publisher.publisherName}>
-                {publisher.publisherName}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Autocomplete
+          options={publishers}
+          getOptionLabel={(option) => option.publisherName}
+          value={publishers.find((p) => p.publisherId === formData.publisher) || null} // Match ID
+          onChange={(event, newValue) => onChange({ publisher: newValue ? newValue.publisherId : "" })}
+          renderInput={(params) => <TextField {...params} label="Publisher" variant="outlined" />}
+        />
       </Grid>
+
       <Grid item xs={12}>
-        <FormControl fullWidth>
-          <InputLabel>Author</InputLabel>
-          <Select
-            multiple
-            name="author"
-            value={formData.author}
-            onChange={handleChange}
-            input={<OutlinedInput label="Author" />}
-            renderValue={(selected) => (
-              <div>
-                {(selected as string[]).map((value) => (
-                  <Chip
-                    key={value}
-                    label={value}
-                    onDelete={() => handleChipRemove("author", value)} // Remove tag when cross is clicked
-                  />
-                ))}
-              </div>
-            )}
-          >
-            {authors.map((a) => (
-              <MenuItem key={a.authorId} value={a.fullName}>
-                {a.fullName}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Autocomplete
+          multiple
+          options={authors}
+          getOptionLabel={(option) => option.fullName}
+          value={authors.filter((a) => formData.author.includes(a.authorId))} // Match IDs
+          onChange={(event, newValue) => onChange({ author: newValue.map((a) => a.authorId) })}
+          renderTags={(selected, getTagProps) =>
+            selected.map((option, index) => (
+              <Chip key={option.authorId} label={option.fullName} {...getTagProps({ index })} />
+            ))
+          }
+          renderInput={(params) => <TextField {...params} label="Author" variant="outlined" />}
+        />
       </Grid>
     </Grid>
   );
