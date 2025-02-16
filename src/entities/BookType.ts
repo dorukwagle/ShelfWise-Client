@@ -22,25 +22,97 @@ export const BookFilter = z.object({
 export type BookSortType = z.infer<typeof BookSort>;
 export type FilterState = z.infer<typeof BookFilter>;
 
-export interface Book {
-  id: string;
+export interface BookInfo {
+  bookInfoId: string;
+  classNumber: string;
+  bookNumber: string;
   title: string;
   subTitle?: string;
-  publisher: {
-    name: string;
-  };
-  score: number;
-  bookGenres: Array<{
-    genre: {
-      name: string;
-    };
-  }>;
-  bookAuthors: Array<{
-    author: {
-      name: string;
-    };
-  }>;
+  editionStatement?: string;
+  numberOfPages: bigint;
+  publicationYear: number;
+  seriesStatement?: string;
+  addedDate: Date;
+  coverPhoto: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date;
+  bookAuthors: BookWithAuthors[];
+  publisherId: string;
+  publisher: Publishers;
+  isbns: Isbn[];
+  bookGenres: BookWithGenres[];
+  books: Books[];
+  purchases: BookPurchases[];
+  reservations: BookReservations[];
+  comments: Comments[];
+  ratings: Ratings[];
+  score: BookRatingScore[];
 }
+
+export interface BookWithAuthors {
+  authorId: string;
+  author: Author;
+}
+
+export interface Author {
+  authorId: string;
+  name: string;
+}
+
+export interface Publishers {
+  publisherId: string;
+  name: string;
+}
+
+export interface Isbn {
+  isbn: string;
+}
+
+export interface BookWithGenres {
+  genreId: string;
+  genre: Genre;
+}
+
+export interface Genre {
+  genreId: string;
+  name: string;
+}
+
+export interface Books {
+  bookId: string;
+  status: string;
+}
+
+export interface BookPurchases {
+  purchaseId: string;
+  date: Date;
+}
+
+export interface BookReservations {
+  reservationId: string;
+  userId: string;
+  reservedDate: Date;
+}
+
+export interface Comments {
+  commentId: string;
+  userId: string;
+  text: string;
+  createdAt: Date;
+}
+
+export interface Ratings {
+  ratingId: string;
+  userId: string;
+  score: number;
+}
+
+export interface BookRatingScore {
+  scoreId: string;
+  averageScore: number;
+}
+
 
 export interface PaginationInfo {
   hasNextPage: boolean;
@@ -48,7 +120,7 @@ export interface PaginationInfo {
 }
 
 export interface ApiResponse {
-  data: Book[];
+  data: BookInfo[];
   info: PaginationInfo;
   statusCode: number;
 }

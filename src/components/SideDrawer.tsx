@@ -24,13 +24,13 @@ const SideDrawer = ({ isOpen = false, onNavigate }: Props) => {
 
   const publicPages = [
     { text: "Home", link: "/", icon: <Home /> },
-    { text: "Online Books", link: "/book-list", icon: <BookOnline /> },
+    { text: "Online Books", link: "/online-books", icon: <BookOnline /> },
     { text: "About", link: "/about", icon: <Info /> },
   ];
 
   const privatePages = [
     { text: "Home", link: "", icon: <Home /> },
-    { text: "Online Books", link: "/book-list", icon: <BookOnline /> },
+    { text: "Online Books", link: "/online-books", icon: <BookOnline /> },
     { text: "About", link: "", icon: <Info /> },
     { text: "Attributes", link: "/attributes", icon: <Category /> }, 
   ];

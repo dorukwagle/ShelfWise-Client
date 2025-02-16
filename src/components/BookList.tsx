@@ -35,7 +35,7 @@ const LoadingSkeleton = () => (
   </Grid>
 );
 
-const BookList = () => {
+const BookList: React.FC = () => {
   const [filters, setFilters] = useState<FilterState>({
     pageSize: 10
   });
@@ -109,13 +109,13 @@ const BookList = () => {
                   )}
                   <Box sx={{ mt: 2 }}>
                     <Typography variant="body2">
-                      Authors: {book.bookAuthors.map(ba => ba.author.name).join(', ')}
+                      Authors: {book.bookAuthors.map((ba: { author: { name: any; }; }) => ba.author.name).join(', ')}
                     </Typography>
                     <Typography variant="body2">
-                      Genres: {book.bookGenres.map(bg => bg.genre.name).join(', ')}
+                      Genres: {book.bookGenres.map((bg: { genre: { name: any; }; }) => bg.genre.name).join(', ')}
                     </Typography>
                     <Typography variant="body2">
-                      Publisher: {book.publisher.name}
+                      Publisher: {book.publisher.publisherName}
                     </Typography>
                     <Typography variant="body2">
                       Score: {book.score}

@@ -30,6 +30,8 @@ export const BookService = {
       console.log('yes');
       
       const { data } = await api.get<ApiResponse>(`/books?${params}`);
+      console.log(data);
+      
       // const { data } = new APIClient<any, Genre>("/attributes/genres");
       return data;
     } catch (error) {

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import TagsInput from "../components/TagInputs"; // Import TagsInput
 import { useState } from "react";
 import { FilterState } from "../entities/BookType";
+import BookList from "../components/BookList";
 
 const HomePage = () => {
   const { data: user, isLoading } = useMe();
@@ -57,6 +58,7 @@ const HomePage = () => {
         </CardContent>
       </Card>
 
+      <BookList />
     </Container>
   );
 };
