@@ -10,7 +10,7 @@ import {
   Paper,
   CircularProgress,
 } from "@mui/material";
-import { Book, Category, Settings, Image, EventRepeat } from "@mui/icons-material";
+import { Book, Category, Settings, Image} from "@mui/icons-material";
 import BookInfoForm from "../components/BookInfoForm";
 import CategorizationForm
 
@@ -30,21 +30,22 @@ const MultiPageForm: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState({
     title: "",
-    subtitle: "",
+    subTitle: "",
     editionStatement: "",
     seriesStatement: "",
     numberOfPages: "",
     publicationYear: "",
-    isbn: [],
-    barcodes: [],
+    isbn: [] as string[],  
+    barcodes: [] as string[],  
     classNumber: "",
     bookNumber: "",
-    genre: [],
+    genre: [] as string[],  
     publisher: "",
-    author: [],
+    author: [] as string[],
     totalPieces: "",
     pricePerPiece: "",
-    coverPhoto: null,
+    coverPhoto: null as File | null,
+
   });
 
   const { mutate: addBook, isLoading, isError, error, isSuccess } = useAddBook(() => {
@@ -68,48 +69,41 @@ const MultiPageForm: React.FC = () => {
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
   const handleSubmit = () => {
-    const formData = {
-      title: 'Sample Book Title',
-      subtitle: 'A Comprehensive Guide to React',
-      classNumber: 'QA123',
-      bookNumber: 'BN456',
-      editionStatement: 'Second Edition',
-      seriesStatement: 'React Series',
-      publicationYear: '2025',
-      numberOfPages: '350',
-      pricePerPiece: '25.99',
-      totalPieces: '100',
-      publisherId: 'PUB123',
-      coverPhoto: new File([new Blob([''], { type: 'image/jpeg' })], "C:\Users\Acer\Downloads\bottle.jpeg", { type: 'image/jpeg' }),
-    };
+
     
     // Create a FormData object
     const formDataToSubmit = new FormData();
     
-    // Append data to the FormData object
-    formDataToSubmit.append('title', formData.title);
-    formDataToSubmit.append('subtitle', formData.subtitle);
-    formDataToSubmit.append('classNumber', formData.classNumber);
-    formDataToSubmit.append('bookNumber', formData.bookNumber);
-    formDataToSubmit.append('editionStatement', formData.editionStatement);
-    formDataToSubmit.append('seriesStatement', formData.seriesStatement);
-    formDataToSubmit.append('publicationYear', formData.publicationYear);
-    formDataToSubmit.append('numberOfPages', formData.numberOfPages);
-    formDataToSubmit.append('pricePerPiece', formData.pricePerPiece);
-    formDataToSubmit.append('totalPieces', formData.totalPieces);
-    formDataToSubmit.append('publisherId', formData.publisherId);
+    // Append simple text fields
+    formDataToSubmit.append("title", formData.title);
+    formDataToSubmit.append("subTitle", formData.subTitle);
+    formDataToSubmit.append("classNumber", formData.classNumber);
+    formDataToSubmit.append("bookNumber", formData.bookNumber);
+    formDataToSubmit.append("editionStatement", formData.editionStatement);
+    formDataToSubmit.append("seriesStatement", formData.seriesStatement);
+    formDataToSubmit.append("publicationYear", formData.publicationYear);
+    formDataToSubmit.append("numberOfPages", formData.numberOfPages);
+    formDataToSubmit.append("pricePerPiece", formData.pricePerPiece);
+    formDataToSubmit.append("totalPieces", formData.totalPieces);
+    formDataToSubmit.append("publisherId", formData.publisher);
+
+    // Append arrays (if any)
+    formData.isbn.forEach((item) => formDataToSubmit.append("isbns[]", item));
+    formData.barcodes.forEach((item) => formDataToSubmit.append("barcodes[]", item));
+    formData.genre.forEach((item) => formDataToSubmit.append("bookGenres[]", item));
+    formData.author.forEach((item) => formDataToSubmit.append("bookAuthors[]", item));
+
     
-    // Append the file (coverPhoto) to FormData
-    // if (formData.coverPhoto) {
-      formDataToSubmit.append('coverPhoto', formData.coverPhoto);
-    // }
+    // Append cover photo if provided
+    if (formData.coverPhoto) {
+      formDataToSubmit.append("coverPhoto", formData.coverPhoto);
+    }
     
     // You can now use formDataToSubmit for further operations like submitting the form
     console.log(formDataToSubmit);
     
     addBook(formDataToSubmit);
     console.log(formDataToSubmit)
-    console.log('kk')
   };
 
   return (

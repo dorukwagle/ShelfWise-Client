@@ -45,7 +45,7 @@ const CategorizationForm: React.FC<{ formData: any; onChange: (data: any) => voi
           multiple
           options={genres}
           getOptionLabel={(option) => option.genre}
-          value={genres.filter((g) => formData.genre.includes(g.genreId))} // Match IDs to objects
+          value={genres.filter((g) => formData.genre.includes(g.genreId))} // Ensure correct value assignment
           onChange={(event, newValue) => onChange({ genre: newValue.map((g) => g.genreId) })}
           renderTags={(selected, getTagProps) =>
             selected.map((option, index) => (
@@ -60,7 +60,7 @@ const CategorizationForm: React.FC<{ formData: any; onChange: (data: any) => voi
         <Autocomplete
           options={publishers}
           getOptionLabel={(option) => option.publisherName}
-          value={publishers.find((p) => p.publisherId === formData.publisher) || null} // Match ID
+          value={publishers.find((p) => p.publisherId === formData.publisher) || null} // Ensure correct value assignment
           onChange={(event, newValue) => onChange({ publisher: newValue ? newValue.publisherId : "" })}
           renderInput={(params) => <TextField {...params} label="Publisher" variant="outlined" />}
         />
@@ -71,7 +71,7 @@ const CategorizationForm: React.FC<{ formData: any; onChange: (data: any) => voi
           multiple
           options={authors}
           getOptionLabel={(option) => option.fullName}
-          value={authors.filter((a) => formData.author.includes(a.authorId))} // Match IDs
+          value={authors.filter((a) => formData.author.includes(a.authorId))} // Ensure correct value assignment
           onChange={(event, newValue) => onChange({ author: newValue.map((a) => a.authorId) })}
           renderTags={(selected, getTagProps) =>
             selected.map((option, index) => (
@@ -86,3 +86,4 @@ const CategorizationForm: React.FC<{ formData: any; onChange: (data: any) => voi
 };
 
 export default CategorizationForm;
+

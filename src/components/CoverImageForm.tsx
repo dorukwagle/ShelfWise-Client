@@ -1,32 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Button, Card, CardMedia } from "@mui/material";
 
-const CoverImageForm: React.FC<{
+interface CoverImageFormProps {
   formData: { coverPhoto: File | null };
   onChange: (data: Partial<{ coverPhoto: File | null }>) => void;
-}> = ({ formData, onChange }) => {
+}
+
+const CoverImageForm: React.FC<CoverImageFormProps> = ({ formData, onChange }) => {
   const [preview, setPreview] = useState<string | null>(null);
 
-  // Generate preview when formData.coverPhoto changes
+  // Generate a preview when coverPhoto changes
   useEffect(() => {
     if (formData.coverPhoto) {
-      console.log(formData)
-
+      console.log("Generating preview for:", formData.coverPhoto);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
       };
       reader.readAsDataURL(formData.coverPhoto);
     } else {
-      setPreview(null); // Reset preview if no image is selected
+      setPreview(null);
     }
   }, [formData.coverPhoto]);
 
+  // Handle file selection and update parent state
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      console.log("File selected:", file);
       onChange({ coverPhoto: file });
-      console.log('asdasdasdasd')
     }
   };
 
@@ -35,10 +37,10 @@ const CoverImageForm: React.FC<{
       <Grid item xs={12}>
         {preview && (
           <Card
-            style={{
+            sx={{
               maxWidth: 300,
               margin: "auto",
-              borderRadius: 10,
+              borderRadius: 2,
               overflow: "hidden",
               boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
             }}
@@ -47,7 +49,7 @@ const CoverImageForm: React.FC<{
           </Card>
         )}
       </Grid>
-      <Grid item xs={12} style={{ textAlign: "center" }}>
+      <Grid item xs={12} sx={{ textAlign: "center" }}>
         <input
           accept="image/*"
           type="file"
