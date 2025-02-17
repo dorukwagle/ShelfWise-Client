@@ -10,6 +10,7 @@ import OnlineBooksPage from "./pages/OnlineBooksPage";
 import SignInPage from "./pages/SignInPage";
 import AttributesPage from "./pages/AttributesPage";
 import BookList from "./components/BookList";
+import MultiPageForm from "./pages/AddBookMultiFormPage";
 
 
 const router = createBrowserRouter([
@@ -24,6 +25,8 @@ const router = createBrowserRouter([
       { path: "/about", element: <AboutPage />},
       { path: "/online-books", element: <OnlineBooksPage />},
       { path: "/book-list", element: <BookList />},
+      {path: "/add-books", element: <MultiPageForm/>},
+      
 
       {
         element: <PrivateRoutes />,

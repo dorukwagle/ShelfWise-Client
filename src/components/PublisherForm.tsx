@@ -17,6 +17,7 @@ const PublisherForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const publisher = { publisherName, address }; 
+    
     setMessage(null); 
     
     addPublisher.mutate(publisher, {
