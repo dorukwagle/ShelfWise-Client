@@ -48,7 +48,7 @@ const MultiPageForm: React.FC = () => {
 
   });
 
-  const { mutate: addBook, isLoading, isError, error, isSuccess } = useAddBook(() => {
+  const { mutate: addBook, isPending, isError, error, isSuccess } = useAddBook(() => {
     setSubmitted(true);
   });
 
@@ -142,11 +142,11 @@ const MultiPageForm: React.FC = () => {
           )}
 
           <Box display="flex" justifyContent="space-between" mt={2}>
-            <Button disabled={activeStep === 0 || isLoading} onClick={handleBack}>
+            <Button disabled={activeStep === 0 || isPending} onClick={handleBack}>
               Back
             </Button>
-            <Button variant="contained" color="primary" onClick={handleNext} disabled={isLoading}>
-              {isLoading ? <CircularProgress size={24} /> : activeStep === steps.length - 1 ? "Submit" : "Next"}
+            <Button variant="contained" color="primary" onClick={handleNext} disabled={isPending}>
+              {isPending ? <CircularProgress size={24} /> : activeStep === steps.length - 1 ? "Submit" : "Next"}
             </Button>
           </Box>
         </>

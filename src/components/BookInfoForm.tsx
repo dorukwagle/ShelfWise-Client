@@ -3,7 +3,7 @@ import { TextField, Grid } from "@mui/material";
 
 interface BookFormData {
   title: string;
-  subtitle: string;
+  subTitle: string;
   editionStatement: string;
   seriesStatement: string;
   numberOfPages: string;
@@ -38,7 +38,7 @@ const BookInfoForm: React.FC<{
           fullWidth
           label="Subtitle"
           name="subtitle"
-          value={formData.subtitle}
+          value={formData.subTitle}
           onChange={handleChange}
           variant="outlined"
         />

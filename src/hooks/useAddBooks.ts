@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import bookService from "../services/bookServices";
 import { BOOKS_CACHE_KEY } from "../entities/constants";
+import { AxiosError } from "axios";
 
 const useAddBook = (onSuccess?: () => void) => {
   const queryClient = useQueryClient();
 
-  return useMutation<FormData, FormData, FormData>({
+  return useMutation<FormData, AxiosError, FormData>({
     mutationFn: (newBook: FormData) => {
       // const formData = new FormData();
       // Object.keys(newBook).forEach(key => {
