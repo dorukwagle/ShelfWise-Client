@@ -7,6 +7,8 @@ const PUBLISHERS_CACHE_KEY = ["publishers"];
 const DETAILED_USER_ROLES_KEY = ["roles_detailed"];
 const NET_ERR_KEY = ["net_err"];
 const BOOKS_CACHE_KEY = ["books"]; // Added for books
+const ENROLL_CACHE_KEY = ["enrollments"]
+
 
 enum EUserRoles {
     Manager = "Manager",
@@ -30,5 +32,6 @@ export {
     GENRES_CACHE_KEY,
     PUBLISHERS_CACHE_KEY,
     AUTHORS_CACHE_KEY,
-    BOOKS_CACHE_KEY
+    BOOKS_CACHE_KEY,
+    ENROLL_CACHE_KEY
 };
