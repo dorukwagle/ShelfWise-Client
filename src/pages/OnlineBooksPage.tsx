@@ -4,14 +4,17 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import AddBookForm from '../components/AddBookForm';
 import AddExistingBook from "../components/AddExistingBook";
+import { useNavigate } from 'react-router-dom';
 
 const OnlineBooksPage = () => {
   const [openBookDialog, setOpenBookDialog] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const navigate = useNavigate();
+
 
   // Function to open book dialog
-  const handleOpenBookDialog = () => {
-    setOpenBookDialog(true);
+  const handleAddBook = () => {
+    navigate('/add-books')
   };
 
   // Function to close book dialog
@@ -64,7 +67,7 @@ const OnlineBooksPage = () => {
               alignItems: 'center',
             }}
             startIcon={<AddIcon />}
-            onClick={handleOpenBookDialog}
+            onClick={handleAddBook}
           >
             Add Book
           </Button>
