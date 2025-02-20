@@ -1,6 +1,6 @@
 interface MembershipTypes {
   type: "Employee" | "Staff" | "Faculty" | "Tutor";
-  membershipTypeId: String;
+  membershipTypeId: string;
   precedence: number;
 }
 

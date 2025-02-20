@@ -2,7 +2,7 @@ import  UserRoles from "./UserRoles";
 import Membership  from "./Membership";
 
 interface User {
-  userId: string;
+  userId?: string;
   fullName: string;
   dob: string;
   address: string;
@@ -18,6 +18,8 @@ interface User {
   rollNumber: string;
   email: string;
   accountStatus: "Pending" | "Active" | "Inactive" | "Rejected" | "Suspended";
+  startDate: string;
+  expiryDate: string;
 }
 
 export default User;
