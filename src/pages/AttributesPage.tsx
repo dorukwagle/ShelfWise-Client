@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import GenreForm from '../components/GenreForm';
 import AuthorForm from '../components/AuthorForm';
 import PublisherForm from '../components/PublisherForm';
+import GlobalAttributesForm from '../components/GlobalAttributesForm';
 
 
 
@@ -38,6 +39,8 @@ const AttributesPage: React.FC = () => {
         return <PublisherForm />;
       case 'author':
         return <AuthorForm />;
+      case 'globalAttributes':
+        return <GlobalAttributesForm />;
       default:
         return <Typography>Select a tab</Typography>;
     }
@@ -57,6 +60,7 @@ const AttributesPage: React.FC = () => {
           <Tab label="Genre" value="genre" sx={{ mx: 3 }} />
           <Tab label="Publisher" value="publisher" sx={{ mx: 3 }} />
           <Tab label="Author" value="author" sx={{ mx: 3 }} />
+          <Tab label="Global Attributes" value="globalAttributes" sx={{ mx: 3 }} /> 
         </Tabs>
       </Paper>
       <Box sx={{ p: 3 }}>

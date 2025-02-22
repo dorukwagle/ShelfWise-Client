@@ -1,4 +1,3 @@
-// import User from "../entities/User";
 import Enrollment from "../entities/enrollements";
 import APIClient from "./apiClient";
 

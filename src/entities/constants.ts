@@ -9,6 +9,7 @@ const NET_ERR_KEY = ["net_err"];
 const BOOKS_CACHE_KEY = ["books"]; // Added for books
 const ENROLL_CACHE_KEY = ["enrollments"]
 const DETAILED_MEMBER_TYPE_KEY = ["memberTypes_detailed"]
+const GLOBAL_ATTRIBUTES_CACHE_KEY = ["global_attributes"];
 
 
 enum EUserRoles {
@@ -35,5 +36,6 @@ export {
     AUTHORS_CACHE_KEY,
     BOOKS_CACHE_KEY,
     ENROLL_CACHE_KEY,
-    DETAILED_MEMBER_TYPE_KEY
+    DETAILED_MEMBER_TYPE_KEY,
+    GLOBAL_ATTRIBUTES_CACHE_KEY
 };
