@@ -57,14 +57,16 @@ const GenreTable: React.FC = () => {
 
   return (
     <Box>
-      <TextField
-        label="Search Genre"
-        variant="outlined"
-        size="small"
-        value={searchTerm}
-        onChange={handleSearch}
-        sx={{ marginBottom: 2 }}
-      />
+      <Box display="flex" justifyContent="flex-end" sx={{ marginBottom: 2 }}>
+        <TextField
+          label="Search Author"
+          variant="outlined"
+          size="small"
+          value={searchTerm}
+          onChange={handleSearch}
+          sx={{ width: '350px' }} 
+        />
+      </Box>
       {filteredGenres && filteredGenres.length > 0 ? (
         <Table>
           <TableHead>
