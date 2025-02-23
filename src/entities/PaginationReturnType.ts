@@ -6,3 +6,4 @@ export type PaginationReturnTypes<T = any> = {
     };
     data: T[]; // Array of fetched items (e.g., books)
   };
+  

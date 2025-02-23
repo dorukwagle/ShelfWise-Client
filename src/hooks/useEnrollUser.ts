@@ -19,4 +19,3 @@ const useEnrollUser = (onSuccess?: () => void) => {
 }
 
 export default useEnrollUser;
-
