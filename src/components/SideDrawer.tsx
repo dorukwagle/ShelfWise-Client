@@ -7,7 +7,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { BookOnline, Home, Info, Category } from "@mui/icons-material";
+import { BookOnline, Home, Info, Category, School } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { ColorModeContext } from "../ThemedApp"; 
@@ -33,6 +33,7 @@ const SideDrawer = ({ isOpen = false, onNavigate }: Props) => {
     { text: "Online Books", link: "/online-books", icon: <BookOnline /> },
     { text: "About", link: "", icon: <Info /> },
     { text: "Attributes", link: "/attributes", icon: <Category /> }, 
+    { text: "Enrollments", link: "/enrollments", icon: <School /> },
   ];
 
   const onLinkClick = (link: string) => {

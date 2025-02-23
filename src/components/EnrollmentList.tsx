@@ -92,7 +92,6 @@ const EnrollmentTable: React.FC = () => {
       </Box>
       {filteredEnrollments && filteredEnrollments.length > 0 ? (
         <>
-          <TableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -103,7 +102,6 @@ const EnrollmentTable: React.FC = () => {
                   <TableCell>Contact No</TableCell>
                   <TableCell>Enrollment Year</TableCell>
                   <TableCell>Account Status</TableCell>
-                  <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -127,32 +125,11 @@ const EnrollmentTable: React.FC = () => {
                           </Select>
                         </FormControl>
                       </TableCell>
-                      <TableCell>
-                        <IconButton onClick={() => toggleShowFullData(enrollment.rollNumber)}>
-                          {showFullData[enrollment.rollNumber] ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </TableCell>
                     </TableRow>
-                    {showFullData[enrollment.rollNumber] && (
-                      <TableRow>
-                        <TableCell colSpan={8}>
-                          <Box>
-                            <Typography>User ID: {enrollment.userId}</Typography>
-                            <Typography>Address: {enrollment.address}</Typography>
-                            <Typography>Profile Picture: {enrollment.profilePicUrl}</Typography>
-                            <Typography>Account Creation Date: {enrollment.accountCreationDate}</Typography>
-                            <Typography>Gender: {enrollment.gender}</Typography>
-                            <Typography>Role ID: {enrollment.roleId}</Typography>
-                            <Typography>Created At: {enrollment.createdAt}</Typography>
-                          </Box>
-                        </TableCell>
-                      </TableRow>
-                    )}
                   </React.Fragment>
                 ))}
               </TableBody>
             </Table>
-          </TableContainer>
           <TablePagination
             component="div"
             count={enrollments?.length || 0}
