@@ -12,6 +12,7 @@ import AttributesPage from "./pages/AttributesPage";
 import BookList from "./components/BookList";
 import MultiPageForm from "./pages/AddBookMultiFormPage";
 import EnrollmentRequestForm from "./components/UserEnrollmentForm";
+import BookInfoTable from "./components/BookInfoTable";
 
 
 const router = createBrowserRouter([
@@ -28,9 +29,6 @@ const router = createBrowserRouter([
       { path: "/book-list", element: <BookList />},
       {path: "/add-books", element: <MultiPageForm/>},
       {path: "/enroll-user", element: <EnrollmentRequestForm/>},
-      
-      
-
       {
         element: <PrivateRoutes />,
         children: [{ path: "dashboard", element: <DashboardBranch /> },

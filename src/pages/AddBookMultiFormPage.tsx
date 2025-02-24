@@ -9,12 +9,13 @@ import {
   Typography,
   Paper,
   CircularProgress,
+  Snackbar,
+  Alert,
 } from "@mui/material";
-import { Book, Category, Settings, Image} from "@mui/icons-material";
+import { Book, Category, Settings, Image } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 import BookInfoForm from "../components/BookInfoForm";
-import CategorizationForm
-
-from "../components/categorizationForm";
+import CategorizationForm from "../components/categorizationForm";
 import BarcodeForm from "../components/BarcodeForm";
 import CoverImageForm from "../components/CoverImageForm";
 import useAddBook from "../hooks/useAddBooks";
@@ -35,24 +36,25 @@ const MultiPageForm: React.FC = () => {
     seriesStatement: "",
     numberOfPages: "",
     publicationYear: "",
-    isbn: [] as string[],  
-    barcodes: [] as string[],  
+    isbn: [] as string[],
+    barcodes: [] as string[],
     classNumber: "",
     bookNumber: "",
-    genre: [] as string[],  
+    genre: [] as string[],
     publisher: "",
     author: [] as string[],
     totalPieces: "",
     pricePerPiece: "",
     coverPhoto: null as File | null,
-
   });
 
+  const navigate = useNavigate();
   const { mutate: addBook, isPending, isError, error, isSuccess } = useAddBook(() => {
     setSubmitted(true);
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleFormChange = (newData: Partial<typeof formData>) => {
     setFormData((prev) => ({ ...prev, ...newData }));
@@ -69,12 +71,7 @@ const MultiPageForm: React.FC = () => {
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
   const handleSubmit = () => {
-
-    
-    // Create a FormData object
     const formDataToSubmit = new FormData();
-    
-    // Append simple text fields
     formDataToSubmit.append("title", formData.title);
     formDataToSubmit.append("subTitle", formData.subTitle);
     formDataToSubmit.append("classNumber", formData.classNumber);
@@ -86,25 +83,26 @@ const MultiPageForm: React.FC = () => {
     formDataToSubmit.append("pricePerPiece", formData.pricePerPiece);
     formDataToSubmit.append("totalPieces", formData.totalPieces);
     formDataToSubmit.append("publisherId", formData.publisher);
-
-    // Append arrays (if any)
     formData.isbn.forEach((item) => formDataToSubmit.append("isbns[]", item));
     formData.barcodes.forEach((item) => formDataToSubmit.append("barcodes[]", item));
     formData.genre.forEach((item) => formDataToSubmit.append("bookGenres[]", item));
     formData.author.forEach((item) => formDataToSubmit.append("bookAuthors[]", item));
-
-    
-    // Append cover photo if provided
     if (formData.coverPhoto) {
       formDataToSubmit.append("coverPhoto", formData.coverPhoto);
     }
-    
-    // You can now use formDataToSubmit for further operations like submitting the form
-    console.log(formDataToSubmit);
-    
     addBook(formDataToSubmit);
-    console.log(formDataToSubmit)
   };
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+    navigate("/online-books");
+  };
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      setOpenSnackbar(true);
+    }
+  }, [isSuccess]);
 
   return (
     <Container maxWidth="md" sx={{ mt: 6 }}>
@@ -171,6 +169,11 @@ const MultiPageForm: React.FC = () => {
           )}
         </Paper>
       )}
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+          Form Submitted Successfully!
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

@@ -37,7 +37,7 @@ const BookInfoForm: React.FC<{
         <TextField
           fullWidth
           label="Subtitle"
-          name="subtitle"
+          name="subTitle"
           value={formData.subTitle}
           onChange={handleChange}
           variant="outlined"
