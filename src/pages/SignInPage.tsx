@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import { useState, useContext } from "react";
 import {
   Box,
   Button,
   Card,
   CardContent,
-  Container,
   Stack,
   TextField,
   Typography,
@@ -13,35 +12,46 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useLogin from "../hooks/useLogin";
 import FlipCard from "../components/FlipCard";
+import { ColorModeContext } from "../ThemedApp";
 
 const SignInPage = () => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [flipDirection, setFlipDirection] = useState<'left' | 'right'>('right');
   const navigate = useNavigate();
   const { mutate: login, isError, error } = useLogin(() => {
     navigate("/dashboard");
   });
 
   const { register, handleSubmit } = useForm();
+  const { mode } = useContext(ColorModeContext);
 
   const onSubmit = (data: any) => {
     login(data);
   };
 
   const handleRegisterClick = () => {
+    setFlipDirection('right');
     setIsFlipped(true);
     setTimeout(() => {
       navigate("/registration");
-    }, 400); 
+    }, 400);
   };
 
+  const backgroundImage = mode === 'dark' ? 'url(src/assets/backgrounimgdark.jpg)' : 'url(src/assets/backroundimglight.jpeg)';
+
   return (
-    <Container
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        bgcolor: 'background.default',
+    <div
+      style={{
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "var(--mui-background-default)",
+        backgroundImage: backgroundImage,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
       <FlipCard
@@ -121,11 +131,13 @@ const SignInPage = () => {
               bgcolor: "transparent",
             }}
           />
-        } 
+        }
         isFlipped={isFlipped}
+        flipDirection={flipDirection}
       />
-    </Container>
+    </div>
   );
 };
 
 export default SignInPage;
+
