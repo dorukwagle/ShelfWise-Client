@@ -24,6 +24,7 @@ export default function ThemedApp() {
     () => ({
       toggleColorMode: (newMode: ColorMode) => {
         setMode(newMode);
+        localStorage.setItem("theme", newMode);
       },
       mode,
     }),

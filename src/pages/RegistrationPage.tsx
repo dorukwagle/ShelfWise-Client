@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardContent,
-  Container,
   InputLabel,
   MenuItem,
   Select,
@@ -23,6 +22,7 @@ import useRegistration from "../hooks/useRegistration";
 
 const RegistrationPage = () => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [flipDirection, setFlipDirection] = useState<'left' | 'right'>('left');
   const navigate = useNavigate();
   const { data: detailedRoles } = useDetailedUserRoles();
   const { mutate: registration, isError, error } = useRegistration(() => {
@@ -37,23 +37,31 @@ const RegistrationPage = () => {
   };
 
   const handleSignInClick = () => {
+    setFlipDirection('left');
     setIsFlipped(true);
     setTimeout(() => {
       navigate("/sign-in");
-    }, 400); // Flip transition timing
+    }, 400);
   };
 
+  const backgroundImage = mode === 'dark' ? 'url(src/assets/backgrounimgdark.jpg)' : 'url(src/assets/backroundimglight.jpeg)';
+
   return (
-    <Container
-      sx={{
+    <div
+      style={{
         height: "100vh",
+        width: "100vw",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        bgcolor: "background.default",
+        backgroundColor: "var(--mui-background-default)", 
+        backgroundImage: backgroundImage,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
-      <Box sx={{ width: 700 }}> 
+      <Box sx={{ width: 700 }}>
         <FlipCard
           front={
             <Card
@@ -139,11 +147,11 @@ const RegistrationPage = () => {
           }
           back={<div></div>}
           isFlipped={isFlipped}
+          flipDirection={flipDirection}
         />
       </Box>
-    </Container>
+    </div>
   );
 };
 
 export default RegistrationPage;
-
