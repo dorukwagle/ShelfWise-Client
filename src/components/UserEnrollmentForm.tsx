@@ -8,7 +8,19 @@ import useDetailedMembershipTypes from "../hooks/usedetailedMembershiptypes";
 import useEnrollUser from "../hooks/useEnrollUser";
 
 const EnrollmentRequestForm = () => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<{
+        fullName: string;
+        dob: string | null; // Updated type to string | null
+        address: string;
+        contactNo: string;
+        enrollmentYear: string;
+        gender: string;
+        rollNumber: string;
+        password: string;
+        email: string;
+        roleId: string;
+        membershipId: string;
+    }>({
         fullName: "",
         dob: null, // Use null for date initially
         address: "",
@@ -32,7 +44,7 @@ const EnrollmentRequestForm = () => {
     };
 
     const handleDateChange = (date: dayjs.Dayjs | null) => {
-        setFormData(prev => ({ ...prev, dob: date ? date.format("YYYY-MM-DD") : "" })); // Ensure dob is a string
+        setFormData(prev => ({ ...prev, dob: date ? date.format("YYYY-MM-DD") : null })); // Ensure dob is either null or string
     };
 
     const handleSubmit = (e: React.FormEvent) => {

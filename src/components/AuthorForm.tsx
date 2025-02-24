@@ -7,21 +7,32 @@ const AuthorForm: React.FC = () => {
   const [title, setTitle] = useState('');
   const [fullName, setFullName] = useState('');
   const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState(false);
 
   const addAuthor = useAddAuthor(() => {
     setTitle('');
     setFullName('');
     setMessage('Author successfully added to the database!');
+    setError(false);
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const author = { title, fullName };
-    setMessage(null);
+    
+    if (!fullName.trim()) {
+      setMessage('Write full name please');
+      setError(true);
+      return;
+    }
 
+    setMessage(null);
+    setError(false);
+
+    const author = { title, fullName };
     addAuthor.mutate(author, {
-      onError: (error: any) => {
-        setMessage(`An error occurred: ${error.response?.data.message || error.message}`);
+      onError: () => {
+        setMessage('An error occurred. Please try again.');
+        setError(true);
       },
     });
   };
@@ -33,7 +44,7 @@ const AuthorForm: React.FC = () => {
           <form onSubmit={handleSubmit}>
             <TextField
               fullWidth
-              placeholder='Title'
+              placeholder="Title"
               variant="outlined"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -49,20 +60,29 @@ const AuthorForm: React.FC = () => {
               <option value="Ms">Ms</option>
               <option value="Mrs">Mrs</option>
             </TextField>
+
             <TextField
               fullWidth
-              placeholder='Full Name'
+              placeholder="Full Name"
               variant="outlined"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
               sx={{ mb: 2 }}
+              error={error} 
+              helperText={error ? 'Full name is required' : ''}
             />
+
             <Button variant="contained" color="primary" type="submit" fullWidth>
               Create Author
             </Button>
           </form>
-          {message && <Alert severity="success" sx={{ mt: 2 }}>{message}</Alert>}
+
+          {message && (
+            <Alert severity={error ? "error" : "success"} sx={{ mt: 2 }}>
+              {message}
+            </Alert>
+          )}
         </Paper>
       </Box>
 

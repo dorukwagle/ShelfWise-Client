@@ -12,26 +12,8 @@ import AttributesPage from "./pages/AttributesPage";
 import BookList from "./components/BookList";
 import MultiPageForm from "./pages/AddBookMultiFormPage";
 import EnrollmentRequestForm from "./components/UserEnrollmentForm";
-import EnrollmentPage from "./pages/ApprovePage";
+import EnrollmentList from "./components/EnrollmentList";
 
-const staticEnrollments = [
-  {
-      userId: '1',
-      accountStatus: 'Pending',
-  },
-  {
-      userId: '2',
-      accountStatus: 'Active',
-  },
-  {
-      userId: '3',
-      accountStatus: 'Inactive',
-  },
-  {
-      userId: '4',
-      accountStatus: 'Rejected',
-  },
-];
 const router = createBrowserRouter([
   {
     path: "/",
@@ -46,14 +28,15 @@ const router = createBrowserRouter([
       { path: "/book-list", element: <BookList />},
       {path: "/add-books", element: <MultiPageForm/>},
       {path: "/enroll-user", element: <EnrollmentRequestForm/>},
-      {path: "/enroll-approve", element: <EnrollmentPage enrollments={staticEnrollments}/>},
+      
       
       
 
       {
         element: <PrivateRoutes />,
         children: [{ path: "dashboard", element: <DashboardBranch /> },
-          {path: "attributes", element: <AttributesPage />}
+          {path: "attributes", element: <AttributesPage />},
+          { path: "/enrollments", element: <EnrollmentList /> }
         ],
       },
     ],
