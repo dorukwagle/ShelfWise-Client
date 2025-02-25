@@ -5,11 +5,12 @@ interface FlipCardProps {
   front: React.ReactNode;
   back: React.ReactNode;
   isFlipped: boolean;
+  flipDirection: 'left' | 'right';
   width?: string | number;
   height?: string | number;
 }
 
-const FlipCard: React.FC<FlipCardProps> = ({ front, back, isFlipped, width = "600px", height = "500px" }) => {
+const FlipCard: React.FC<FlipCardProps> = ({ front, back, isFlipped, flipDirection, width = "600px", height = "500px" }) => {
   return (
     <Container
       sx={{
@@ -22,11 +23,15 @@ const FlipCard: React.FC<FlipCardProps> = ({ front, back, isFlipped, width = "60
     >
       <div
         style={{
-          width, 
+          width,
           height,
           position: 'relative',
           transformStyle: 'preserve-3d',
-          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+          transform: isFlipped
+            ? flipDirection === 'right'
+              ? 'rotateY(180deg)'
+              : 'rotateY(-180deg)'
+            : 'rotateY(0deg)',
           transition: 'transform 0.4s ease',
         }}
       >
