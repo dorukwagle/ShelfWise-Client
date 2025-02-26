@@ -4,7 +4,6 @@ import LoadingProgress from "../components/LoadingProgress";
 import { useNavigate } from "react-router-dom";
 import TagsInput from "../components/TagInputs";
 import { useState } from "react";
-import BookList from "../book/components/BookList";
 
 const HomePage = () => {
   const { data: user, isLoading } = useMe();
@@ -66,7 +65,6 @@ const HomePage = () => {
         </Card>
       )}
 
-      {!user?.userId && <BookList />}
     </Container>
   );
 };
