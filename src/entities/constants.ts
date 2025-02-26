@@ -14,10 +14,10 @@ const DEFAULT_PAGE_SIZE = 15;
 
 
 enum EUserRoles {
-    Manager = "Manager",
-    AssistantManager = "AssistantManager",
-    Coordinator = "Coordinator",
-    Member = "Member"
+  Manager = "Manager",
+  AssistantManager = "AssistantManager",
+  Coordinator = "Coordinator",
+  Member = "Member"
 }
 
 const HOUR = 60 * 60 * 1000;

@@ -2,10 +2,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import InfoModel from "./InfoModel";
 import { NET_ERR_KEY } from "../entities/constants";
 
-
 const NetErrorDialog = () => {
     const query = useQueryClient();
-    const {data} = useQuery<boolean>({ 
+    const { data } = useQuery<boolean>({
         queryKey: NET_ERR_KEY,
         queryFn: () => Boolean(query.getQueryData(NET_ERR_KEY)),
         refetchInterval: 5
@@ -19,7 +18,7 @@ const NetErrorDialog = () => {
             show={Boolean(data)}
             buttonText={{ yes: "Reload", no: "Cancel" }}
             onYes={() => window.location.reload()}
-            onNo={() => query.invalidateQueries({queryKey: NET_ERR_KEY})}
+            onNo={() => query.invalidateQueries({ queryKey: NET_ERR_KEY })}
         />
     );
 };

@@ -1,8 +1,8 @@
 import React from "react";
 import { TextField, Grid, Chip, CircularProgress, Autocomplete } from "@mui/material";
-import useGenres from "../hooks/useGenres";
-import useAuthors from "../hooks/useAuthors";
-import usePublishers from "../hooks/usePublishers";
+import useGenres from "../attributes/hooks/useGenres";
+import useAuthors from "../attributes/hooks/useAuthors";
+import usePublishers from "../attributes/hooks/usePublishers";
 
 const CategorizationForm: React.FC<{ formData: any; onChange: (data: any) => void }> = ({ formData, onChange }) => {
   // Fetch data

@@ -7,7 +7,7 @@ import router from "./routes";
 type ColorMode = "dark" | "light";
 
 export const ColorModeContext = createContext({
-  toggleColorMode: (_: ColorMode) => {},
+  toggleColorMode: (_: ColorMode) => { },
   mode: "light" as ColorMode,
 });
 
@@ -38,29 +38,29 @@ export default function ThemedApp() {
           mode,
           ...(mode === "light"
             ? {
-                primary: { main: "#0066cc" },
-                secondary: { main: "#ff6600" },
-                background: {
-                  default: "#f5f5f5",
-                  paper: "#ffffff",
-                },
-                text: {
-                  primary: "#333333",
-                  secondary: "#666666",
-                },
-              }
+              primary: { main: "#0066cc" },
+              secondary: { main: "#ff6600" },
+              background: {
+                default: "#f5f5f5",
+                paper: "#ffffff",
+              },
+              text: {
+                primary: "#333333",
+                secondary: "#666666",
+              },
+            }
             : {
-                primary: { main: "#4a90e2" },
-                secondary: { main: "#ff8c00" },
-                background: {
-                  default: "#1a1a1a",
-                  paper: "#26262a",
-                },
-                text: {
-                  primary: "#e0e0e0",
-                  secondary: "#b3b3b3",
-                },
-              }),
+              primary: { main: "#4a90e2" },
+              secondary: { main: "#ff8c00" },
+              background: {
+                default: "#1a1a1a",
+                paper: "#26262a",
+              },
+              text: {
+                primary: "#e0e0e0",
+                secondary: "#b3b3b3",
+              },
+            }),
         },
         typography: {
           button: {

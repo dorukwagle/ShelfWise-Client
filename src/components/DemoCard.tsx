@@ -33,7 +33,7 @@ const DemoCard = () => {
           {'"a benevolent smile"'}
         </Typography>
         <Typography>
-            Hello world
+          Hello world
         </Typography>
       </CardContent>
       <CardActions>

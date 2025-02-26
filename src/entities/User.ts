@@ -1,5 +1,5 @@
-import  UserRoles from "./UserRoles";
-import Membership  from "./Membership";
+import UserRoles from "./UserRoles";
+import Membership from "../attributes/entities/Membership";
 
 interface User {
   userId?: string;

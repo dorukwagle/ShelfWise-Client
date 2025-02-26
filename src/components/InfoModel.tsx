@@ -5,19 +5,18 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-
 interface ButtonText {
-    yes: string;
-    no?: string;
+  yes: string;
+  no?: string;
 }
 
 interface Props {
-    buttonText: ButtonText;
-    title: string;
-    body: string;
-    show: boolean;
-    onYes?: () => void;
-    onNo?: () => void;
+  buttonText: ButtonText;
+  title: string;
+  body: string;
+  show: boolean;
+  onYes?: () => void;
+  onNo?: () => void;
 }
 
 const InfoModel = ({ show, buttonText, title, body, onYes, onNo }: Props) => {
@@ -41,7 +40,7 @@ const InfoModel = ({ show, buttonText, title, body, onYes, onNo }: Props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          { buttonText.no && <Button onClick={handleClickNo}>{buttonText.no}</Button>}
+          {buttonText.no && <Button onClick={handleClickNo}>{buttonText.no}</Button>}
           <Button onClick={handleClickYes} autoFocus>
             {buttonText.yes}
           </Button>

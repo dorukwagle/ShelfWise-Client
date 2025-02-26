@@ -39,9 +39,9 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>  
-        <ThemedApp />
-        <ReactQueryDevtools />
+    <QueryClientProvider client={queryClient}>
+      <ThemedApp />
+      <ReactQueryDevtools />
     </QueryClientProvider>
   </React.StrictMode>
 );

@@ -3,7 +3,7 @@ import useMe from "../hooks/useMe";
 import LoadingProgress from "../components/LoadingProgress";
 
 const PrivateRoutes = () => {
-  const {data: user,  isLoading} = useMe();
+  const { data: user, isLoading } = useMe();
 
   if (isLoading) return <LoadingProgress />
 

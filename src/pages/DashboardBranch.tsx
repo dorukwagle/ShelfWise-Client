@@ -1,7 +1,8 @@
+import BookList from "../book/components/BookList";
 
 const DashboardBranch = () => {
   return (
-    <div>DashboardBranch</div>
+    <div><BookList /></div>
   )
 }
 

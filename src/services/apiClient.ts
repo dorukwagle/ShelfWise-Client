@@ -8,12 +8,12 @@ const client = axios.create({
 
 const defaultOption = {
     headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        }
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
 };
 
-class APIClient<R={}, S={}, F={}> {
+class APIClient<R = {}, S = {}, F = {}> {
     route: string;
     subRoute: string = "";
 
@@ -39,8 +39,8 @@ class APIClient<R={}, S={}, F={}> {
             })
             .then((res) => res.data);
     };
-    
-    post = (body?: S , option = defaultOption) => {
+
+    post = (body?: S, option = defaultOption) => {
         return client
             .post<R>(this.endpoint(), body, option)
             .then((res) => res.data);
@@ -55,7 +55,7 @@ class APIClient<R={}, S={}, F={}> {
     delete = (routerParam?: string | number, body?: S) => {
         const url = routerParam ? `${this.endpoint()}/${routerParam}` : this.endpoint();
         return client
-            .delete<R>(url, {data: body})
+            .delete<R>(url, { data: body })
             .then((res) => res.data);
     };
 }
