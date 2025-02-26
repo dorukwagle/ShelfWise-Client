@@ -14,8 +14,6 @@ import MultiPageForm from "./pages/AddBookMultiFormPage";
 import EnrollmentRequestForm from "./components/UserEnrollmentForm";
 import EnrollmentList from "./components/EnrollmentList";
 
-
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,10 +28,6 @@ const router = createBrowserRouter([
       { path: "/book-list", element: <BookList />},
       {path: "/add-books", element: <MultiPageForm/>},
       {path: "/enroll-user", element: <EnrollmentRequestForm/>},
-      
-      
-      
-
       {
         element: <PrivateRoutes />,
         children: [{ path: "dashboard", element: <DashboardBranch /> },

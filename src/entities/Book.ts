@@ -3,7 +3,7 @@ import Genre from "./Genre";
 // import Publisher from "./Publisher";
 
 interface Book {
-  bookId?: string;
+  bookInfoId?: string;
   classNumber: string;
   bookNumber: string;
   title: string;
