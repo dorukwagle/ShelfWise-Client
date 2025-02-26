@@ -1,18 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./pages/Layout";
 import HomePage from "./pages/HomePage";
-import RegistrationPage from "./pages/RegistrationPage";
 import PrivateRoutes from "./pages/PrivateRoutes";
 import DashboardBranch from "./pages/DashboardBranch";
 import ErrorPage from "./pages/ErrorPage";
 import AboutPage from "./pages/AboutPage";
-import OnlineBooksPage from "./pages/OnlineBooksPage";
-import SignInPage from "./pages/SignInPage";
-import AttributesPage from "./pages/AttributesPage";
-import BookList from "./components/BookList";
-import MultiPageForm from "./pages/AddBookMultiFormPage";
-import EnrollmentRequestForm from "./components/UserEnrollmentForm";
-import EnrollmentList from "./components/EnrollmentList";
+import OnlineBooksPage from "./book/pages/OnlineBooksPage";
+import AttributesPage from "./attributes/pages/AttributesPage";
+import BookList from "./book/components/BookList";
+import MultiPageForm from "./book/pages/AddBookMultiFormPage";
+import EnrollmentRequestForm from "./enrollment/components/UserEnrollmentForm";
+import EnrollmentList from "./enrollment/components/EnrollmentList";
+import RegistrationPage from "./auth/pages/RegistrationPage";
+import SignInPage from "./auth/pages/SignInPage";
 
 const router = createBrowserRouter([
   {

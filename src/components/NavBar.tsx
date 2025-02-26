@@ -16,7 +16,7 @@ import Logo from "../assets/shelfwise-logo-fancy.png";
 import useMe from "../hooks/useMe";
 import useUserRoles from "../hooks/useUserRoles";
 import { EUserRoles } from "../entities/constants";
-import useLogout from "../hooks/useLogout";
+import useLogout from "../auth/hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 
 import ThemeToggleButton from "./ThemeToggleButton"; 
