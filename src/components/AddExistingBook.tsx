@@ -7,25 +7,24 @@ import { BookAddition } from "../entities/BookAddition";
 import TagsInput from "./TagInputs";
 
 interface AddExistingBookProps {
-    open: boolean;
-    onClose: () => void;
-  }
+  open: boolean;
+  onClose: () => void;
+}
 
-  const AddExistingBook: React.FC<AddExistingBookProps> = ({ open, onClose }) => {
+const AddExistingBook: React.FC<AddExistingBookProps> = ({ open, onClose }) => {
   const [filters, setFilters] = useState<FilterState>({ pageSize: 50 });
   const { books } = useBookList(filters);
   const [selectedBook, setSelectedBook] = useState<BookInfo | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [pricePerPiece, setPricePerPiece] = useState("");
   const [totalPieces, setTotalPieces] = useState("");
+  const [barcodes, setBarcodes] = useState<string[]>([]);
   const { mutate: addExistingBook, isPending } = useAddExistingBook(() => {
     onClose();
   });
 
-  const [barcodes, setTags] = useState<string[]>([]);
-
   const handleTagsChange = (newTags: string[]) => {
-    setTags(newTags);
+    setBarcodes(newTags);
   };
 
   useEffect(() => {
@@ -79,7 +78,11 @@ interface AddExistingBookProps {
           onChange={(e) => setTotalPieces(e.target.value)}
           margin="dense"
         />
-        <TagsInput placeholder="Enter tags..." onChange={handleTagsChange} />
+        <TagsInput
+          placeholder="Enter barcodes..."
+          value={barcodes}
+          onChange={handleTagsChange}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="secondary">Cancel</Button>
@@ -97,3 +100,5 @@ interface AddExistingBookProps {
 };
 
 export default AddExistingBook;
+
+

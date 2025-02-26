@@ -8,11 +8,11 @@ interface TagsInputProps {
   onChange: (tags: string[]) => void;
 }
 
-const TagsInput: React.FC<TagsInputProps> = ({ 
-  placeholder = "Enter tags...", 
+const TagsInput: React.FC<TagsInputProps> = ({
+  placeholder = "Enter tags...",
   maxTagLength = 4,
   value, onChange,
-  }) => {
+}) => {
 
   const [inputValue, setInputValue] = useState<string>("");
 
@@ -32,14 +32,13 @@ const TagsInput: React.FC<TagsInputProps> = ({
     onChange(newTags);
   };
 
-    // Function to truncate tag text if it exceeds maxTagLength
-    const truncateTag = (tag: string) => {
-      return tag.length > maxTagLength ? `${tag.slice(0, maxTagLength)}...` : tag;
-    };
+  // Function to truncate tag text if it exceeds maxTagLength
+  const truncateTag = (tag: string) => {
+    return tag.length > maxTagLength ? `${tag.slice(0, maxTagLength)}...` : tag;
+  };
 
   return (
     <Box>
-      
       <TextField
         variant="outlined"
         size="small"
@@ -57,7 +56,7 @@ const TagsInput: React.FC<TagsInputProps> = ({
               <Box
                 sx={{
                   display: "flex",
-                  flexWrap: "wrap", // Makes tags wrap to the next line
+                  overflow: "auto", // Allow horizontal scrolling
                   gap: "4px",
                   paddingBottom: "4px",
                   width: "100%", // Ensures the tags input field uses the full width

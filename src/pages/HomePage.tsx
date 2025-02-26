@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, Container, Typography, } from "@mui/material";
+import { Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
 import useMe from "../hooks/useMe";
 import LoadingProgress from "../components/LoadingProgress";
 import { useNavigate } from "react-router-dom";
@@ -39,15 +39,34 @@ const HomePage = () => {
         <CardActions>{!user?.userId && <Actions />}</CardActions>
       </Card>
 
-      {/* Tags Input Card (Separate Container) */}
+      Tags Input Card (Separate Container)
       <Card sx={{ minWidth: 100, maxWidth: 700, mt: 3, p: 2 }}>
         <CardContent>
           <Typography variant="h6">Enter Tags</Typography>
-          <TagsInput placeholder="Enter tags..." onChange={handleTagsChange} />
+          <TagsInput
+            placeholder="Enter tags..."
+            value={tags}
+            onChange={handleTagsChange}
+          />
         </CardContent>
       </Card>
 
-      <BookList />
+      {tags.length > 0 && (
+        <Card sx={{ minWidth: 100, maxWidth: 700, mt: 3, p: 2 }}>
+          <CardContent>
+            <Typography variant="h6">Your Tags</Typography>
+            <div>
+              {tags.map((tag, index) => (
+                <Typography key={index} variant="body1">
+                  {tag}
+                </Typography>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* <BookList /> */}
     </Container>
   );
 };

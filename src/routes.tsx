@@ -28,10 +28,6 @@ const router = createBrowserRouter([
       { path: "/book-list", element: <BookList />},
       {path: "/add-books", element: <MultiPageForm/>},
       {path: "/enroll-user", element: <EnrollmentRequestForm/>},
-      
-      
-      
-
       {
         element: <PrivateRoutes />,
         children: [{ path: "dashboard", element: <DashboardBranch /> },
