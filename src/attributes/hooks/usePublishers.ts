@@ -7,13 +7,13 @@ import PaginationResponse from "../../entities/PaginationResponse";
 import { AxiosError } from "axios";
 import { ErrorRes } from "../../entities/ErrorRes";
 
-const usePublishers = ({seed}: PaginationParams) => {
-    const params: PaginationParams = {
-        page: 1,
-        pageSize: 15,
-        seed,
-    };
-    
+const usePublishers = ({ seed }: PaginationParams) => {
+  const params: PaginationParams = {
+    page: 1,
+    pageSize: 15,
+    seed,
+  };
+
   return useQuery<PaginationResponse<Publisher>, AxiosError<ErrorRes>>({
     queryKey: [...PUBLISHERS_CACHE_KEY, params],
     queryFn: () => publisherService.get("", params),

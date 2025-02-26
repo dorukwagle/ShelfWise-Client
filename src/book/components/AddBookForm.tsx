@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { 
-    Box, TextField, Button, Typography, Grid, IconButton
+import {
+  Box, TextField, Button, Typography, Grid, IconButton
 } from '@mui/material';
 import BookIcon from '@mui/icons-material/Book';
 import CloseIcon from '@mui/icons-material/Close';
@@ -30,14 +30,14 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onClose }) => {
     pricePerPiece: '',
     totalPieces: '',
     publisherId: '',
-    bookAuthors: [] as string[],  
-    isbns: [] as string[],        
-    bookGenres: [] as string[],   
-    barcodes: [] as string[],     
+    bookAuthors: [] as string[],
+    isbns: [] as string[],
+    bookGenres: [] as string[],
+    barcodes: [] as string[],
     coverPhoto: null as File | null,
   });
 
-  const { mutate: addBook } = useAddBook(() => {});
+  const { mutate: addBook } = useAddBook(() => { });
 
   /** Handles standard input changes */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

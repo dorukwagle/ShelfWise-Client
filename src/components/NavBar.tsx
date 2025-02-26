@@ -19,8 +19,8 @@ import { EUserRoles } from "../entities/constants";
 import useLogout from "../auth/hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 
-import ThemeToggleButton from "./ThemeToggleButton"; 
-import { ColorModeContext } from "../ThemedApp"; 
+import ThemeToggleButton from "./ThemeToggleButton";
+import { ColorModeContext } from "../ThemedApp";
 
 interface Props {
   toggleOnChange?: (theme: "light" | "dark") => void;
@@ -72,7 +72,7 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
     <AppBar
       position="sticky"
       sx={{
-        backgroundColor: mode === "light" ? "#ADD8E6" : "#001f3f", 
+        backgroundColor: mode === "light" ? "#ADD8E6" : "#001f3f",
       }}
       enableColorOnDark
     >
@@ -102,14 +102,14 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
               fontFamily: "monospace",
               fontWeight: 500,
               letterSpacing: ".1rem",
-              color: "text.primary", 
+              color: "text.primary",
               textDecoration: "none",
             }}
           >
             ShelfWise
           </Typography>
           <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
-            <ThemeToggleButton /> 
+            <ThemeToggleButton />
             {user?.userId && (
               <>
                 <IconButton size="large" color="inherit" sx={{ pr: 0 }}>

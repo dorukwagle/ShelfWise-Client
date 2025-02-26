@@ -54,7 +54,7 @@ const RegistrationPage = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "var(--mui-background-default)", 
+        backgroundColor: "var(--mui-background-default)",
         backgroundImage: backgroundImage,
         backgroundSize: "cover",
         backgroundPosition: "center",

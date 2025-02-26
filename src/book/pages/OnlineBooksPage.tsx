@@ -46,7 +46,7 @@ const OnlineBooksPage = () => {
     switch (activeTab) {
       case 'bookInfo':
         // return <Typography variant="body1">Book Info Content will go here.</Typography>;
-        return <BookInfoTable/>
+        return <BookInfoTable />
       case 'bookbarcodes':
         return "Helloworld"
       default:

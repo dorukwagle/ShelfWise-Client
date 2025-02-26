@@ -15,7 +15,7 @@ const ApproveEnrollmentDialog: React.FC<ApproveEnrollmentDialogProps> = ({ open,
 
     const handleFormSubmit = (data: any) => {
         console.log(data);
-        
+
         onSubmit(data);
     };
 

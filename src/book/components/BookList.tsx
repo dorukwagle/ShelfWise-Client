@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { 
-  Box, 
-  Card, 
-  CardContent, 
-  Typography, 
-  Grid, 
-  Button, 
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Button,
   CircularProgress,
   Container,
   Alert,
@@ -35,7 +35,7 @@ const LoadingSkeleton = () => (
   </Grid>
 );
 
-const   BookList: React.FC = () => {
+const BookList: React.FC = () => {
   const [filters, setFilters] = useState<FilterState>({
     pageSize: 10
   });
@@ -84,7 +84,7 @@ const   BookList: React.FC = () => {
     <Container maxWidth="lg">
       <Box py={4}>
         <BookFilters filters={filters} onFilterChange={setFilters} />
-        
+
         <Box sx={{ my: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="subtitle1">
             {totalItems > 0 ? `Found ${totalItems} books` : 'No books found'}

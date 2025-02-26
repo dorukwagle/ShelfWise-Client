@@ -12,11 +12,11 @@ const Layout = () => {
 
   return (
     <Box>
-      <NavBar 
-      toggleOnChange={colorMode.toggleColorMode} 
-      onMenuBtnClick={() => setDrawerOpen(!isDrawserOpen)}
+      <NavBar
+        toggleOnChange={colorMode.toggleColorMode}
+        onMenuBtnClick={() => setDrawerOpen(!isDrawserOpen)}
       />
-      <SideDrawer isOpen={isDrawserOpen} onNavigate={() => setDrawerOpen(false)}/>
+      <SideDrawer isOpen={isDrawserOpen} onNavigate={() => setDrawerOpen(false)} />
       <Outlet />
       <NetErrorDialog />
     </Box>

@@ -23,16 +23,16 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "/registration", element: <RegistrationPage /> },
       { path: "/sign-in", element: <SignInPage /> },
-      { path: "/about", element: <AboutPage />},
-      { path: "/online-books", element: <OnlineBooksPage />},
-      { path: "/book-list", element: <BookList />},
-      {path: "/add-books", element: <MultiPageForm/>},
-      {path: "/enroll-user", element: <EnrollmentRequestForm/>},
+      { path: "/about", element: <AboutPage /> },
+      { path: "/online-books", element: <OnlineBooksPage /> },
+      { path: "/book-list", element: <BookList /> },
+      { path: "/add-books", element: <MultiPageForm /> },
+      { path: "/enroll-user", element: <EnrollmentRequestForm /> },
       {
         element: <PrivateRoutes />,
         children: [{ path: "dashboard", element: <DashboardBranch /> },
-          {path: "attributes", element: <AttributesPage />},
-          { path: "/enrollments", element: <EnrollmentList /> }
+        { path: "attributes", element: <AttributesPage /> },
+        { path: "/enrollments", element: <EnrollmentList /> }
         ],
       },
     ],

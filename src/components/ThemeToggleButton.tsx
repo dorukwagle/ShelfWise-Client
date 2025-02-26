@@ -6,7 +6,7 @@ import DarkModeIcon from "@mui/icons-material/NightsStay"; // Dark mode icon
 
 const ThemeToggleButton: React.FC = () => {
   const colorMode = useContext(ColorModeContext);
-  
+
   const handleToggle = () => {
     colorMode.toggleColorMode(colorMode.mode === "dark" ? "light" : "dark");
     localStorage.setItem("theme", colorMode.mode === "dark" ? "light" : "dark");

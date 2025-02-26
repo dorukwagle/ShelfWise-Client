@@ -8,13 +8,13 @@ import Genre from "../entities/Genre";
 const useDeleteGenre = (onSuccess?: () => void) => {
   const queryClient = useQueryClient();
 
-  return useMutation<Genre, AxiosError<ErrorRes>, string>( {
+  return useMutation<Genre, AxiosError<ErrorRes>, string>({
     mutationFn: (genreId: string) => genreService.delete(genreId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: GENRES_CACHE_KEY });
       onSuccess && onSuccess();
     },
-  } );
+  });
 };
 
 export default useDeleteGenre;

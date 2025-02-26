@@ -10,7 +10,7 @@ interface Params {
     status?: "Pending" | "Completed";
 }
 
-const useTodos = ({seed}: Params) => {
+const useTodos = ({ seed }: Params) => {
 
     const params: PaginationParams = {
         page: 1,

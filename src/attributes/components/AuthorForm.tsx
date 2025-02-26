@@ -18,7 +18,7 @@ const AuthorForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!fullName.trim()) {
       setMessage('Write full name please');
       setError(true);
@@ -69,7 +69,7 @@ const AuthorForm: React.FC = () => {
               onChange={(e) => setFullName(e.target.value)}
               required
               sx={{ mb: 2 }}
-              error={error} 
+              error={error}
               helperText={error ? 'Full name is required' : ''}
             />
 

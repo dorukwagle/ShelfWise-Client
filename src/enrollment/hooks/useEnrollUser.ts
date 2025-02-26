@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { ErrorRes } from "../../entities/ErrorRes";
 import Enrollment from "../entities/enrollements";
 import enrollmentService from "../services/enrollmentRequest";
-import { ENROLL_CACHE_KEY} from "../../entities/constants";
+import { ENROLL_CACHE_KEY } from "../../entities/constants";
 
 const useEnrollUser = (onSuccess?: () => void) => {
     const queryClient = useQueryClient();
@@ -12,7 +12,7 @@ const useEnrollUser = (onSuccess?: () => void) => {
         mutationFn: (body: Enrollment) =>
             enrollmentService.post(body),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ENROLL_CACHE_KEY});
+            queryClient.invalidateQueries({ queryKey: ENROLL_CACHE_KEY });
             onSuccess && onSuccess();
         }
     });

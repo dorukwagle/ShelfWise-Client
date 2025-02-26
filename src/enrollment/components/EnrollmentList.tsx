@@ -1,21 +1,21 @@
-// src/components/EnrollmentTable.tsx
 import React, { useState } from "react";
-import { 
-  Box, 
-  TextField, 
-  Table, 
-  TableHead, 
-  TableRow, 
-  TableCell, 
-  TableBody, 
-  Typography, 
-  Select, 
-  MenuItem, 
-  FormControl, 
-  TablePagination } from "@mui/material";
+import {
+    Box,
+    TextField,
+    Table,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody,
+    Typography,
+    Select,
+    MenuItem,
+    FormControl,
+    TablePagination
+} from "@mui/material";
 import { SearchOff } from "@mui/icons-material";
 import useEnrollments from "../hooks/useEnrollments";
-import { DEFAULT_PAGE_SIZE } from "../../entities/constants"; 
+import { DEFAULT_PAGE_SIZE } from "../../entities/constants";
 
 const EnrollmentTable: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState("");

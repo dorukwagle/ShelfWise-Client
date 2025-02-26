@@ -23,10 +23,10 @@ interface FilterProps {
 }
 
 export const BookFilters: React.FC<FilterProps> = ({ filters, onFilterChange }) => {
-  const { data: authors, isLoading, error } = useAuthors({ 
+  const { data: authors, isLoading, error } = useAuthors({
     seed: filters.seed || "",
-    page: 1, 
-    pageSize: 15 
+    page: 1,
+    pageSize: 15
   });
   const { data: genres, isLoading: genresLoading, error: genresError } = useGenres({ seed: filters.seed });
 
@@ -91,7 +91,7 @@ export const BookFilters: React.FC<FilterProps> = ({ filters, onFilterChange }) 
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-          <FormControl fullWidth size="small">
+            <FormControl fullWidth size="small">
               <InputLabel>Genre</InputLabel>
               <Select
                 value={filters.genre || ""}

@@ -7,7 +7,7 @@ const PublisherForm: React.FC = () => {
   const [publisherName, setPublisherName] = useState('');
   const [address, setAddress] = useState('');
   const [message, setMessage] = useState<string | null>(null);
-  
+
   const addPublisher = useAddPublisher(() => {
     setPublisherName('');
     setAddress('');
@@ -16,10 +16,10 @@ const PublisherForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const publisher = { publisherName, address }; 
-    
-    setMessage(null); 
-    
+    const publisher = { publisherName, address };
+
+    setMessage(null);
+
     addPublisher.mutate(publisher, {
       onError: (error: any) => {
         setMessage(`An error occurred: ${error.response?.data.message || error.message}`);
@@ -62,7 +62,7 @@ const PublisherForm: React.FC = () => {
         <PublisherTable />
       </Box>
 
-      
+
     </>
   );
 };

@@ -13,8 +13,8 @@ interface Book {
   seriesStatement?: string | null;
   publisherId: string;
   bookAuthors: Author[];
-  isbns: string[]; 
-  bookGenres: Genre[]; 
+  isbns: string[];
+  bookGenres: Genre[];
   pricePerPiece: number;
   totalPieces: number;
   barcodes: string[];

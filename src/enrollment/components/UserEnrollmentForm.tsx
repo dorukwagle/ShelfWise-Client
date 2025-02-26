@@ -80,10 +80,10 @@ const EnrollmentRequestForm = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker 
-                                label="Date of Birth" 
-                                value={formData.dob ? dayjs(formData.dob) : null} 
-                                onChange={handleDateChange} 
+                            <DatePicker
+                                label="Date of Birth"
+                                value={formData.dob ? dayjs(formData.dob) : null}
+                                onChange={handleDateChange}
                             />
                         </LocalizationProvider>
                     </Grid>

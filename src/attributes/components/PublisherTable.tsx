@@ -7,7 +7,7 @@ import useUpdatePublisher from '../hooks/useUpdatePublisher';
 import Publisher from '../entities/Publisher';
 
 const PublisherTable: React.FC = () => {
-  const { data, isLoading, error } = usePublishers({ page: 1, pageSize: 15 }); 
+  const { data, isLoading, error } = usePublishers({ page: 1, pageSize: 15 });
   const deletePublisherMutation = useDeletePublisher();
   const updatePublisherMutation = useUpdatePublisher();
 
@@ -62,7 +62,7 @@ const PublisherTable: React.FC = () => {
           size="small"
           value={searchTerm}
           onChange={handleSearch}
-          sx={{ width: '350px' }} 
+          sx={{ width: '350px' }}
         />
       </Box>
       {filteredPublishers && filteredPublishers.length > 0 ? (

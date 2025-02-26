@@ -64,7 +64,7 @@ const GenreTable: React.FC = () => {
           size="small"
           value={searchTerm}
           onChange={handleSearch}
-          sx={{ width: '350px' }} 
+          sx={{ width: '350px' }}
         />
       </Box>
       {filteredGenres && filteredGenres.length > 0 ? (

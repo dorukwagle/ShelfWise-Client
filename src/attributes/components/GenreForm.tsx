@@ -6,17 +6,17 @@ import { TextField, Button, Paper, Alert, Box } from '@mui/material';
 const GenreForm: React.FC = () => {
   const [genreName, setGenreName] = useState('');
   const [message, setMessage] = useState<string | null>(null);
-  
+
   const addGenre = useAddGenre(() => {
-    setGenreName(''); 
+    setGenreName('');
     setMessage('Genre successfully added to the database!');
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const genre = { genre: genreName }; 
-    setMessage(null); 
-    
+    const genre = { genre: genreName };
+    setMessage(null);
+
     addGenre.mutate(genre, {
       onError: (error: any) => {
         setMessage(`An error occurred: ${error.response?.data.message || error.message}`);

@@ -60,7 +60,7 @@ const AttributesPage: React.FC = () => {
           <Tab label="Genre" value="genre" sx={{ mx: 3 }} />
           <Tab label="Publisher" value="publisher" sx={{ mx: 3 }} />
           <Tab label="Author" value="author" sx={{ mx: 3 }} />
-          <Tab label="Global Attributes" value="globalAttributes" sx={{ mx: 3 }} /> 
+          <Tab label="Global Attributes" value="globalAttributes" sx={{ mx: 3 }} />
         </Tabs>
       </Paper>
       <Box sx={{ p: 3 }}>

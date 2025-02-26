@@ -10,7 +10,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { BookOnline, Home, Info, Category, School } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { ColorModeContext } from "../ThemedApp"; 
+import { ColorModeContext } from "../ThemedApp";
 const drawerWidth = 240;
 
 interface Props {
@@ -32,7 +32,7 @@ const SideDrawer = ({ isOpen = false, onNavigate }: Props) => {
     { text: "Home", link: "", icon: <Home /> },
     { text: "Online Books", link: "/online-books", icon: <BookOnline /> },
     { text: "About", link: "", icon: <Info /> },
-    { text: "Attributes", link: "/attributes", icon: <Category /> }, 
+    { text: "Attributes", link: "/attributes", icon: <Category /> },
     { text: "Enrollments", link: "/enrollments", icon: <School /> },
   ];
 
@@ -52,7 +52,7 @@ const SideDrawer = ({ isOpen = false, onNavigate }: Props) => {
           width: drawerWidth,
           boxSizing: "border-box",
           bgcolor: mode === "light" ? "#ADD8E6" : "#001f3f",
-          color: "text.primary", 
+          color: "text.primary",
         },
         zIndex: 0,
       }}

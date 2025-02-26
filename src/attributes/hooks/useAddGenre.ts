@@ -12,7 +12,7 @@ const useAddGenre = (onSuccess?: () => void) => {
         mutationFn: (body: Genre) =>
             genreService.post(body),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: GENRES_CACHE_KEY});
+            queryClient.invalidateQueries({ queryKey: GENRES_CACHE_KEY });
             onSuccess && onSuccess();
         }
     });

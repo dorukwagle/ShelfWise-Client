@@ -63,7 +63,7 @@ const AuthorTable: React.FC = () => {
           size="small"
           value={searchTerm}
           onChange={handleSearch}
-          sx={{ width: '350px' }} 
+          sx={{ width: '350px' }}
         />
       </Box>
       {filteredAuthors && filteredAuthors.length > 0 ? (

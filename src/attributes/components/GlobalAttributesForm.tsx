@@ -62,10 +62,10 @@ const GlobalAttributesForm: React.FC = () => {
           <Button variant="contained" color="primary" onClick={handleSave} fullWidth>
             Save
           </Button>
-        </Paper>      
+        </Paper>
       </Box>
-      <Box>  
-        <GlobalAttributesTable /> 
+      <Box>
+        <GlobalAttributesTable />
       </Box>
     </>
   );

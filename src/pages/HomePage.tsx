@@ -66,7 +66,7 @@ const HomePage = () => {
         </Card>
       )}
 
-      <BookList />
+      {!user?.userId && <BookList />}
     </Container>
   );
 };

@@ -10,12 +10,12 @@ const useAddBook = (onSuccess?: () => void) => {
     mutationFn: (newBook: FormData) => {
       return bookService.post(newBook, {
         headers: {
-                "Content-Type": "multipart/form-data",
-                "Accept": "application/json",
-            }
-    });
-   },
-   
+          "Content-Type": "multipart/form-data",
+          "Accept": "application/json",
+        }
+      });
+    },
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: BOOKS_CACHE_KEY });
       onSuccess && onSuccess();

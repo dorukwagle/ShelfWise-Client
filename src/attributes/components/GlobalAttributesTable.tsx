@@ -10,7 +10,7 @@ const GlobalAttributesTable: React.FC = () => {
 
   return (
     <Box>
-        <Table>
+      <Table>
         <TableHead>
           <TableRow>
             <TableCell>Penalty Per Day</TableCell>
@@ -37,7 +37,7 @@ const GlobalAttributesTable: React.FC = () => {
         </TableBody>
       </Table>
     </Box>
-      
+
 
   );
 };
