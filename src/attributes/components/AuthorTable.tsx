@@ -1,29 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, IconButton, Box, TextField, Typography } from '@mui/material';
 import { Edit, Delete, Save, Cancel, SearchOff } from '@mui/icons-material';
 import { Alert } from '@mui/material';
 import useAuthors from '../hooks/useAuthors';
 import useDeleteAuthor from '../hooks/useDeleteAuthor';
 import useUpdateAuthor from '../hooks/useUpdateAuthor';
+import useSearchAuthors from '../hooks/useSearchAuthors';
 import Author from '../entities/Author';
 
 const AuthorTable: React.FC = () => {
-  const { data, error, isLoading } = useAuthors({ page: 1, pageSize: 15, seed: '' });
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const { data: authorsData, error: authorsError, isLoading: authorsLoading } = useAuthors({ page: 1, pageSize: 15, seed: '' });
+  const { data: searchResults, error: searchError, isLoading: searchLoading } = useSearchAuthors(searchTerm);
   const deleteAuthorMutation = useDeleteAuthor();
   const updateAuthorMutation = useUpdateAuthor();
 
   const [editingAuthorId, setEditingAuthorId] = useState<string | null>(null);
   const [updatedAuthor, setUpdatedAuthor] = useState<Author | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>("");
 
-  if (isLoading) return <CircularProgress />;
-  if (error) return <Alert severity="error">{error.message}</Alert>;
+  useEffect(() => {
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchTerm]);
+
+  if (authorsLoading || searchLoading) return <CircularProgress />;
+  if (authorsError || searchError) return <Alert severity="error">{authorsError?.message || searchError?.message}</Alert>;
 
   const handleDelete = (authorId: string) => {
-    if (window.confirm("Are you sure you want to delete this author?")) {
-      deleteAuthorMutation.mutate(authorId);
-    }
-  };
+      if (window.confirm("Are you sure you want to delete this author?")) {
+        deleteAuthorMutation.mutate(authorId);
+      }
+    };
 
   const handleEdit = (author: Author) => {
     setEditingAuthorId(author.authorId || null);
@@ -50,14 +59,13 @@ const AuthorTable: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredAuthors = data?.data.filter((author) =>
-    author.fullName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const authorsToShow = searchTerm ? searchResults?.data : authorsData?.data;
 
   return (
     <Box>
       <Box display="flex" justifyContent="flex-end" sx={{ marginBottom: 2 }}>
         <TextField
+          inputRef={searchInputRef}
           label="Search Author"
           variant="outlined"
           size="small"
@@ -66,7 +74,7 @@ const AuthorTable: React.FC = () => {
           sx={{ width: '350px' }}
         />
       </Box>
-      {filteredAuthors && filteredAuthors.length > 0 ? (
+      {authorsToShow && authorsToShow.length > 0 ? (
         <Table>
           <TableHead>
             <TableRow>
@@ -77,7 +85,7 @@ const AuthorTable: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredAuthors.map((author) => (
+            {authorsToShow.map((author: Author) => (
               <TableRow key={author.authorId}>
                 <TableCell>{author.authorId}</TableCell>
                 <TableCell>
