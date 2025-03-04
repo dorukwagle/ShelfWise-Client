@@ -6,7 +6,7 @@ const useApproveEnrollment = () => {
     const [open, setOpen] = useState<boolean>(false);
     const { register, setValue, handleSubmit, reset } = useForm<EnrollmentData>();
     const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    const [approveError, setError] = useState<string | null>(null);
 
     const handleOpen = (data: EnrollmentData) => {
         reset();
@@ -44,7 +44,7 @@ const useApproveEnrollment = () => {
         handleSubmit: handleSubmit(onSubmit),
         handleOpen,
         loading,
-        error,
+        approveError,
     };
 };
 
