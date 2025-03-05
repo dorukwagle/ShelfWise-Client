@@ -13,7 +13,7 @@ import EnrollmentRequestForm from "./enrollment/components/UserEnrollmentForm";
 import EnrollmentList from "./enrollment/components/EnrollmentList";
 import RegistrationPage from "./auth/pages/RegistrationPage";
 import SignInPage from "./auth/pages/SignInPage";
-import EnrollmentListPage from "./enrollment/pages/ApprovePage";
+import EnrollmentApprovePage from "./enrollment/pages/ApproveEnrollmentPage";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         children: [{ path: "dashboard", element: <DashboardBranch /> },
         { path: "attributes", element: <AttributesPage /> },
         { path: "/enrollments", element: <EnrollmentList /> },
-        { path: "/enrollments-request", element: <EnrollmentListPage /> }
+        { path: "/enrollments-request", element: <EnrollmentApprovePage /> }
         ],
       },
     ],
