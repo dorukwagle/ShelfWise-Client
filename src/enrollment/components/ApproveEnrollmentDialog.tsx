@@ -1,15 +1,15 @@
-import { 
-    Dialog, 
-    DialogTitle, 
-    DialogContent, 
-    TextField, 
-    Grid, 
-    Avatar, 
-    DialogActions, 
-    Button, 
-    Select, 
-    MenuItem, 
-    FormControl, 
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    TextField,
+    Grid,
+    Avatar,
+    DialogActions,
+    Button,
+    Select,
+    MenuItem,
+    FormControl,
     InputLabel,
     CircularProgress
 } from '@mui/material';
@@ -17,6 +17,8 @@ import { useForm, Controller } from 'react-hook-form';
 import Enrollment from '../entities/enrollements';
 import { EnrollmentApproveData } from '../services/approveEnrollmentService';
 import useApproveEnrollment from '../hooks/useApproveEnrollment';
+import useMembershipType from '../../attributes/hooks/useMembershipType';
+import { useState } from 'react';
 
 interface EnrollmentDialogProps {
     open: boolean;
@@ -30,11 +32,12 @@ const formatDateToYYYYMMDD = (date: Date | string | null): string => {
     return dateObj.toISOString().split('T')[0];
 };
 
-const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ 
-    open, 
-    onClose, 
+const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
+    open,
+    onClose,
     enrollment
 }) => {
+    const { data: membershipTypes, isLoading: isMembershipTypesLoading } = useMembershipType();
     const { control, handleSubmit, register, formState: { errors } } = useForm<EnrollmentApproveData>({
         defaultValues: {
             ...enrollment,
@@ -60,7 +63,7 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
         approveEnrollment.mutate(enrollmentData, {
             onSuccess: () => {
                 console.log('Enrollment approved successfully');
-                onClose(); 
+                onClose();
             },
             onError: (error) => {
                 console.error('Error approving enrollment:', error);
@@ -69,10 +72,10 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
     };
 
     return (
-        <Dialog 
-            open={open} 
-            onClose={onClose} 
-            maxWidth="md" 
+        <Dialog
+            open={open}
+            onClose={onClose}
+            maxWidth="md"
             fullWidth
         >
             <DialogTitle>Approve and Edit Enrollment</DialogTitle>
@@ -80,10 +83,10 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
                 <DialogContent>
                     {/* Profile Picture */}
                     <Grid container spacing={3}>
-                        <Grid item xs={12} sx={{ 
-                            display: 'flex', 
-                            justifyContent: 'center', 
-                            marginBottom: 2 
+                        <Grid item xs={12} sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            marginBottom: 2
                         }}>
                             <Avatar
                                 alt={enrollment.fullName}
@@ -107,7 +110,7 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
                             <TextField
                                 fullWidth
                                 label="Email"
-                                {...register('email', { 
+                                {...register('email', {
                                     required: 'Email is required',
                                     pattern: {
                                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -123,7 +126,7 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
                             <TextField
                                 fullWidth
                                 label="Contact Number"
-                                {...register('contactNo', { 
+                                {...register('contactNo', {
                                     required: 'Contact Number is required',
                                     pattern: {
                                         value: /^[0-9]{10}$/,
@@ -177,8 +180,8 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
                                 InputLabelProps={{ shrink: true }}
                                 variant="outlined"
                                 InputProps={{
-                                    inputProps: { 
-                                        max: formatDateToYYYYMMDD(new Date()) 
+                                    inputProps: {
+                                        max: formatDateToYYYYMMDD(new Date())
                                     }
                                 }}
                             />
@@ -201,7 +204,7 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
                                         </Select>
                                     )}
                                 />
-                                {errors.gender && <span style={{color: 'red', fontSize: '0.75rem'}}>{errors.gender.message}</span>}
+                                {errors.gender && <span style={{ color: 'red', fontSize: '0.75rem' }}>{errors.gender.message}</span>}
                             </FormControl>
                         </Grid>
 
@@ -236,7 +239,7 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
                                         </Select>
                                     )}
                                 />
-                                {errors.accountStatus && <span style={{color: 'red', fontSize: '0.75rem'}}>{errors.accountStatus.message}</span>}
+                                {errors.accountStatus && <span style={{ color: 'red', fontSize: '0.75rem' }}>{errors.accountStatus.message}</span>}
                             </FormControl>
                         </Grid>
 
@@ -252,8 +255,8 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
                                 InputLabelProps={{ shrink: true }}
                                 variant="outlined"
                                 InputProps={{
-                                    inputProps: { 
-                                        min: formatDateToYYYYMMDD(new Date()) 
+                                    inputProps: {
+                                        min: formatDateToYYYYMMDD(new Date())
                                     }
                                 }}
                             />
@@ -263,7 +266,7 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
                                 fullWidth
                                 label="Membership Expiry Date"
                                 type="date"
-                                {...register('expiryDate', { 
+                                {...register('expiryDate', {
                                     required: 'Expiry Date is required',
                                     validate: (value, formValues) => {
                                         const startDate = new Date(formValues.startDate);
@@ -276,21 +279,43 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
                                 InputLabelProps={{ shrink: true }}
                                 variant="outlined"
                                 InputProps={{
-                                    inputProps: { 
-                                        min: formatDateToYYYYMMDD(new Date()) 
+                                    inputProps: {
+                                        min: formatDateToYYYYMMDD(new Date())
                                     }
                                 }}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <TextField
-                                fullWidth
-                                label="Membership Type ID"
-                                {...register('membershipTypeId', { required: 'Membership Type ID is required' })}
-                                error={!!errors.membershipTypeId}
-                                helperText={errors.membershipTypeId?.message}
-                                variant="outlined"
-                            />
+                            <FormControl fullWidth variant="outlined" error={!!errors.membershipTypeId}>
+                                <InputLabel>Membership Type</InputLabel>
+                                <Controller
+                                    name="membershipTypeId"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: 'Membership Type is required' }}
+                                    render={({ field }) => (
+                                        <Select
+                                            {...field}
+                                            label="Membership Type"
+                                            disabled={isMembershipTypesLoading}
+                                        >
+                                            {isMembershipTypesLoading ? (
+                                                <MenuItem disabled>Loading...</MenuItem>
+                                            ) : (
+                                                membershipTypes?.map((type) => (
+                                                    <MenuItem
+                                                        key={type.membershipTypeId}
+                                                        value={type.membershipTypeId}
+                                                    >
+                                                        {type.type}
+                                                    </MenuItem>
+                                                ))
+                                            )}
+                                        </Select>
+                                    )}
+                                />
+                                {errors.membershipTypeId && <span style={{ color: 'red', fontSize: '0.75rem' }}>{errors.membershipTypeId.message}</span>}
+                            </FormControl>
                         </Grid>
 
                         {/* Address */}
@@ -312,9 +337,9 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
                     <Button onClick={onClose} color="secondary">
                         Cancel
                     </Button>
-                    <Button 
-                        type="submit" 
-                        color="primary" 
+                    <Button
+                        type="submit"
+                        color="primary"
                         variant="contained"
                         disabled={approveEnrollment.isPending}
                     >
