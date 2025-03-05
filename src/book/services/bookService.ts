@@ -41,3 +41,8 @@ export const addExistingBook = async (bookData: BookAddition) => {
   const data = await api.post(bookData);
   return data;
 };
+
+export const addBookService = new APIClient<any, FormData>("/books");
+
+export const updateGenreService = new APIClient<any, FormData>("/books/info/:infoId/genres")
+

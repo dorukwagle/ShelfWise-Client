@@ -8,6 +8,7 @@ const DETAILED_USER_ROLES_KEY = ["roles_detailed"];
 const NET_ERR_KEY = ["net_err"];
 const BOOKS_CACHE_KEY = ["books"]; // Added for books
 const ENROLL_CACHE_KEY = ["enrollments"]
+const ISBNS_CACHE_KEY = ["isbns"]
 const DETAILED_MEMBER_TYPE_KEY = ["memberTypes_detailed"]
 const GLOBAL_ATTRIBUTES_CACHE_KEY = ["global_attributes"];
 const DEFAULT_PAGE_SIZE = 15;
@@ -37,6 +38,7 @@ export {
   AUTHORS_CACHE_KEY,
   BOOKS_CACHE_KEY,
   ENROLL_CACHE_KEY,
+  ISBNS_CACHE_KEY,
   DETAILED_MEMBER_TYPE_KEY,
   GLOBAL_ATTRIBUTES_CACHE_KEY, DEFAULT_PAGE_SIZE
 };

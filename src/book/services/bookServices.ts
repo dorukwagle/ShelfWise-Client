@@ -1,5 +1,5 @@
 import APIClient from "../../services/apiClient";
 
-const bookService = new APIClient<any, FormData>("/books/info");
+const bookService = new APIClient<any, any>("/books/info");
 
 export default bookService;

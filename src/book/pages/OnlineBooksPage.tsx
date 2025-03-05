@@ -6,6 +6,7 @@ import AddBookForm from '../components/AddBookForm';
 import AddExistingBook from '../components/AddExistingBook';
 import { useNavigate, useLocation } from 'react-router-dom';
 import BookInfoTable from '../components/BookInfoTable';
+import BookClassificationTable from '../components/BookClassificationTable';
 
 const OnlineBooksPage = () => {
   const [openBookDialog, setOpenBookDialog] = useState(false);
@@ -48,7 +49,7 @@ const OnlineBooksPage = () => {
         // return <Typography variant="body1">Book Info Content will go here.</Typography>;
         return <BookInfoTable />
       case 'bookbarcodes':
-        return "Helloworld"
+        return <BookClassificationTable/>
       default:
         return <Typography variant="body1">Select a tab</Typography>;
     }
