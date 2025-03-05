@@ -1,21 +1,33 @@
-import React, { useState } from "react";
-import { Table, TableHead, TableRow, TableCell, TableBody, IconButton, TextField, Box, CircularProgress, Alert, Typography } from "@mui/material";
-import { Edit, Delete, Save, Cancel, SearchOff } from "@mui/icons-material";
+import React, { useState, useRef, useEffect } from "react";
+import { Table, TableHead, TableRow, TableCell, TableBody, IconButton, TextField, Box, CircularProgress, Alert, Typography, Button } from "@mui/material";
+import { Edit, Delete, Save, Cancel, SearchOff, Search } from "@mui/icons-material";
 import useTodos from "../hooks/useGenres";
 import useDeleteGenre from "../hooks/useDeleteGenre";
 import useUpdateGenre from "../hooks/useUpdateGenre";
+import useSearchGenres from '../hooks/useSearchGenres';
+import Genre from "../entities/Genre";
+import PaginationResponse from "../../entities/PaginationResponse";
 
 const GenreTable: React.FC = () => {
-  const { data, isLoading, error } = useTodos({});
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchInput, setSearchInput] = useState<string>("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const { data: genresData, isLoading: genresLoading, error: genresError } = useTodos({ seed: '' });
+  const { data: searchResults, error: searchError, isLoading: searchLoading } = useSearchGenres(searchTerm);
   const deleteGenreMutation = useDeleteGenre();
   const updateGenreMutation = useUpdateGenre();
 
   const [editingGenreId, setEditingGenreId] = useState<string | null>(null);
   const [updatedGenre, setUpdatedGenre] = useState<string>("");
-  const [searchTerm, setSearchTerm] = useState<string>("");
 
-  if (isLoading) return <CircularProgress />;
-  if (error) return <Alert severity="error">An error occurred: {error.message}</Alert>;
+  useEffect(() => {
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, []);
+
+  if (genresLoading || searchLoading) return <CircularProgress />;
+  if (genresError || searchError) return <Alert severity="error">An error occurred: {genresError?.message || searchError?.message}</Alert>;
 
   const handleEdit = (genreId: string, genre: string) => {
     setEditingGenreId(genreId);
@@ -43,31 +55,51 @@ const GenreTable: React.FC = () => {
 
   const handleDelete = (genreId: string) => {
     if (window.confirm("Are you sure you want to delete this genre?")) {
-      deleteGenreMutation.mutate(genreId);
+      deleteGenreMutation.mutate(genreId, {
+        onError: (error) => {
+          console.error("Error deleting genre:", error);
+          alert("Failed to delete the genre.");
+        },
+      });
     }
   };
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(event.target.value);
+    if (event.target.value === "") {
+      setSearchTerm("");
+    }
   };
 
-  const filteredGenres = data?.data.filter((genre) =>
-    genre.genre.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleSearch = () => {
+    setSearchTerm(searchInput);
+  };
+
+  const genresToShow = searchTerm ? searchResults?.data : genresData?.data;
 
   return (
     <Box>
       <Box display="flex" justifyContent="flex-end" sx={{ marginBottom: 2 }}>
         <TextField
-          label="Search Author"
+          inputRef={searchInputRef}
+          label="Search Genre"
           variant="outlined"
           size="small"
-          value={searchTerm}
-          onChange={handleSearch}
+          value={searchInput}
+          onChange={handleSearchInputChange}
           sx={{ width: '350px' }}
         />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSearch}
+          sx={{ marginLeft: 1 }}
+          startIcon={<Search />}
+        >
+          Search
+        </Button>
       </Box>
-      {filteredGenres && filteredGenres.length > 0 ? (
+      {genresToShow && genresToShow.length > 0 ? (
         <Table>
           <TableHead>
             <TableRow>
@@ -77,7 +109,7 @@ const GenreTable: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredGenres.map((genre) => (
+            {genresToShow.map((genre: Genre) => (
               <TableRow key={genre.genreId}>
                 <TableCell>{genre.genreId}</TableCell>
                 <TableCell>
@@ -96,7 +128,7 @@ const GenreTable: React.FC = () => {
                   <Box display="flex" justifyContent="flex-end">
                     {editingGenreId === genre.genreId ? (
                       <>
-                        <IconButton onClick={() => handleSaveEdit(genre.genreId)} size="small" disabled={updateGenreMutation.isLoading}>
+                        <IconButton onClick={() => handleSaveEdit(genre.genreId!)} size="small" disabled={updateGenreMutation.isPending}>
                           <Save fontSize="small" />
                         </IconButton>
                         <IconButton onClick={handleCancelEdit} size="small">
@@ -105,10 +137,10 @@ const GenreTable: React.FC = () => {
                       </>
                     ) : (
                       <>
-                        <IconButton onClick={() => handleEdit(genre.genreId, genre.genre)} size="small">
+                        <IconButton onClick={() => handleEdit(genre.genreId!, genre.genre)} size="small">
                           <Edit fontSize="small" />
                         </IconButton>
-                        <IconButton onClick={() => handleDelete(genre.genreId)} size="small" disabled={deleteGenreMutation.isLoading}>
+                        <IconButton onClick={() => handleDelete(genre.genreId!)} size="small" disabled={deleteGenreMutation.isPending}>
                           <Delete fontSize="small" />
                         </IconButton>
                       </>
@@ -132,10 +164,6 @@ const GenreTable: React.FC = () => {
 };
 
 export default GenreTable;
-
-
-
-
 
 
 
