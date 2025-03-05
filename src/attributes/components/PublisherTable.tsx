@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Alert, IconButton, Box, TextField, Typography } from '@mui/material';
-import { Edit, Delete, Save, Cancel, SearchOff } from '@mui/icons-material';
+import { Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Alert, IconButton, Box, TextField, Typography, Button } from '@mui/material';
+import { Edit, Delete, Save, Cancel, SearchOff, Search } from '@mui/icons-material';
 import usePublishers from '../hooks/usePublishers';
 import useDeletePublisher from '../hooks/useDeletePublisher';
 import useUpdatePublisher from '../hooks/useUpdatePublisher';
@@ -9,6 +9,7 @@ import Publisher from '../entities/Publisher';
 
 const PublisherTable: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchInput, setSearchInput] = useState<string>("");
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { data: publishersData, isLoading: publishersLoading, error: publishersError } = usePublishers({ page: 1, pageSize: 15, seed: '' });
   const { data: searchResults, error: searchError, isLoading: searchLoading } = useSearchPublishers(searchTerm);
@@ -22,7 +23,7 @@ const PublisherTable: React.FC = () => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
-  }, [searchTerm]);
+  }, []);
 
   if (publishersLoading || searchLoading) return <CircularProgress />;
   if (publishersError || searchError) return <Alert severity="error">An error occurred: {publishersError?.message || searchError?.message}</Alert>;
@@ -59,8 +60,15 @@ const PublisherTable: React.FC = () => {
     setUpdatedPublisher(null);
   };
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(event.target.value);
+    if (event.target.value === "") {
+      setSearchTerm("");
+    }
+  };
+
+  const handleSearch = () => {
+    setSearchTerm(searchInput);
   };
 
   const publishersToShow = searchTerm ? searchResults?.data : publishersData?.data;
@@ -73,10 +81,19 @@ const PublisherTable: React.FC = () => {
           label="Search Publisher"
           variant="outlined"
           size="small"
-          value={searchTerm}
-          onChange={handleSearch}
+          value={searchInput}
+          onChange={handleSearchInputChange}
           sx={{ width: '350px' }}
         />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSearch}
+          sx={{ marginLeft: 1 }}
+          startIcon={<Search />}
+        >
+          Search
+        </Button>
       </Box>
       {publishersToShow && publishersToShow.length > 0 ? (
         <Table>
@@ -89,7 +106,7 @@ const PublisherTable: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {publishersToShow.map((publisher) => (
+            {publishersToShow.map((publisher: Publisher) => (
               <TableRow key={publisher.publisherId}>
                 <TableCell>{publisher.publisherId}</TableCell>
                 <TableCell>

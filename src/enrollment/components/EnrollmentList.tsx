@@ -137,4 +137,3 @@ const EnrollmentTable: React.FC = () => {
 };
 
 export default EnrollmentTable;
-

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, IconButton, Box, TextField, Typography } from '@mui/material';
-import { Edit, Delete, Save, Cancel, SearchOff } from '@mui/icons-material';
+import { Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, IconButton, Box, TextField, Typography, Button } from '@mui/material';
+import { Edit, Delete, Save, Cancel, SearchOff, Search } from '@mui/icons-material';
 import { Alert } from '@mui/material';
 import useAuthors from '../hooks/useAuthors';
 import useDeleteAuthor from '../hooks/useDeleteAuthor';
@@ -10,6 +10,7 @@ import Author from '../entities/Author';
 
 const AuthorTable: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchInput, setSearchInput] = useState<string>("");
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { data: authorsData, error: authorsError, isLoading: authorsLoading } = useAuthors({ page: 1, pageSize: 15, seed: '' });
   const { data: searchResults, error: searchError, isLoading: searchLoading } = useSearchAuthors(searchTerm);
@@ -23,16 +24,21 @@ const AuthorTable: React.FC = () => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
-  }, [searchTerm]);
+  }, []);
 
   if (authorsLoading || searchLoading) return <CircularProgress />;
   if (authorsError || searchError) return <Alert severity="error">{authorsError?.message || searchError?.message}</Alert>;
 
   const handleDelete = (authorId: string) => {
-      if (window.confirm("Are you sure you want to delete this author?")) {
-        deleteAuthorMutation.mutate(authorId);
-      }
-    };
+    if (window.confirm("Are you sure you want to delete this author?")) {
+      deleteAuthorMutation.mutate(authorId, {
+        onError: (error) => {
+          console.error("Error deleting author:", error);
+          alert("Failed to delete the author.");
+        },
+      });
+    }
+  };
 
   const handleEdit = (author: Author) => {
     setEditingAuthorId(author.authorId || null);
@@ -55,8 +61,15 @@ const AuthorTable: React.FC = () => {
     setUpdatedAuthor(null);
   };
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(event.target.value);
+    if (event.target.value === "") {
+      setSearchTerm("");
+    }
+  };
+
+  const handleSearch = () => {
+    setSearchTerm(searchInput);
   };
 
   const authorsToShow = searchTerm ? searchResults?.data : authorsData?.data;
@@ -69,10 +82,19 @@ const AuthorTable: React.FC = () => {
           label="Search Author"
           variant="outlined"
           size="small"
-          value={searchTerm}
-          onChange={handleSearch}
+          value={searchInput}
+          onChange={handleSearchInputChange}
           sx={{ width: '350px' }}
         />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSearch}
+          sx={{ marginLeft: 1 }}
+          startIcon={<Search />}
+        >
+          Search
+        </Button>
       </Box>
       {authorsToShow && authorsToShow.length > 0 ? (
         <Table>
@@ -156,4 +178,3 @@ const AuthorTable: React.FC = () => {
 };
 
 export default AuthorTable;
-

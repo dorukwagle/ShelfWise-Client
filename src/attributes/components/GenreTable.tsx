@@ -1,13 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Table, TableHead, TableRow, TableCell, TableBody, IconButton, TextField, Box, CircularProgress, Alert, Typography } from "@mui/material";
-import { Edit, Delete, Save, Cancel, SearchOff } from "@mui/icons-material";
+import { Table, TableHead, TableRow, TableCell, TableBody, IconButton, TextField, Box, CircularProgress, Alert, Typography, Button } from "@mui/material";
+import { Edit, Delete, Save, Cancel, SearchOff, Search } from "@mui/icons-material";
 import useTodos from "../hooks/useGenres";
 import useDeleteGenre from "../hooks/useDeleteGenre";
 import useUpdateGenre from "../hooks/useUpdateGenre";
 import useSearchGenres from '../hooks/useSearchGenres';
+import Genre from "../entities/Genre";
+import PaginationResponse from "../../entities/PaginationResponse";
 
 const GenreTable: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchInput, setSearchInput] = useState<string>("");
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { data: genresData, isLoading: genresLoading, error: genresError } = useTodos({ seed: '' });
   const { data: searchResults, error: searchError, isLoading: searchLoading } = useSearchGenres(searchTerm);
@@ -21,7 +24,7 @@ const GenreTable: React.FC = () => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
-  }, [searchTerm]);
+  }, []);
 
   if (genresLoading || searchLoading) return <CircularProgress />;
   if (genresError || searchError) return <Alert severity="error">An error occurred: {genresError?.message || searchError?.message}</Alert>;
@@ -61,8 +64,15 @@ const GenreTable: React.FC = () => {
     }
   };
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(event.target.value);
+    if (event.target.value === "") {
+      setSearchTerm("");
+    }
+  };
+
+  const handleSearch = () => {
+    setSearchTerm(searchInput);
   };
 
   const genresToShow = searchTerm ? searchResults?.data : genresData?.data;
@@ -75,10 +85,19 @@ const GenreTable: React.FC = () => {
           label="Search Genre"
           variant="outlined"
           size="small"
-          value={searchTerm}
-          onChange={handleSearch}
+          value={searchInput}
+          onChange={handleSearchInputChange}
           sx={{ width: '350px' }}
         />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSearch}
+          sx={{ marginLeft: 1 }}
+          startIcon={<Search />}
+        >
+          Search
+        </Button>
       </Box>
       {genresToShow && genresToShow.length > 0 ? (
         <Table>
@@ -90,7 +109,7 @@ const GenreTable: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {genresToShow.map((genre) => (
+            {genresToShow.map((genre: Genre) => (
               <TableRow key={genre.genreId}>
                 <TableCell>{genre.genreId}</TableCell>
                 <TableCell>
@@ -145,8 +164,6 @@ const GenreTable: React.FC = () => {
 };
 
 export default GenreTable;
-
-
 
 
 
