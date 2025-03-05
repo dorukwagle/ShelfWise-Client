@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { ErrorRes } from "../../entities/ErrorRes";
 import Enrollment from "../entities/enrollements";
-import enrollmentService from "../services/enrollmentRequest";
+import enrollmentService from "../services/enrollmentService";
 import { ENROLL_CACHE_KEY } from "../../entities/constants";
 
 const useEnrollUser = (onSuccess?: () => void) => {

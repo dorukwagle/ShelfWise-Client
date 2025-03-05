@@ -61,7 +61,8 @@ const EnrollmentRequestForm = () => {
             enrollMentYear: formData.enrollmentYear, // Ensure naming consistency
             startDate: currentDate.format("YYYY-MM-DD"), // Set start date as form submission date
             expiryDate: expiryDate.format("YYYY-MM-DD"), // Set expiry date to one year later
-            membershipTypeId: formData.membershipId, // Correct field name here
+            membershipTypeId: formData.membershipId,
+            userId: ""
         });
 
         console.log(formData);

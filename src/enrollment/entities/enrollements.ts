@@ -1,4 +1,5 @@
 interface Enrollment {
+    userId: string;
     fullName: string;
     dob: string | null; // Allowing both string and null
     address: string;
