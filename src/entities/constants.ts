@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL = "http://localhost:8080/api/";
 const USER_CACHE_KEY = ["me"];
 const USER_ROLES_KEY = ["roles"];
 const AUTHORS_CACHE_KEY = ["authors"];
