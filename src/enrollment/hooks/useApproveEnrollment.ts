@@ -1,51 +1,18 @@
-import { useState } from 'react';
-import { approveEnrollment, EnrollmentData } from '../services/enrollmentService';
-import { useForm } from 'react-hook-form';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { EnrollmentApproveData } from "../services/approveEnrollmentService";
+import { AxiosError } from "axios";
+import { ErrorRes } from "../../entities/ErrorRes";
+import { ENROLL_CACHE_KEY } from "../../entities/constants";
+import enrollmentApproveService from "../services/approveEnrollmentService";
 
 const useApproveEnrollment = () => {
-    const [open, setOpen] = useState<boolean>(false);
-    const { register, setValue, handleSubmit, reset } = useForm<EnrollmentData>();
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    const queryClient = useQueryClient();
 
-    const handleOpen = (data: EnrollmentData) => {
-        reset();
-        setValue('userId', data.userId);
-        setValue('accountStatus', data.accountStatus);
-        setValue('startDate', data.startDate);
-        setValue('expiryDate', data.expiryDate);
-        setValue('membershipTypeId', data.membershipTypeId);
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-        reset();
-        setError(null);
-    };
-
-    const onSubmit = async (formData: EnrollmentData) => {
-        setLoading(true);
-        try {
-            const response = await approveEnrollment(formData.userId, formData);
-            handleClose();
-            return response;
-        } catch (err: any) {
-            setError(err.response?.data || 'An error occurred');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return {
-        open,
-        register,
-        handleClose,
-        handleSubmit: handleSubmit(onSubmit),
-        handleOpen,
-        loading,
-        error,
-    };
-};
+    return useMutation<EnrollmentApproveData, AxiosError<ErrorRes>, EnrollmentApproveData>({
+        mutationFn: (body: EnrollmentApproveData) =>
+            enrollmentApproveService(body),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ENROLL_CACHE_KEY }),
+    })
+}
 
 export default useApproveEnrollment;

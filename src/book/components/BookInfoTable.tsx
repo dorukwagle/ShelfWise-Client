@@ -152,6 +152,14 @@ const BookInfoTable: React.FC = () => {
               />
               <TextField
                 margin="dense"
+                label="Sub Title"
+                name="subTitle"
+                value={selectedBook.subTitle}
+                onChange={handleInputChange}
+                fullWidth
+              />
+              <TextField
+                margin="dense"
                 label="Edition Statement"
                 name="editionStatement"
                 value={selectedBook.editionStatement}

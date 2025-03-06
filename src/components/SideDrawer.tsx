@@ -34,6 +34,7 @@ const SideDrawer = ({ isOpen = false, onNavigate }: Props) => {
     { text: "About", link: "", icon: <Info /> },
     { text: "Attributes", link: "/attributes", icon: <Category /> },
     { text: "Enrollments", link: "/enrollments", icon: <School /> },
+    { text: "Request List", link: "/enrollments-request", icon: <School /> },
   ];
 
   const onLinkClick = (link: string) => {

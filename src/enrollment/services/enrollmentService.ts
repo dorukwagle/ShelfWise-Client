@@ -1,16 +1,6 @@
-import axios from 'axios';
+import Enrollment from "../entities/enrollements";
+import APIClient from "../../services/apiClient";
 
-const API_URL = '/api/enrollment';
+const enrollmentService = new APIClient<Enrollment, any>("/enrollments/request");
 
-export interface EnrollmentData {
-    userId: string;
-    accountStatus: string;
-    startDate: Date;
-    expiryDate: Date;
-    membershipTypeId: string;
-}
-
-export const approveEnrollment = async (userId: string, data: EnrollmentData) => {
-    const response = await axios.post(`${API_URL}/approve/${userId}`, data);
-    return response.data;
-};
+export default enrollmentService;

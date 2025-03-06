@@ -7,8 +7,8 @@ import usePublishers from "../attributes/hooks/usePublishers";
 const CategorizationForm: React.FC<{ formData: any; onChange: (data: any) => void }> = ({ formData, onChange }) => {
   // Fetch data
   const { data: genresData, isLoading: genresLoading } = useGenres({});
-  const { data: authorsData, isLoading: authorsLoading } = useAuthors({});
-  const { data: publishersData, isLoading: publishersLoading } = usePublishers({});
+  const { data: authorsData, isLoading: authorsLoading } = useAuthors({ page: 1, pageSize: 15 });
+  const { data: publishersData, isLoading: publishersLoading } = usePublishers({ page: 1, pageSize: 15 });
 
   const genres = genresData?.data || [];
   const authors = authorsData?.data || [];
@@ -49,7 +49,7 @@ const CategorizationForm: React.FC<{ formData: any; onChange: (data: any) => voi
           onChange={(event, newValue) => onChange({ genre: newValue.map((g) => g.genreId) })}
           renderTags={(selected, getTagProps) =>
             selected.map((option, index) => (
-              <Chip key={option.genreId} label={option.genre} {...getTagProps({ index })} />
+              <Chip label={option.genre} {...getTagProps({ index })} key={option.genreId} />
             ))
           }
           renderInput={(params) => <TextField {...params} label="Genre" variant="outlined" />}
@@ -59,7 +59,7 @@ const CategorizationForm: React.FC<{ formData: any; onChange: (data: any) => voi
       <Grid item xs={12}>
         <Autocomplete
           options={publishers}
-          getOptionLabel={(option) => option.publisherName}
+          getOptionLabel={(option) => option.publisherName as string}
           value={publishers.find((p) => p.publisherId === formData.publisher) || null} // Ensure correct value assignment
           onChange={(event, newValue) => onChange({ publisher: newValue ? newValue.publisherId : "" })}
           renderInput={(params) => <TextField {...params} label="Publisher" variant="outlined" />}
@@ -75,7 +75,7 @@ const CategorizationForm: React.FC<{ formData: any; onChange: (data: any) => voi
           onChange={(event, newValue) => onChange({ author: newValue.map((a) => a.authorId) })}
           renderTags={(selected, getTagProps) =>
             selected.map((option, index) => (
-              <Chip key={option.authorId} label={option.fullName} {...getTagProps({ index })} />
+              <Chip label={option.fullName} {...getTagProps({ index })} />
             ))
           }
           renderInput={(params) => <TextField {...params} label="Author" variant="outlined" />}

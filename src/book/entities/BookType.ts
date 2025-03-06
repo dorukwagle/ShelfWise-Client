@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import Genre from '../../attributes/entities/Genre';
 
 export const BookSort = z.enum([
   "ratings_asc",
@@ -51,19 +52,28 @@ export interface BookInfo {
 }
 
 export interface BookWithAuthors {
-  authorId: string;
   bookAuthorId: string;
   bookInfoId: string;
-  name: string;
+  authorId: string;
+  author: Author;
+}
+
+export interface Author {
+  authorId: string;
+  title: string;
+  fullName: string;
 }
 
 export interface Publishers {
   publisherId: string;
   publisherName: string;
   name: string;
+  address: string;
 }
 
 export interface Isbn {
+  isbnId: string;
+  bookInfoId: string;
   isbn: string;
 }
 
@@ -72,6 +82,7 @@ export interface BookWithGenres {
   bookInfoId: string;
   genreId: string;
   createdAt: string;
+  genre: Genre;
 }
 
 export interface Books {

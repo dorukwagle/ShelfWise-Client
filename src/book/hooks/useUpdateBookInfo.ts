@@ -11,9 +11,22 @@ const useUpdateBookInfo = () => {
   return useMutation<Book, AxiosError<ErrorRes>, Book>({
     mutationFn: (body: Book) => {
       console.log(body);
-      return bookService.put(body.bookInfoId || "", body);
+      // Convert Book object to FormData
+      const formData = new FormData();
+      Object.keys(body).forEach(key => {
+        if (Array.isArray((body as any)[key])) {
+          (body as any)[key].forEach((item: any, index: number) => {
+            formData.append(`${key}[${index}]`, JSON.stringify(item));
+          });
+        } else {
+          formData.append(key, (body as any)[key]);
+        }
+      });
+      return bookService.put(body.bookInfoId || "", formData);
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: BOOKS_CACHE_KEY }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: BOOKS_CACHE_KEY });
+    },
   });
 };
 
