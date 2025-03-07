@@ -6,17 +6,11 @@ interface Enrollment {
     contactNo: string;
     enrollmentYear: string;
     gender: string;
-    rollNumber: string;
     password: string;
+    collegeId: string;
+    universityId: string;
     email: string;
     roleId: string;
-    accountStatus: string;
-    membershipTypeId: string;
-    profilePicUrl: string;
-    accountCreationDate: string;
-    enrollMentYear: string;
-    startDate: string;
-    expiryDate: string;
 }
 
 export default Enrollment;

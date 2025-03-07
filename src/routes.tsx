@@ -14,6 +14,7 @@ import EnrollmentList from "./enrollment/components/EnrollmentList";
 import RegistrationPage from "./auth/pages/RegistrationPage";
 import SignInPage from "./auth/pages/SignInPage";
 import EnrollmentApprovePage from "./enrollment";
+import NotificationPage from "./notification/pages/notificationPage";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
       { path: "/book-list", element: <BookList /> },
       { path: "/add-books", element: <MultiPageForm /> },
       { path: "/enroll-user", element: <EnrollmentRequestForm /> },
+      {path: "/notifications", element: <NotificationPage/>},
       {
         element: <PrivateRoutes />,
         children: [{ path: "dashboard", element: <DashboardBranch /> },

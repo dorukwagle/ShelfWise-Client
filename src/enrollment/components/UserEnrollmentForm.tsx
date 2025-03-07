@@ -4,8 +4,8 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import useDetailedUserRoles from "../../hooks/useDetailedUserRoles";
-import useDetailedMembershipTypes from "../../hooks/usedetailedMembershiptypes";
 import useEnrollUser from "../hooks/useEnrollUser";
+import Enrollment from "../entities/enrollements";
 
 const EnrollmentRequestForm = () => {
     const [formData, setFormData] = useState<{
@@ -15,11 +15,11 @@ const EnrollmentRequestForm = () => {
         contactNo: string;
         enrollmentYear: string;
         gender: string;
-        rollNumber: string;
+        collegeId: string;
+        universityId: string;
         password: string;
         email: string;
         roleId: string;
-        membershipId: string;
     }>({
         fullName: "",
         dob: null, // Use null for date initially
@@ -27,16 +27,31 @@ const EnrollmentRequestForm = () => {
         contactNo: "",
         enrollmentYear: "",
         gender: "",
-        rollNumber: "",
+        collegeId: "",
+        universityId: "",
         password: "",
         email: "",
         roleId: "",
-        membershipId: "",
     });
 
     const { data: detailedRoles, isLoading: rolesLoading } = useDetailedUserRoles();
-    const { data: membershipTypes, isLoading: memberTypesLoading } = useDetailedMembershipTypes();
-    const enrollUser = useEnrollUser(() => alert("Enrollment request submitted successfully!"));
+    // const { data: membershipTypes, isLoading: memberTypesLoading } = useDetailedMembershipTypes();
+    const enrollUser = useEnrollUser(() => {
+        alert("Enrollment request submitted successfully!");
+        setFormData({
+            fullName: "",
+            dob: null,
+            address: "",
+            contactNo: "",
+            enrollmentYear: "",
+            gender: "",
+            collegeId: "",
+            universityId: "",
+            password: "",
+            email: "",
+            roleId: "",
+        });
+    });
 
     const handleChange = (e: React.ChangeEvent<{ name?: string; value: unknown }>) => {
         const { name, value } = e.target;
@@ -50,25 +65,10 @@ const EnrollmentRequestForm = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const currentDate = dayjs(); // Get current date
-        const expiryDate = currentDate.add(1, 'year'); // Add 1 year to current date
-
-        enrollUser.mutate({
-            ...formData,
-            accountStatus: "Pending", // Ensure correct enum value
-            profilePicUrl: "", // Provide a default value or upload logic
-            accountCreationDate: currentDate.toISOString(), // Assign the current date
-            enrollMentYear: formData.enrollmentYear, // Ensure naming consistency
-            startDate: currentDate.format("YYYY-MM-DD"), // Set start date as form submission date
-            expiryDate: expiryDate.format("YYYY-MM-DD"), // Set expiry date to one year later
-            membershipTypeId: formData.membershipId,
-            userId: ""
-        });
-
-        console.log(formData);
+        enrollUser.mutate(formData as Enrollment);
     };
 
-    if (rolesLoading || memberTypesLoading) return <CircularProgress />;
+    if (rolesLoading) return <CircularProgress />;
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
@@ -100,15 +100,12 @@ const EnrollmentRequestForm = () => {
                     <Grid item xs={12} sm={6}>
                         <FormControl fullWidth required>
                             <InputLabel>Gender</InputLabel>
-                            <Select name="gender" value={formData.gender} onChange={handleChange} label="Gender">
+                            <Select name="gender" value={formData.gender} onChange={handleChange as any} label="Gender">
                                 <MenuItem value="Male">Male</MenuItem>
                                 <MenuItem value="Female">Female</MenuItem>
                                 <MenuItem value="Other">Other</MenuItem>
                             </Select>
                         </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField label="Roll Number" name="rollNumber" value={formData.rollNumber} onChange={handleChange} fullWidth required />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField label="Email" name="email" type="email" value={formData.email} onChange={handleChange} fullWidth required />
@@ -117,29 +114,25 @@ const EnrollmentRequestForm = () => {
                         <TextField label="Password" name="password" type="password" value={formData.password} onChange={handleChange} fullWidth required />
                     </Grid>
                     <Grid item xs={12} sm={6}>
+                        <TextField label="College ID" name="collegeId" value={formData.collegeId} onChange={handleChange} fullWidth required />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField label="University ID" name="universityId" value={formData.universityId} onChange={handleChange} fullWidth required />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
                         <FormControl fullWidth required>
                             <InputLabel>Preferred Role</InputLabel>
-                            <Select name="roleId" value={formData.roleId} onChange={handleChange} label="Preferred Role">
+                            <Select name="roleId" value={formData.roleId} onChange={handleChange as any} label="Preferred Role">
                                 {detailedRoles?.map(({ roleId, role }) => (
                                     <MenuItem key={roleId} value={roleId}>{role}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth required>
-                            <InputLabel>Membership Type</InputLabel>
-                            <Select name="membershipId" value={formData.membershipId} onChange={handleChange} label="Membership Type">
-                                {membershipTypes?.map(({ membershipTypeId, type }) => (
-                                    <MenuItem key={membershipTypeId} value={membershipTypeId}>{type}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
                 </Grid>
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-                    <Button variant="contained" type="submit" disabled={enrollUser.isLoading}>
-                        {enrollUser.isLoading ? <CircularProgress size={24} /> : "Submit Enrollment"}
+                    <Button variant="contained" type="submit" disabled={enrollUser.isPending}>
+                        {enrollUser.isPending ? <CircularProgress size={24} /> : "Submit Enrollment"}
                     </Button>
                 </Box>
             </form>

@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 
 import ThemeToggleButton from "./ThemeToggleButton";
 import { ColorModeContext } from "../ThemedApp";
+import fetchNotificationCount from "../notification/hooks/getCountNotifications";
 
 interface Props {
   toggleOnChange?: (theme: "light" | "dark") => void;
@@ -30,6 +31,7 @@ interface Props {
 let settings = ["Profile", "Account", "Logout"];
 
 const NavBar = ({ onMenuBtnClick }: Props) => {
+  const { data: notificationCount, error } = fetchNotificationCount();
   const { data: user } = useMe();
   const { mode } = useContext(ColorModeContext);
   const { data: userRoles } = useUserRoles();
@@ -59,6 +61,10 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
 
   const handleLogout = () => {
     logoutMutation.mutate(); // Call logout mutation
+  };
+
+  const handleNotificationClick = () => {
+    navigate("/notifications");
   };
 
   const menuActions: Record<string, () => void> = {
@@ -112,8 +118,8 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
             <ThemeToggleButton />
             {user?.userId && (
               <>
-                <IconButton size="large" color="inherit" sx={{ pr: 0 }}>
-                  <Badge badgeContent={17} color="error">
+                <IconButton size="large" color="inherit" sx={{ pr: 0 }} onClick={handleNotificationClick}>
+                  <Badge badgeContent={error ? 0 : notificationCount?.count || 0} color="error">
                     <NotificationsIcon sx={{ color: "text.primary" }} fontSize="large" />
                   </Badge>
                 </IconButton>
