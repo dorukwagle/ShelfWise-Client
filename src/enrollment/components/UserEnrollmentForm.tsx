@@ -99,7 +99,7 @@ const EnrollmentRequestForm = () => {
                     <Grid item xs={12} sm={6}>
                         <FormControl fullWidth required>
                             <InputLabel>Gender</InputLabel>
-                            <Select name="gender" value={formData.gender} onChange={handleChange} label="Gender">
+                            <Select name="gender" value={formData.gender} onChange={handleChange as any} label="Gender">
                                 <MenuItem value="Male">Male</MenuItem>
                                 <MenuItem value="Female">Female</MenuItem>
                                 <MenuItem value="Other">Other</MenuItem>
@@ -118,7 +118,7 @@ const EnrollmentRequestForm = () => {
                     <Grid item xs={12} sm={6}>
                         <FormControl fullWidth required>
                             <InputLabel>Preferred Role</InputLabel>
-                            <Select name="roleId" value={formData.roleId} onChange={handleChange} label="Preferred Role">
+                            <Select name="roleId" value={formData.roleId} onChange={handleChange as any} label="Preferred Role">
                                 {detailedRoles?.map(({ roleId, role }) => (
                                     <MenuItem key={roleId} value={roleId}>{role}</MenuItem>
                                 ))}
@@ -128,7 +128,7 @@ const EnrollmentRequestForm = () => {
                     <Grid item xs={12} sm={6}>
                         <FormControl fullWidth required>
                             <InputLabel>Membership Type</InputLabel>
-                            <Select name="membershipId" value={formData.membershipId} onChange={handleChange} label="Membership Type">
+                            <Select name="membershipId" value={formData.membershipId} onChange={handleChange as any} label="Membership Type">
                                 {membershipTypes?.map(({ membershipTypeId, type }) => (
                                     <MenuItem key={membershipTypeId} value={membershipTypeId}>{type}</MenuItem>
                                 ))}
@@ -137,8 +137,8 @@ const EnrollmentRequestForm = () => {
                     </Grid>
                 </Grid>
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-                    <Button variant="contained" type="submit" disabled={enrollUser.isLoading}>
-                        {enrollUser.isLoading ? <CircularProgress size={24} /> : "Submit Enrollment"}
+                    <Button variant="contained" type="submit" disabled={(enrollUser as any).isLoading}>
+                        {(enrollUser as any).isLoading ? <CircularProgress size={24} /> : "Submit Enrollment"}
                     </Button>
                 </Box>
             </form>
