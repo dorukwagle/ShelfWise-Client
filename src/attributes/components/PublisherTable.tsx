@@ -99,17 +99,15 @@ const PublisherTable: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Publisher ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Address</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Name</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Address</TableCell>
+              <TableCell align="right" sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {publishersToShow.map((publisher: Publisher) => (
               <TableRow key={publisher.publisherId}>
-                <TableCell>{publisher.publisherId}</TableCell>
-                <TableCell>
+                <TableCell sx={{ padding: '16px', backgroundColor: editingPublisherId === publisher.publisherId ? 'secondary.light' : 'inherit' }}>
                   {editingPublisherId === publisher.publisherId ? (
                     <TextField
                       fullWidth
@@ -120,7 +118,7 @@ const PublisherTable: React.FC = () => {
                     publisher.publisherName
                   )}
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ padding: '16px', backgroundColor: editingPublisherId === publisher.publisherId ? 'secondary.light' : 'inherit' }}>
                   {editingPublisherId === publisher.publisherId ? (
                     <TextField
                       fullWidth
@@ -131,7 +129,7 @@ const PublisherTable: React.FC = () => {
                     publisher.address
                   )}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="right" sx={{ padding: '16px', backgroundColor: editingPublisherId === publisher.publisherId ? 'secondary.light' : 'inherit' }}>
                   <Box display="flex" justifyContent="flex-end">
                     {editingPublisherId === publisher.publisherId ? (
                       <>

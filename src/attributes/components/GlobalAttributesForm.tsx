@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Paper, TextField } from '@mui/material';
+import { Box, Button, Paper, TextField, Divider, Alert } from '@mui/material';
 import GlobalAttribute from '../entities/GlobalAttribute';
 import useGlobalAttributes from '../hooks/useGlobalAttributes';
 import useUpdateGlobalAttribute from '../hooks/useUpdateGlobalAttribute';
@@ -11,6 +11,7 @@ const GlobalAttributesForm: React.FC = () => {
   const [penaltyPerDay, setPenaltyPerDay] = useState(globalAttributes?.penaltyPerDay || 0);
   const [issueValidityDays, setIssueValidityDays] = useState(globalAttributes?.issueValidityDays || 0);
   const [membershipValidationMonths, setMembershipValidationMonths] = useState(globalAttributes?.membershipValidationMonths || 0);
+  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (globalAttributes) {
@@ -28,12 +29,25 @@ const GlobalAttributesForm: React.FC = () => {
       membershipValidationMonths,
       updatedAt: new Date()
     };
-    updateGlobalAttribute(globalAttribute);
+    updateGlobalAttribute(globalAttribute, {
+      onSuccess: () => {
+        setMessage('Global attributes successfully updated!');
+        setTimeout(() => setMessage(null), 2000);
+      },
+      onError: () => {
+        setMessage('An error occurred. Please try again.');
+        setTimeout(() => setMessage(null), 2000);
+      }
+    });
   };
 
   return (
-    <>
-      <Box sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', mt: 1, gap: 2 }}>
+      <Box sx={{ flex: 3 }}>
+        <GlobalAttributesTable />
+      </Box>
+      <Divider orientation="vertical" flexItem />
+      <Box sx={{ flex: 1 }}>
         <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 3 }}>
           <TextField
             label="Penalty Per Day"
@@ -62,14 +76,15 @@ const GlobalAttributesForm: React.FC = () => {
           <Button variant="contained" color="primary" onClick={handleSave} fullWidth>
             Save
           </Button>
+          {message && (
+            <Alert severity="success" sx={{ mt: 2 }}>
+              {message}
+            </Alert>
+          )}
         </Paper>
       </Box>
-      <Box>
-        <GlobalAttributesTable />
-      </Box>
-    </>
+    </Box>
   );
 };
 
 export default GlobalAttributesForm;
-

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { TextField, Button, Paper, Alert, Box } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { TextField, Button, Paper, Alert, Box, Divider, Typography } from '@mui/material';
 import useAddAuthor from '../hooks/useAddAuthor';
 import AuthorTable from './AuthorTable';
 
@@ -37,9 +37,22 @@ const AuthorForm: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage(null);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
   return (
-    <>
-      <Box sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', mt: 4, gap: 2 }}>
+      <Box sx={{ flex: 3 }}>
+        <AuthorTable />
+      </Box>
+      <Divider orientation="vertical" flexItem />
+      <Box sx={{ flex: 2 }}>
         <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 3 }}>
           <form onSubmit={handleSubmit}>
             <TextField
@@ -85,13 +98,8 @@ const AuthorForm: React.FC = () => {
           )}
         </Paper>
       </Box>
-
-      <Box>
-        <AuthorTable />
-      </Box>
-    </>
+    </Box>
   );
 };
 
 export default AuthorForm;
-

@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
   Button,
   CircularProgress,
   Container,
@@ -18,9 +17,9 @@ import { BookFilters } from './BookFIlters';
 import { RES_URL } from '../../entities/constants';
 
 const LoadingSkeleton = () => (
-  <Grid container spacing={3}>
+  <Box display="flex" flexWrap="wrap" gap={3}>
     {[...Array(6)].map((_, index) => (
-      <Grid item xs={12} sm={6} md={4} key={index}>
+      <Box key={index} width={{ xs: '100%', sm: 'calc(50% - 24px)', md: 'calc(25% - 24px)' }}>
         <Card>
           <CardContent>
             <Skeleton variant="text" width="80%" height={32} />
@@ -32,9 +31,9 @@ const LoadingSkeleton = () => (
             </Box>
           </CardContent>
         </Card>
-      </Grid>
+      </Box>
     ))}
-  </Grid>
+  </Box>
 );
 
 const BookList: React.FC = () => {
@@ -81,7 +80,6 @@ const BookList: React.FC = () => {
     );
   }
   console.log(books.length);
-  
 
   return (
     <Container maxWidth="lg">
@@ -97,9 +95,9 @@ const BookList: React.FC = () => {
           )}
         </Box>
 
-        <Grid container spacing={3}>
+        <Box display="flex" flexWrap="wrap" gap={3}>
           {books.map((book) => (
-            <Grid item xs={12} sm={6} md={4} key={book.bookInfoId}>
+            <Box key={book.bookInfoId} width={{ xs: '100%', sm: 'calc(50% - 24px)', md: 'calc(25% - 24px)' }}>
               <Card 
                 sx={{ 
                   height: '100%',
@@ -119,7 +117,7 @@ const BookList: React.FC = () => {
                 <CardMedia
                   component="img"
                   sx={{
-                    height: 450,
+                    height: 200,
                     objectFit: 'cover',
                     backgroundColor: 'rgba(245, 245, 245, 0.5)', // Semi-transparent fallback
                     borderBottom: '1px solid rgba(255, 255, 255, 0.2)'
@@ -131,7 +129,8 @@ const BookList: React.FC = () => {
                   sx={{ 
                     flexGrow: 1,
                     color: 'text.primary', // Ensure text is readable
-                    backgroundColor: 'transparent'
+                    backgroundColor: 'transparent',
+                    padding: '8px' // Reduce padding to shorten the height of book details
                   }}
                 >
                   <Typography 
@@ -140,7 +139,7 @@ const BookList: React.FC = () => {
                     sx={{
                       fontWeight: 600,
                       lineHeight: 1.2,
-                      minHeight: '3rem',
+                      minHeight: '2.5rem', // Reduce minHeight to shorten the height of book details
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       display: '-webkit-box',
@@ -157,7 +156,7 @@ const BookList: React.FC = () => {
                       gutterBottom
                       sx={{
                         fontStyle: 'italic',
-                        mb: 2,
+                        mb: 1, // Reduce margin bottom to shorten the height of book details
                         opacity: 0.9
                       }}
                     >
@@ -165,12 +164,21 @@ const BookList: React.FC = () => {
                     </Typography>
                   )}
                   <Box sx={{ mt: 1 }}>
-                    <Typography 
-                      variant="body2"
-                      sx={{ mb: 0.5, opacity: 0.95 }}
-                    >
-                      <strong>Genres:</strong> {book.bookGenres.map((genre) => genre.genre.genre).join(', ')}
-                    </Typography>
+                    {book.bookGenres.length > 1 ? (
+                      <Typography 
+                        variant="body2"
+                        sx={{ mb: 0.5, opacity: 0.95 }}
+                      >
+                        <strong>Genres:</strong> {book.bookGenres.map((genre) => genre.genre.genre).join(', ')}
+                      </Typography>
+                    ) : (
+                      <Typography 
+                        variant="body2"
+                        sx={{ mb: 0.5, opacity: 0.95 }}
+                      >
+                        <strong>Genre:</strong> {book.bookGenres[0].genre.genre}
+                      </Typography>
+                    )}
                     <Typography 
                       variant="body2"
                       sx={{ opacity: 0.95 }}
@@ -180,9 +188,9 @@ const BookList: React.FC = () => {
                   </Box>
                 </CardContent>
               </Card>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
 
         {hasNextPage && (
           <Box display="flex" justifyContent="center" mt={4}>

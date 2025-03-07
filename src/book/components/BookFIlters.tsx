@@ -70,7 +70,7 @@ export const BookFilters: React.FC<FilterProps> = ({ filters, onFilterChange }) 
   const handleGenreChange = (event: SelectChangeEvent<string>) => {
     onFilterChange({
       ...filters,
-      genre: event.target.value || "", // Reset when "None" is selected
+      genre: event.target.value || "", 
     });
   };
 

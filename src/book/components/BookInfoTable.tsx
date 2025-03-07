@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Typography,
   Box,
   IconButton,
@@ -63,7 +62,7 @@ const BookInfoTable: React.FC = () => {
     setOpenSnackbar(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isSuccess) {
       setOpenSnackbar(true);
     }
@@ -74,44 +73,43 @@ const BookInfoTable: React.FC = () => {
 
   return (
     <Box>
-      <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Actions</TableCell>
-              <TableCell>Class Number</TableCell>
-              <TableCell>Book Number</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell>SubTitle</TableCell>
-              <TableCell>Edition Statement</TableCell>
-              <TableCell>Number of Pages</TableCell>
-              <TableCell>Publication Year</TableCell>
-              <TableCell>Series Statement</TableCell>
-              <TableCell>Publisher</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Title</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>SubTitle</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Edition Statement</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Book Number</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Number of Pages</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Publication Year</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Series Statement</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Publisher</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Class Number</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {books.map((book) => (
               <TableRow key={book.bookInfoId}>
-                <TableCell>
-                  <IconButton onClick={() => handleEditClick(book)}>
-                    <Edit />
-                  </IconButton>
-                </TableCell>
-                <TableCell>{book.classNumber}</TableCell>
-                <TableCell>{book.bookNumber}</TableCell>
                 <TableCell>{book.title}</TableCell>
                 <TableCell>{book.subTitle}</TableCell>
                 <TableCell>{book.editionStatement}</TableCell>
+                <TableCell>{book.bookNumber}</TableCell>
                 <TableCell>{book.numberOfPages}</TableCell>
                 <TableCell>{book.publicationYear}</TableCell>
                 <TableCell>{book.seriesStatement}</TableCell>
                 <TableCell>{book.publisher.publisherName}</TableCell>
+                <TableCell>{book.classNumber}</TableCell>
+                <TableCell>
+                  <IconButton  onClick={() => handleEditClick(book)}>
+                    <Edit />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+   
 
       <Dialog open={openDialog} onClose={handleDialogClose}>
         <DialogTitle>Edit Book</DialogTitle>

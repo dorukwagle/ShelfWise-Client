@@ -22,7 +22,6 @@ import useReadAllNotification from '../hooks/readAllNotifications';
 
 const NotificationPage: React.FC = () => {
   const [view, setView] = useState('all');
-  const [selectedNotification, setSelectedNotification] = useState('');
   const { data, error, isLoading } = fetchNotifications();
   const readOneNotification = useReadOneNotification();
   const readAllNotification = useReadAllNotification();
@@ -65,27 +64,26 @@ const NotificationPage: React.FC = () => {
             Notifications
           </Typography>
           
-          <ToggleButtonGroup
-            value={view}
-            exclusive
-            onChange={handleViewChange}
-            aria-label="notification filter"
-            size="small"
-          >
-            <ToggleButton value="all">All</ToggleButton>
-            <ToggleButton value="unread">Unread</ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
-
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
-          <Button 
-            variant="contained" 
-            color="primary" 
-            onClick={handleMarkAllAsRead}
-            disabled={filteredNotifications.length === 0}
-          >
-            Mark All as Read
-          </Button>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <ToggleButtonGroup
+              value={view}
+              exclusive
+              onChange={handleViewChange}
+              aria-label="notification filter"
+              size="small"
+            >
+              <ToggleButton value="all">All</ToggleButton>
+              <ToggleButton value="unread">Unread</ToggleButton>
+            </ToggleButtonGroup>
+            <Button 
+              variant="contained" 
+              color="primary" 
+              onClick={handleMarkAllAsRead}
+              disabled={filteredNotifications.length === 0}
+            >
+              Mark All as Read
+            </Button>
+          </Box>
         </Box>
 
         {isLoading ? (
