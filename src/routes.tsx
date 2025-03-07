@@ -14,6 +14,7 @@ import EnrollmentList from "./enrollment/components/EnrollmentList";
 import RegistrationPage from "./auth/pages/RegistrationPage";
 import SignInPage from "./auth/pages/SignInPage";
 import EnrollmentApprovePage from "./enrollment";
+import UserPaymentPage from "./userpayment/pages/UserPaymentPage";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,8 @@ const router = createBrowserRouter([
         children: [{ path: "dashboard", element: <DashboardBranch /> },
         { path: "attributes", element: <AttributesPage /> },
         { path: "/enrollments", element: <EnrollmentList /> },
-        { path: "/enrollments-request", element: <EnrollmentApprovePage /> }
+        { path: "/enrollments-request", element: <EnrollmentApprovePage /> },
+        { path: '/user-payment', element: <UserPaymentPage /> },
         ],
       },
     ],

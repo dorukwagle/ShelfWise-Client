@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL = "https://pcpslibrary.mssn.org.np/api";
 const USER_CACHE_KEY = ["me"];
 const USER_ROLES_KEY = ["roles"];
 const AUTHORS_CACHE_KEY = ["authors"];
@@ -11,6 +11,7 @@ const ENROLL_CACHE_KEY = ["enrollments"]
 const ISBNS_CACHE_KEY = ["isbns"]
 const DETAILED_MEMBER_TYPE_KEY = ["memberTypes_detailed"]
 const GLOBAL_ATTRIBUTES_CACHE_KEY = ["global_attributes"];
+const USERS_CACHE_KEY = ["users"];
 const DEFAULT_PAGE_SIZE = 15;
 
 
@@ -40,5 +41,6 @@ export {
   ENROLL_CACHE_KEY,
   ISBNS_CACHE_KEY,
   DETAILED_MEMBER_TYPE_KEY,
-  GLOBAL_ATTRIBUTES_CACHE_KEY, DEFAULT_PAGE_SIZE
+  GLOBAL_ATTRIBUTES_CACHE_KEY, DEFAULT_PAGE_SIZE,
+  USERS_CACHE_KEY 
 };
