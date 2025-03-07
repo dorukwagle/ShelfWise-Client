@@ -39,7 +39,10 @@ const LoadingSkeleton = () => (
 
 const BookList: React.FC = () => {
   const [filters, setFilters] = useState<FilterState>({
-    pageSize: 10
+    pageSize: 10,
+    seed: "",
+    genreSeed: "",
+    authorSeed: "",
   });
 
   const {
@@ -80,8 +83,6 @@ const BookList: React.FC = () => {
       </Container>
     );
   }
-  console.log(books.length);
-  
 
   return (
     <Container maxWidth="lg">

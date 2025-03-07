@@ -22,8 +22,6 @@ const SideDrawer = ({ isOpen = false, onNavigate }: Props) => {
   const navigate = useNavigate();
   const { mode } = useContext(ColorModeContext); // Get the current theme mode
   const { data: user } = useMe();
-  console.log(user);
-  
 
   const publicPages = [
     { text: "Home", link: "/dashboard", icon: <Home /> },
