@@ -35,13 +35,12 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
   const { data: userRoles } = useUserRoles();
   const navigate = useNavigate();
 
-
   if (
     user?.role &&
     userRoles &&
     user.role.precedence >= userRoles[EUserRoles.Manager]
   )
-    settings = ["Profile", "Account", "Dashboard", "Logout"];
+    settings = ["Profile", "Account", "Logout"];
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -64,7 +63,6 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
   const menuActions: Record<string, () => void> = {
     Profile: () => navigate("/profile"),
     Account: () => navigate("/account"),
-    Dashboard: () => navigate("/dashboard"),
     Logout: handleLogout,
   };
 

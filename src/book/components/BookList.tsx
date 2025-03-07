@@ -9,11 +9,13 @@ import {
   CircularProgress,
   Container,
   Alert,
-  Skeleton
+  Skeleton,
+  CardMedia
 } from '@mui/material';
 import { FilterState } from '../entities/BookType';
 import { useBookList } from '../hooks/useBookList';
 import { BookFilters } from './BookFIlters';
+import { RES_URL } from '../../entities/constants';
 
 const LoadingSkeleton = () => (
   <Grid container spacing={3}>
@@ -48,7 +50,6 @@ const BookList: React.FC = () => {
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-    totalItems,
     isRefetching
   } = useBookList(filters);
 
@@ -79,6 +80,8 @@ const BookList: React.FC = () => {
       </Container>
     );
   }
+  console.log(books.length);
+  
 
   return (
     <Container maxWidth="lg">
@@ -87,7 +90,7 @@ const BookList: React.FC = () => {
 
         <Box sx={{ my: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="subtitle1">
-            {totalItems > 0 ? `Found ${totalItems} books` : 'No books found'}
+            {books.length > 0 ? `Found ${books.length} books` : 'No books found'}
           </Typography>
           {isRefetching && (
             <CircularProgress size={20} />
@@ -97,28 +100,82 @@ const BookList: React.FC = () => {
         <Grid container spacing={3}>
           {books.map((book) => (
             <Grid item xs={12} sm={6} md={4} key={book.bookInfoId}>
-              <Card sx={{ height: '100%' }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
+              <Card 
+                sx={{ 
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)', // Semi-transparent white
+                  backdropFilter: 'blur(5px)', // Glass effect
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  transition: 'all 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.2)'
+                  }
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  sx={{
+                    height: 450,
+                    objectFit: 'cover',
+                    backgroundColor: 'rgba(245, 245, 245, 0.5)', // Semi-transparent fallback
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.2)'
+                  }}
+                  image={`${RES_URL}${book.coverPhoto}`}
+                  alt={book.title}
+                />
+                <CardContent 
+                  sx={{ 
+                    flexGrow: 1,
+                    color: 'text.primary', // Ensure text is readable
+                    backgroundColor: 'transparent'
+                  }}
+                >
+                  <Typography 
+                    variant="h6" 
+                    gutterBottom
+                    sx={{
+                      fontWeight: 600,
+                      lineHeight: 1.2,
+                      minHeight: '3rem',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical'
+                    }}
+                  >
                     {book.title}
                   </Typography>
                   {book.subTitle && (
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary" 
+                      gutterBottom
+                      sx={{
+                        fontStyle: 'italic',
+                        mb: 2,
+                        opacity: 0.9
+                      }}
+                    >
                       {book.subTitle}
                     </Typography>
                   )}
-                  <Box sx={{ mt: 2 }}>
-                    <Typography variant="body2">
-                      Authors: {book.bookAuthors.map((author) => author.authorId)}
+                  <Box sx={{ mt: 1 }}>
+                    <Typography 
+                      variant="body2"
+                      sx={{ mb: 0.5, opacity: 0.95 }}
+                    >
+                      <strong>Genres:</strong> {book.bookGenres.map((genre) => genre.genre.genre).join(', ')}
                     </Typography>
-                    <Typography variant="body2">
-                      Genres: {book.bookGenres.map((genre) => genre.genreId)}
-                    </Typography>
-                    <Typography variant="body2">
-                      Publisher: {book.publisher.publisherName}
-                    </Typography>
-                    <Typography variant="body2">
-                      Score: 98
+                    <Typography 
+                      variant="body2"
+                      sx={{ opacity: 0.95 }}
+                    >
+                      <strong>Score:</strong> 98
                     </Typography>
                   </Box>
                 </CardContent>
@@ -133,6 +190,15 @@ const BookList: React.FC = () => {
               variant="contained"
               onClick={() => fetchNextPage()}
               disabled={isFetchingNextPage}
+              sx={{
+                borderRadius: 20,
+                px: 4,
+                py: 1,
+                textTransform: 'none',
+                '&:hover': {
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                }
+              }}
             >
               {isFetchingNextPage ? (
                 <Box display="flex" alignItems="center">
