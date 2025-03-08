@@ -133,3 +133,11 @@ export interface ApiResponse {
   info: PaginationInfo;
   statusCode: number;
 }
+
+export interface RelatedBook {
+  bookInfoId: string;
+  title: string;
+  coverPhoto: string | null;
+  publicationYear: number;
+  authors: string[];
+}
