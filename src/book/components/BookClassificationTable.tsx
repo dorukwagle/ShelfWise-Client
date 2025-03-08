@@ -3,10 +3,8 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
-  Paper,
   IconButton,
   Dialog,
   DialogTitle,
@@ -17,7 +15,7 @@ import {
   TextField,
   Autocomplete,
   Chip,
-  Grid,
+  Box,
   Snackbar,
   Alert,
 } from '@mui/material';
@@ -88,108 +86,101 @@ const BookClassificationTable: React.FC = () => {
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Title</TableCell>
-            <TableCell>Author</TableCell>
-            <TableCell>Genre</TableCell>
-            <TableCell>ISBNs</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {books.map((book) => (
-            <TableRow key={book.bookInfoId}>
-              <TableCell>{book.title}</TableCell>
-              <TableCell>
-                {book.bookAuthors.map((author) => author.author.fullName).join(', ')}
-              </TableCell>
-              <TableCell>
-                {book.bookGenres.map((genre) => genre.genre.genre).join(', ')}
-              </TableCell>
-              <TableCell>
-                {book.isbns.map((isbn) => isbn.isbn).join(', ')}
-              </TableCell>
-              <TableCell>
-                <IconButton onClick={() => handleEditClick(book)}>
-                  <Edit />
-                </IconButton>
-              </TableCell>
+    <Box>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Title</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Author</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Genre</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>ISBNs</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Actions</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {books.map((book) => (
+              <TableRow key={book.bookInfoId}>
+                <TableCell>{book.title}</TableCell>
+                <TableCell>
+                  {book.bookAuthors.map((author) => author.author.fullName).join(', ')}
+                </TableCell>
+                <TableCell>
+                  {book.bookGenres.map((genre) => genre.genre.genre).join(', ')}
+                </TableCell>
+                <TableCell>
+                  {book.isbns.map((isbn) => isbn.isbn).join(', ')}
+                </TableCell>
+                <TableCell>
+                  <IconButton onClick={() => handleEditClick(book)}>
+                    <Edit />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
 
       {selectedBook && (
         <Dialog open={openDialog} onClose={handleDialogClose}>
           <DialogTitle>Edit Book</DialogTitle>
           <DialogContent>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  margin="dense"
-                  label="Book ID"
-                  name="bookInfoId"
-                  value={selectedBook.bookInfoId}
-                  disabled
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Autocomplete
-                  multiple
-                  options={genres}
-                  getOptionLabel={(option) => option.genre}
-                  value={selectedBook.bookGenres.map((genre) => genre.genre)}
-                  onChange={(event, newValue) => {
-                    const updatedGenres = newValue.map((genre) => ({
-                      genreId: genre.genreId,
-                      genre,
-                    }));
-                    handleFormChange({ bookGenres: updatedGenres });
-                  }}
-                  renderTags={(value, getTagProps) =>
-                    value.map((option, index) => (
-                      <Chip label={option.genre} {...getTagProps({ index })} key={option.genreId} />
-                    ))
-                  }
-                  renderInput={(params) => <TextField {...params} label="Genres" variant="outlined" />}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Autocomplete
-                  multiple
-                  options={authors}
-                  getOptionLabel={(option) => option.fullName}
-                  value={selectedBook.bookAuthors.map((author) => author.author)}
-                  onChange={(event, newValue) => {
-                    const updatedAuthors = newValue.map((author) => ({
-                      authorId: author.authorId,
-                      author,
-                    }));
-                    handleFormChange({ bookAuthors: updatedAuthors });
-                  }}
-                  renderTags={(value, getTagProps) =>
-                    value.map((option, index) => (
-                      <Chip label={option.fullName} {...getTagProps({ index })} key={option.authorId} />
-                    ))
-                  }
-                  renderInput={(params) => <TextField {...params} label="Authors" variant="outlined" />}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TagsInput
-                  placeholder="Enter ISBNs..."
-                  value={selectedBook.isbns.map((isbn) => isbn.isbn)}
-                  onChange={(newIsbns) => {
-                    const updatedIsbns = newIsbns.map((isbn) => ({ isbn }));
-                    handleFormChange({ isbns: updatedIsbns });
-                  }}
-                />
-              </Grid>
-            </Grid>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <TextField
+                margin="dense"
+                label="Book ID"
+                name="bookInfoId"
+                value={selectedBook.bookInfoId}
+                disabled
+                fullWidth
+              />
+              <Autocomplete
+                multiple
+                options={genres}
+                getOptionLabel={(option) => option.genre}
+                value={selectedBook.bookGenres.map((genre) => genre.genre)}
+                onChange={(event, newValue) => {
+                  const updatedGenres = newValue.map((genre) => ({
+                    genreId: genre.genreId,
+                    genre,
+                  }));
+                  handleFormChange({ bookGenres: updatedGenres });
+                }}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip label={option.genre} {...getTagProps({ index })} key={option.genreId} />
+                  ))
+                }
+                renderInput={(params) => <TextField {...params} label="Genres" variant="outlined" />}
+              />
+              <Autocomplete
+                multiple
+                options={authors}
+                getOptionLabel={(option) => option.fullName}
+                value={selectedBook.bookAuthors.map((author) => author.author)}
+                onChange={(event, newValue) => {
+                  const updatedAuthors = newValue.map((author) => ({
+                    authorId: author.authorId,
+                    author,
+                  }));
+                  handleFormChange({ bookAuthors: updatedAuthors });
+                }}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip label={option.fullName} {...getTagProps({ index })} key={option.authorId} />
+                  ))
+                }
+                renderInput={(params) => <TextField {...params} label="Authors" variant="outlined" />}
+              />
+              <TagsInput
+                placeholder="Enter ISBNs..."
+                value={selectedBook.isbns.map((isbn) => isbn.isbn)}
+                onChange={(newIsbns) => {
+                  const updatedIsbns = newIsbns.map((isbn) => ({ isbn }));
+                  handleFormChange({ isbns: updatedIsbns });
+                }}
+              />
+            </Box>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDialogClose}>Cancel</Button>
@@ -205,7 +196,7 @@ const BookClassificationTable: React.FC = () => {
           Book updated successfully!
         </Alert>
       </Snackbar>
-    </TableContainer>
+    </Box>
   );
 };
 

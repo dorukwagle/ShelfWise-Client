@@ -7,7 +7,7 @@ import router from "./routes";
 type ColorMode = "dark" | "light";
 
 export const ColorModeContext = createContext({
-  toggleColorMode: (_: ColorMode) => { },
+  toggleColorMode: (_: ColorMode) => {},
   mode: "light" as ColorMode,
 });
 
@@ -38,29 +38,31 @@ export default function ThemedApp() {
           mode,
           ...(mode === "light"
             ? {
-              primary: { main: "#0066cc" },
-              secondary: { main: "#ff6600" },
-              background: {
-                default: "#f5f5f5",
-                paper: "#ffffff",
-              },
-              text: {
-                primary: "#333333",
-                secondary: "#666666",
-              },
-            }
+                primary: { main: "#3B82F6" }, // Bright Blue
+                secondary: { main: "#10B981" }, // Emerald Green
+                extra: { main: "#F59E0B" }, // Amber
+                background: {
+                  default: "#F9FAFB", // Light Gray
+                  paper: "#FFFFFF", // Pure White
+                },
+                text: {
+                  primary: "#1F2937", // Dark Gray
+                  secondary: "#666666",
+                },
+              }
             : {
-              primary: { main: "#4a90e2" },
-              secondary: { main: "#ff8c00" },
-              background: {
-                default: "#1a1a1a",
-                paper: "#26262a",
-              },
-              text: {
-                primary: "#e0e0e0",
-                secondary: "#b3b3b3",
-              },
-            }),
+                primary: { main: "#3B82F6" }, // Bright Blue
+                secondary: { main: "#10B981" }, // Emerald Green
+                extra: { main: "#F59E0B" }, // Amber
+                background: {
+                  default: "#111827", // Dark Gray-Black
+                  paper: "#1F2937", // Dark Gray
+                },
+                text: {
+                  primary: "#F9FAFB", // Almost White
+                  secondary: "#b3b3b3",
+                },
+              }),
         },
         typography: {
           button: {
@@ -68,13 +70,13 @@ export default function ThemedApp() {
             fontWeight: "bold",
           },
           h1: {
-            color: mode === "light" ? "#333333" : "#e0e0e0",
+            color: mode === "light" ? "#1F2937" : "#F9FAFB", // Dark Gray or Almost White
           },
           h2: {
-            color: mode === "light" ? "#333333" : "#e0e0e0",
+            color: mode === "light" ? "#1F2937" : "#F9FAFB",
           },
           h3: {
-            color: mode === "light" ? "#333333" : "#e0e0e0",
+            color: mode === "light" ? "#1F2937" : "#F9FAFB",
           },
         },
         shape: {
@@ -85,9 +87,9 @@ export default function ThemedApp() {
             styleOverrides: {
               root: {
                 color: "#ffffff", // Button text color
-                backgroundColor: mode === "light" ? "#0066cc" : "#4a90e2", // Primary button color
+                backgroundColor: mode === "light" ? "#3B82F6" : "#3B82F6", // Primary button color
                 "&:hover": {
-                  backgroundColor: mode === "light" ? "#004c99" : "#357ab7", // Hover state
+                  backgroundColor: mode === "light" ? "#2563EB" : "#2563EB", // Hover state
                 },
               },
             },
@@ -95,14 +97,14 @@ export default function ThemedApp() {
           MuiInputBase: {
             styleOverrides: {
               input: {
-                color: mode === "light" ? "#333333" : "#e0e0e0", // Input text color
+                color: mode === "light" ? "#1F2937" : "#F9FAFB", // Input text color
               },
             },
           },
           MuiInputLabel: {
             styleOverrides: {
               root: {
-                color: mode === "light" ? "#333333" : "#e0e0e0", // Input label color
+                color: mode === "light" ? "#1F2937" : "#F9FAFB", // Input label color
               },
             },
           },
@@ -110,10 +112,10 @@ export default function ThemedApp() {
             styleOverrides: {
               root: {
                 "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: mode === "light" ? "#cccccc" : "#444444", // Border color
+                  borderColor: mode === "light" ? "#E5E7EB" : "#444444", // Border color
                 },
                 "&:focus .MuiOutlinedInput-notchedOutline": {
-                  borderColor: mode === "light" ? "#0066cc" : "#4a90e2", // Focus border color
+                  borderColor: mode === "light" ? "#3B82F6" : "#3B82F6", // Focus border color
                 },
               },
             },
@@ -121,7 +123,7 @@ export default function ThemedApp() {
           MuiTypography: {
             styleOverrides: {
               root: {
-                color: mode === "light" ? "#333333" : "#e0e0e0", // General text color
+                color: mode === "light" ? "#1F2937" : "#F9FAFB", // General text color
               },
             },
           },

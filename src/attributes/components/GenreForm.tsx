@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useAddGenre from '../hooks/useAddGenre';
 import GenreTable from './GenreTable';
-import { TextField, Button, Paper, Alert, Box } from '@mui/material';
+import { TextField, Button, Paper, Alert, Box, Divider } from '@mui/material';
 
 const GenreForm: React.FC = () => {
   const [genreName, setGenreName] = useState('');
@@ -24,9 +24,22 @@ const GenreForm: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage(null);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
   return (
-    <>
-      <Box sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', mt: 4 , gap: 2}}>
+      <Box sx={{ flex: 3 }}>
+        <GenreTable />
+      </Box>
+      <Divider orientation="vertical" flexItem />
+      <Box sx={{ flex: 2 }}>
         <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 3 }}>
           <form onSubmit={handleSubmit}>
             <TextField
@@ -45,14 +58,8 @@ const GenreForm: React.FC = () => {
           {message && <Alert severity="success" sx={{ mt: 2 }}>{message}</Alert>}
         </Paper>
       </Box>
-
-      <Box>
-        <GenreTable />
-      </Box>
-    </>
+    </Box>
   );
 };
 
 export default GenreForm;
-
-

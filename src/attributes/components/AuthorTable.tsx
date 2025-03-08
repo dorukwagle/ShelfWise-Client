@@ -1,19 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, IconButton, Box, TextField, Typography, Button } from '@mui/material';
-import { Edit, Delete, Save, Cancel, SearchOff, Search } from '@mui/icons-material';
-import { Alert } from '@mui/material';
-import useAuthors from '../hooks/useAuthors';
-import useDeleteAuthor from '../hooks/useDeleteAuthor';
-import useUpdateAuthor from '../hooks/useUpdateAuthor';
+import React, { useState, useRef, useEffect } from "react";
+import { Table, TableHead, TableRow, TableCell, TableBody, IconButton, TextField, Box, CircularProgress, Alert, Typography, Button } from "@mui/material";
+import { Edit, Delete, Save, Cancel, SearchOff, Search } from "@mui/icons-material";
+import useAuthors from "../hooks/useAuthors";
+import useDeleteAuthor from "../hooks/useDeleteAuthor";
+import useUpdateAuthor from "../hooks/useUpdateAuthor";
 import useSearchAuthors from '../hooks/useSearchAuthors';
-import Author from '../entities/Author';
+import Author from "../entities/Author";
 
 const AuthorTable: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchInput, setSearchInput] = useState<string>("");
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const { data: authorsData, error: authorsError, isLoading: authorsLoading } = useAuthors({ page: 1, pageSize: 15, seed: '' });
-  const { data: searchResults, error: searchError, isLoading: searchLoading } = useSearchAuthors(searchTerm);
+  const { data: authorsData, isLoading: authorsLoading, error: authorsError } = useAuthors({ page: 1, pageSize: 15, seed: '' });
+  const { data: searchResults, isLoading: searchLoading, error: searchError } = useSearchAuthors(searchTerm);
   const deleteAuthorMutation = useDeleteAuthor();
   const updateAuthorMutation = useUpdateAuthor();
 
@@ -27,22 +26,16 @@ const AuthorTable: React.FC = () => {
   }, []);
 
   if (authorsLoading || searchLoading) return <CircularProgress />;
-  if (authorsError || searchError) return <Alert severity="error">{authorsError?.message || searchError?.message}</Alert>;
-
-  const handleDelete = (authorId: string) => {
-    if (window.confirm("Are you sure you want to delete this author?")) {
-      deleteAuthorMutation.mutate(authorId, {
-        onError: (error) => {
-          console.error("Error deleting author:", error);
-          alert("Failed to delete the author.");
-        },
-      });
-    }
-  };
+  if (authorsError || searchError) return <Alert severity="error">An error occurred: {authorsError?.message || searchError?.message}</Alert>;
 
   const handleEdit = (author: Author) => {
     setEditingAuthorId(author.authorId || null);
     setUpdatedAuthor({ ...author });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingAuthorId(null);
+    setUpdatedAuthor(null);
   };
 
   const handleSaveEdit = () => {
@@ -56,9 +49,15 @@ const AuthorTable: React.FC = () => {
     }
   };
 
-  const handleCancelEdit = () => {
-    setEditingAuthorId(null);
-    setUpdatedAuthor(null);
+  const handleDelete = (authorId: string) => {
+    if (window.confirm("Are you sure you want to delete this author?")) {
+      deleteAuthorMutation.mutate(authorId, {
+        onError: (error) => {
+          console.error("Error deleting author:", error);
+          alert("Failed to delete the author.");
+        },
+      });
+    }
   };
 
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,17 +99,15 @@ const AuthorTable: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Author ID</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell>Full Name</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Title</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Full Name</TableCell>
+              <TableCell align="right" sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {authorsToShow.map((author: Author) => (
               <TableRow key={author.authorId}>
-                <TableCell>{author.authorId}</TableCell>
-                <TableCell>
+                <TableCell sx={{ padding: '16px', backgroundColor: editingAuthorId === author.authorId ? 'secondary.light' : 'inherit' }}>
                   {editingAuthorId === author.authorId ? (
                     <TextField
                       fullWidth
@@ -127,7 +124,7 @@ const AuthorTable: React.FC = () => {
                     author.title
                   )}
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ padding: '16px', backgroundColor: editingAuthorId === author.authorId ? 'secondary.light' : 'inherit' }}>
                   {editingAuthorId === author.authorId ? (
                     <TextField
                       fullWidth
@@ -138,7 +135,7 @@ const AuthorTable: React.FC = () => {
                     author.fullName
                   )}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="right" sx={{ padding: '16px', backgroundColor: editingAuthorId === author.authorId ? 'secondary.light' : 'inherit' }}>
                   <Box display="flex" justifyContent="flex-end">
                     {editingAuthorId === author.authorId ? (
                       <>

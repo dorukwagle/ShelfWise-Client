@@ -6,7 +6,6 @@ import useDeleteGenre from "../hooks/useDeleteGenre";
 import useUpdateGenre from "../hooks/useUpdateGenre";
 import useSearchGenres from '../hooks/useSearchGenres';
 import Genre from "../entities/Genre";
-import PaginationResponse from "../../entities/PaginationResponse";
 
 const GenreTable: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -103,28 +102,27 @@ const GenreTable: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Genre ID</TableCell>
-              <TableCell>Genre</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Genre</TableCell>
+              <TableCell align="right" sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {genresToShow.map((genre: Genre) => (
               <TableRow key={genre.genreId}>
-                <TableCell>{genre.genreId}</TableCell>
-                <TableCell>
+                <TableCell sx={{ padding: '16px', backgroundColor: editingGenreId === genre.genreId ? 'secondary.light' : 'inherit' }}>
                   {editingGenreId === genre.genreId ? (
                     <TextField
                       size="small"
                       value={updatedGenre}
                       onChange={(e) => setUpdatedGenre(e.target.value)}
                       autoFocus
+                      sx={{ typography: 'body2' }}
                     />
                   ) : (
                     genre.genre
                   )}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="right" sx={{ padding: '16px', backgroundColor: editingGenreId === genre.genreId ? 'secondary.light' : 'inherit' }}>
                   <Box display="flex" justifyContent="flex-end">
                     {editingGenreId === genre.genreId ? (
                       <>
@@ -164,7 +162,4 @@ const GenreTable: React.FC = () => {
 };
 
 export default GenreTable;
-
-
-
 

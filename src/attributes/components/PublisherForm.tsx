@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { TextField, Button, Paper, Alert, Box } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { TextField, Button, Paper, Alert, Box, Divider, Typography } from '@mui/material';
 import useAddPublisher from '../hooks/useAddPublisher';
 import PublisherTable from './PublisherTable';
 
@@ -27,9 +27,22 @@ const PublisherForm: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage(null);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
   return (
-    <>
-      <Box sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', mt: 4, gap: 2 }}>
+      <Box sx={{ flex: 2 }}>
+        <PublisherTable />
+      </Box>
+      <Divider orientation="vertical" flexItem />
+      <Box sx={{ flex: 1 }}>
         <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 3 }}>
           <form onSubmit={handleSubmit}>
             <TextField
@@ -57,17 +70,8 @@ const PublisherForm: React.FC = () => {
           {message && <Alert severity="success" sx={{ mt: 2 }}>{message}</Alert>}
         </Paper>
       </Box>
-
-      <Box>
-        <PublisherTable />
-      </Box>
-
-
-    </>
+    </Box>
   );
 };
 
 export default PublisherForm;
-
-
-
