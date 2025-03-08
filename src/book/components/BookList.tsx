@@ -15,6 +15,7 @@ import { FilterState } from '../entities/BookType';
 import { useBookList } from '../hooks/useBookList';
 import { BookFilters } from './BookFIlters';
 import { RES_URL } from '../../entities/constants';
+import { useNavigate } from 'react-router-dom';
 
 const LoadingSkeleton = () => (
   <Box display="flex" flexWrap="wrap" gap={3}>
@@ -37,8 +38,12 @@ const LoadingSkeleton = () => (
 );
 
 const BookList: React.FC = () => {
+  const navigate = useNavigate();
   const [filters, setFilters] = useState<FilterState>({
-    pageSize: 10
+    pageSize: 10,
+    seed: "",
+    genreSeed: "",
+    authorSeed: "",
   });
 
   const {
@@ -51,6 +56,7 @@ const BookList: React.FC = () => {
     fetchNextPage,
     isRefetching
   } = useBookList(filters);
+console.log(books);
 
   if (isLoading) {
     return (
@@ -79,7 +85,10 @@ const BookList: React.FC = () => {
       </Container>
     );
   }
-  console.log(books.length);
+
+  const handleBookClick = (bookInfoId: string) => {
+    navigate(`/book/${bookInfoId}`);
+  };
 
   return (
     <Container maxWidth="lg">
@@ -111,8 +120,10 @@ const BookList: React.FC = () => {
                     transform: 'translateY(-5px)',
                     backgroundColor: 'rgba(255, 255, 255, 0.2)',
                     boxShadow: '0 8px 24px rgba(0,0,0,0.2)'
-                  }
+                  },
+                  cursor: 'pointer'
                 }}
+                onClick={() => handleBookClick(book.bookInfoId)}
               >
                 <CardMedia
                   component="img"

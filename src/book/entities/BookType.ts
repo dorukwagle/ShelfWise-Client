@@ -14,6 +14,8 @@ export const BookFilter = z.object({
   page: z.number().optional(),
   pageSize: z.number().default(10),
   seed: z.string().optional(),
+  genreSeed: z.string().optional(),
+  authorSeed: z.string().optional(),
   genre: z.string().optional(),
   author: z.string().optional(),
   publisher: z.string().optional(),
@@ -130,4 +132,12 @@ export interface ApiResponse {
   data: BookInfo[];
   info: PaginationInfo;
   statusCode: number;
+}
+
+export interface RelatedBook {
+  bookInfoId: string;
+  title: string;
+  coverPhoto: string | null;
+  publicationYear: number;
+  authors: string[];
 }

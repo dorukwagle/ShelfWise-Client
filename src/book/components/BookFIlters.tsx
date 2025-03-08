@@ -2,19 +2,19 @@ import React from "react";
 import {
   Paper,
   Grid,
+  Autocomplete,
   TextField,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
   Box,
-  debounce,
   SelectChangeEvent,
   CircularProgress,
 } from "@mui/material";
+import { debounce } from "@mui/material";
 import { BookSortType, FilterState } from "../entities/BookType";
 import useAuthors from "../../attributes/hooks/useAuthors";
-import Author from "../../attributes/entities/Author";
 import useGenres from "../../attributes/hooks/useGenres";
 
 interface FilterProps {
@@ -23,35 +23,45 @@ interface FilterProps {
 }
 
 export const BookFilters: React.FC<FilterProps> = ({ filters, onFilterChange }) => {
-  const { data: authors, isLoading, error } = useAuthors({
-    seed: filters.seed || "",
+  const { data: authors, isLoading: authorsLoading, error: authorsError } = useAuthors({
+    seed: filters.authorSeed || "",
     page: 1,
     pageSize: 15
   });
-  const { data: genres, isLoading: genresLoading, error: genresError } = useGenres({ seed: filters.seed });
+  const { data: genres, isLoading: genresLoading, error: genresError } = useGenres({
+    seed: filters.genreSeed || ""
+  });
 
-  // Debounce text field changes
-  const debouncedFilterChange = React.useMemo(
-    () =>
-      debounce((key: keyof FilterState, value: string) => {
-        onFilterChange({
-          ...filters,
-          [key]: value,
-        });
-      }, 300),
+  // Debounce functions for each field
+  const debouncedSeedChange = React.useMemo(
+    () => debounce((value: string) => {
+      onFilterChange({ ...filters, seed: value });
+    }, 300),
     [filters, onFilterChange]
   );
 
-  // Cleanup debounce on unmount
+  const debouncedGenreSeedChange = React.useMemo(
+    () => debounce((value: string) => {
+      onFilterChange({ ...filters, genreSeed: value, genre: "" });
+    }, 300),
+    [filters, onFilterChange]
+  );
+
+  const debouncedAuthorSeedChange = React.useMemo(
+    () => debounce((value: string) => {
+      onFilterChange({ ...filters, authorSeed: value, author: "" });
+    }, 300),
+    [filters, onFilterChange]
+  );
+
+  // Cleanup debounces on unmount
   React.useEffect(() => {
     return () => {
-      debouncedFilterChange.clear();
+      debouncedSeedChange.clear();
+      debouncedGenreSeedChange.clear();
+      debouncedAuthorSeedChange.clear();
     };
-  }, [debouncedFilterChange]);
-
-  const handleTextChange = (key: keyof FilterState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    debouncedFilterChange(key, event.target.value);
-  };
+  }, [debouncedSeedChange, debouncedGenreSeedChange, debouncedAuthorSeedChange]);
 
   const handleSortChange = (event: SelectChangeEvent<BookSortType>) => {
     onFilterChange({
@@ -60,19 +70,30 @@ export const BookFilters: React.FC<FilterProps> = ({ filters, onFilterChange }) 
     });
   };
 
-  const handleAuthorChange = (event: SelectChangeEvent<string>) => {
-    onFilterChange({
-      ...filters,
-      author: event.target.value || "",
-    });
-  };
+  // Find the selected genre/author objects based on ID
+  const selectedGenre = genres?.data.find(g => g.genreId === filters.genre) || null;
+  const selectedAuthor = authors?.data.find(a => a.authorId === filters.author) || null;
 
-  const handleGenreChange = (event: SelectChangeEvent<string>) => {
-    onFilterChange({
-      ...filters,
-      genre: event.target.value || "", 
+  // Ensure unique options for Autocomplete components
+  const uniqueGenres = React.useMemo(() => {
+    if (!genres?.data) return [];
+    const seen = new Set();
+    return genres.data.filter(genre => {
+      const duplicate = seen.has(genre.genreId);
+      seen.add(genre.genreId);
+      return !duplicate;
     });
-  };
+  }, [genres?.data]);
+
+  const uniqueAuthors = React.useMemo(() => {
+    if (!authors?.data) return [];
+    const seen = new Set();
+    return authors.data.filter(author => {
+      const duplicate = seen.has(author.authorId);
+      seen.add(author.authorId);
+      return !duplicate;
+    });
+  }, [authors?.data]);
 
   return (
     <Paper elevation={2}>
@@ -84,76 +105,131 @@ export const BookFilters: React.FC<FilterProps> = ({ filters, onFilterChange }) 
               label="Search"
               placeholder="Search books..."
               defaultValue={filters.seed || ""}
-              onChange={handleTextChange("seed")}
+              onChange={(e) => debouncedSeedChange(e.target.value)}
               variant="outlined"
               size="small"
             />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <FormControl fullWidth size="small">
-              <InputLabel>Genre</InputLabel>
-              <Select
-                value={filters.genre || ""}
-                label="Genre"
-                onChange={handleGenreChange}
-                disabled={genresLoading || !!genresError}
-              >
-                {/* Reset Option */}
-                <MenuItem value="">None</MenuItem>
-
-                {/* Loading/Error Handling */}
-                {genresLoading ? (
-                  <MenuItem disabled>
-                    <CircularProgress size={20} />
-                  </MenuItem>
-                ) : genresError ? (
-                  <MenuItem disabled>Error loading genres</MenuItem>
-                ) : (
-                  genres?.data.map((genre) => (
-                    <MenuItem key={genre.genreId} value={genre.genreId}>
-                      {genre.genre}
-                    </MenuItem>
-                  ))
-                )}
-              </Select>
-            </FormControl>
+            <Autocomplete
+              fullWidth
+              freeSolo
+              options={uniqueGenres}
+              getOptionLabel={(option) => {
+                if (typeof option === 'string') return option;
+                return option.genre;
+              }}
+              isOptionEqualToValue={(option, value) => {
+                return option.genreId === value.genreId;
+              }}
+              value={selectedGenre}
+              onChange={(_event, newValue) => {
+                if (newValue && typeof newValue !== 'string' && newValue.genreId) {
+                  onFilterChange({
+                    ...filters,
+                    genre: newValue.genreId,
+                  });
+                } else {
+                  onFilterChange({
+                    ...filters,
+                    genre: "",
+                  });
+                }
+              }}
+              onInputChange={(_event, newInputValue) => {
+                debouncedGenreSeedChange(newInputValue);
+              }}
+              loading={genresLoading}
+              renderOption={(props, option) => (
+                <li {...props} key={`genre-${option.genreId}`}>
+                  {option.genre}
+                </li>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Genre"
+                  variant="outlined"
+                  size="small"
+                  placeholder="Type to search genres..."
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <>
+                        {genresLoading && <CircularProgress size={20} />}
+                        {params.InputProps.endAdornment}
+                      </>
+                    ),
+                  }}
+                  error={!!genresError}
+                  helperText={genresError ? "Error loading genres" : ""}
+                />
+              )}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <FormControl fullWidth size="small">
-              <InputLabel>Author</InputLabel>
-              <Select
-                value={filters.author || ""}
-                label="Author"
-                onChange={handleAuthorChange}
-                disabled={isLoading || !!error}
-              >
-                {/* Reset Option */}
-                <MenuItem value="">None</MenuItem>
-
-                {/* Show loading or error state */}
-                {isLoading ? (
-                  <MenuItem disabled>
-                    <CircularProgress size={20} />
-                  </MenuItem>
-                ) : error ? (
-                  <MenuItem disabled>Error loading authors</MenuItem>
-                ) : (
-                  authors?.data.map((author: Author) => (
-                    <MenuItem key={author.authorId} value={author.authorId}>
-                      {author.fullName}
-                    </MenuItem>
-                  ))
-                )}
-              </Select>
-            </FormControl>
+            <Autocomplete
+              fullWidth
+              freeSolo
+              options={uniqueAuthors}
+              getOptionLabel={(option) => {
+                if (typeof option === 'string') return option;
+                return option.fullName;
+              }}
+              isOptionEqualToValue={(option, value) => {
+                return option.authorId === value.authorId;
+              }}
+              value={selectedAuthor}
+              onChange={(_event, newValue) => {
+                if (newValue && typeof newValue !== 'string' && newValue.authorId) {
+                  onFilterChange({
+                    ...filters,
+                    author: newValue.authorId,
+                  });
+                } else {
+                  onFilterChange({
+                    ...filters,
+                    author: "",
+                  });
+                }
+              }}
+              onInputChange={(_event, newInputValue) => {
+                debouncedAuthorSeedChange(newInputValue);
+              }}
+              loading={authorsLoading}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Author"
+                  variant="outlined"
+                  size="small"
+                  placeholder="Type to search authors..."
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <>
+                        {authorsLoading && <CircularProgress size={20} />}
+                        {params.InputProps.endAdornment}
+                      </>
+                    ),
+                  }}
+                  error={!!authorsError}
+                  helperText={authorsError ? "Error loading authors" : ""}
+                />
+              )}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
             <FormControl fullWidth size="small">
               <InputLabel>Sort By</InputLabel>
-              <Select<BookSortType> value={filters.sort || ""} label="Sort By" onChange={handleSortChange}>
+              <Select<BookSortType>
+                value={filters.sort || ""}
+                label="Sort By"
+                onChange={handleSortChange}
+              >
                 <MenuItem value="ratings_desc">Rating (High to Low)</MenuItem>
                 <MenuItem value="ratings_asc">Rating (Low to High)</MenuItem>
                 <MenuItem value="pub_date_desc">Newest First</MenuItem>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
@@ -26,7 +26,6 @@ const SideDrawer = ({ isOpen = false, onNavigate, onClose }: Props) => {
   const navigate = useNavigate();
   const { mode } = useContext(ColorModeContext); 
   const { data: user } = useMe();
-  console.log(user);
 
   const publicPages = [
     { text: "Home", link: "/dashboard", icon: <Home /> },
