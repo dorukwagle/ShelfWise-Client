@@ -4,15 +4,14 @@ import { Edit, Delete, Save, Cancel, SearchOff, Search } from "@mui/icons-materi
 import useAuthors from "../hooks/useAuthors";
 import useDeleteAuthor from "../hooks/useDeleteAuthor";
 import useUpdateAuthor from "../hooks/useUpdateAuthor";
-import useSearchAuthors from '../hooks/useSearchAuthors';
 import Author from "../entities/Author";
+import PaginationParams from "../../entities/PaginationParams";
 
 const AuthorTable: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [authorParams, setauthorParams] = useState<PaginationParams>({ seed: '', page: 1, pageSize: 15 });
   const [searchInput, setSearchInput] = useState<string>("");
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const { data: authorsData, isLoading: authorsLoading, error: authorsError } = useAuthors({ page: 1, pageSize: 15, seed: '' });
-  const { data: searchResults, isLoading: searchLoading, error: searchError } = useSearchAuthors(searchTerm);
+  const { data: authorsData, isLoading, error: authorsError } = useAuthors(authorParams);
   const deleteAuthorMutation = useDeleteAuthor();
   const updateAuthorMutation = useUpdateAuthor();
 
@@ -25,8 +24,8 @@ const AuthorTable: React.FC = () => {
     }
   }, []);
 
-  if (authorsLoading || searchLoading) return <CircularProgress />;
-  if (authorsError || searchError) return <Alert severity="error">An error occurred: {authorsError?.message || searchError?.message}</Alert>;
+  if (isLoading) return <CircularProgress />;
+  if (authorsError) return <Alert severity="error">An error occurred: {authorsError?.message}</Alert>;
 
   const handleEdit = (author: Author) => {
     setEditingAuthorId(author.authorId || null);
@@ -63,15 +62,13 @@ const AuthorTable: React.FC = () => {
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
     if (event.target.value === "") {
-      setSearchTerm("");
+      setauthorParams({...authorParams, seed:searchInput});
     }
   };
 
   const handleSearch = () => {
-    setSearchTerm(searchInput);
+    setauthorParams({...authorParams, seed:searchInput});
   };
-
-  const authorsToShow = searchTerm ? searchResults?.data : authorsData?.data;
 
   return (
     <Box>
@@ -95,7 +92,16 @@ const AuthorTable: React.FC = () => {
           Search
         </Button>
       </Box>
-      {authorsToShow && authorsToShow.length > 0 ? (
+      {!authorsData?.data.length && (
+         <Box display="flex" flexDirection="column" alignItems="center" marginTop={4}>
+         <SearchOff fontSize="large" color="disabled" />
+         <Typography variant="h6" align="center">
+           Sorry, no authors found.
+         </Typography>
+       </Box>
+      )
+      }
+      {authorsData && authorsData.data.length && (
         <Table>
           <TableHead>
             <TableRow>
@@ -105,7 +111,7 @@ const AuthorTable: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {authorsToShow.map((author: Author) => (
+            {authorsData.data.map((author: Author) => (
               <TableRow key={author.authorId}>
                 <TableCell sx={{ padding: '16px', backgroundColor: editingAuthorId === author.authorId ? 'secondary.light' : 'inherit' }}>
                   {editingAuthorId === author.authorId ? (
@@ -162,13 +168,6 @@ const AuthorTable: React.FC = () => {
             ))}
           </TableBody>
         </Table>
-      ) : (
-        <Box display="flex" flexDirection="column" alignItems="center" marginTop={4}>
-          <SearchOff fontSize="large" color="disabled" />
-          <Typography variant="h6" align="center">
-            Sorry, no authors found.
-          </Typography>
-        </Box>
       )}
     </Box>
   );
