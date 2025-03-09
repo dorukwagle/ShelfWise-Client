@@ -10,7 +10,7 @@ interface Params {
     status?: "Pending" | "Completed";
 }
 
-const useTodos = ({ seed }: Params) => {
+const useGenres = ({ seed }: Params) => {
 
     const params: PaginationParams = {
         page: 1,
@@ -25,4 +25,4 @@ const useTodos = ({ seed }: Params) => {
     });
 }
 
-export default useTodos;
+export default useGenres;

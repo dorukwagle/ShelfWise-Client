@@ -4,15 +4,14 @@ import { Edit, Delete, Save, Cancel, SearchOff, Search } from '@mui/icons-materi
 import usePublishers from '../hooks/usePublishers';
 import useDeletePublisher from '../hooks/useDeletePublisher';
 import useUpdatePublisher from '../hooks/useUpdatePublisher';
-import useSearchPublishers from '../hooks/useSearchPublishers';
 import Publisher from '../entities/Publisher';
+import PaginationParams from '../../entities/PaginationParams';
 
 const PublisherTable: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [publisherParams, setpublisherParams] = useState<PaginationParams>({ seed: '', page: 1, pageSize: 15 });
   const [searchInput, setSearchInput] = useState<string>("");
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const { data: publishersData, isLoading: publishersLoading, error: publishersError } = usePublishers({ page: 1, pageSize: 15, seed: '' });
-  const { data: searchResults, error: searchError, isLoading: searchLoading } = useSearchPublishers(searchTerm);
+  const { data: publishersData, isLoading, error: publishersError } = usePublishers(publisherParams);
   const deletePublisherMutation = useDeletePublisher();
   const updatePublisherMutation = useUpdatePublisher();
 
@@ -25,8 +24,8 @@ const PublisherTable: React.FC = () => {
     }
   }, []);
 
-  if (publishersLoading || searchLoading) return <CircularProgress />;
-  if (publishersError || searchError) return <Alert severity="error">An error occurred: {publishersError?.message || searchError?.message}</Alert>;
+  if (isLoading) return <CircularProgress />;
+  if (publishersError) return <Alert severity="error">An error occurred: {publishersError?.message}</Alert>;
 
   const handleDelete = (publisherId: string) => {
     if (window.confirm("Are you sure you want to delete this publisher?")) {
@@ -63,15 +62,14 @@ const PublisherTable: React.FC = () => {
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
     if (event.target.value === "") {
-      setSearchTerm("");
+      setpublisherParams({...publisherParams, seed:searchInput});
     }
   };
 
   const handleSearch = () => {
-    setSearchTerm(searchInput);
+    setpublisherParams({...publisherParams, seed:searchInput});
   };
 
-  const publishersToShow = searchTerm ? searchResults?.data : publishersData?.data;
 
   return (
     <Box>
@@ -95,7 +93,16 @@ const PublisherTable: React.FC = () => {
           Search
         </Button>
       </Box>
-      {publishersToShow && publishersToShow.length > 0 ? (
+      {!publishersData?.data.length && (
+        <Box display="flex" flexDirection="column" alignItems="center" marginTop={4}>
+        <SearchOff fontSize="large" color="disabled" />
+        <Typography variant="h6" align="center">
+          Sorry, no publishers found.
+        </Typography>
+      </Box>
+      )
+      }
+      {publishersData && publishersData.data.length && (
         <Table>
           <TableHead>
             <TableRow>
@@ -105,7 +112,7 @@ const PublisherTable: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {publishersToShow.map((publisher: Publisher) => (
+            {publishersData.data.map((publisher: Publisher) => (
               <TableRow key={publisher.publisherId}>
                 <TableCell sx={{ padding: '16px', backgroundColor: editingPublisherId === publisher.publisherId ? 'secondary.light' : 'inherit' }}>
                   {editingPublisherId === publisher.publisherId ? (
@@ -155,14 +162,7 @@ const PublisherTable: React.FC = () => {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
-      ) : (
-        <Box display="flex" flexDirection="column" alignItems="center" marginTop={4}>
-          <SearchOff fontSize="large" color="disabled" />
-          <Typography variant="h6" align="center">
-            Sorry, no publishers found.
-          </Typography>
-        </Box>
+        </Table>     
       )}
     </Box>
   );
