@@ -8,7 +8,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Backdrop from "@mui/material/Backdrop";
-import { BookOnline, Home, Info, Category, School } from "@mui/icons-material";
+import { BookOnline, Home, Info, Category, School, Payment } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { ColorModeContext } from "../ThemedApp";
@@ -40,6 +40,7 @@ const SideDrawer = ({ isOpen = false, onNavigate, onClose }: Props) => {
     { text: "Users", link: "/enrollments", icon: <School /> },
     { text: "Request List", link: "/enrollments-request", icon: <School /> },
     { text: "About", link: "", icon: <Info /> },
+    { text: "User and Payment management", link: "/user-payment", icon: <Payment /> },
   ];
 
   const onLinkClick = (link: string) => {
