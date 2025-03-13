@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import useUsers from "../hooks/useUsers";
 import PaginationParams from "../../entities/PaginationParams";
 import { user } from "../entities/UserManagement";
+import useUserRoles from "../hooks/useUserRoles";
 
 const UserList: React.FC = () => {
     const [userParams, setuserParams] = useState<PaginationParams>({ seed: '', page: 1, pageSize: 15 });
@@ -13,8 +14,10 @@ const UserList: React.FC = () => {
     const [accountStatus, setAccountStatus] = useState("");
     const [editingUserId, setEditingUserId] = useState<string | null>(null);
     const [newAccountStatus, setNewAccountStatus] = useState<string>("");
+    const [newRole, setNewRole] = useState<string>("");
     const { data: userData, isLoading, error: userError } = useUsers(userParams);
     const searchInputRef = useRef<HTMLInputElement>(null);
+    const { data: userRoles } = useUserRoles();
 
     useEffect(() => {
         if (searchInputRef.current) {
@@ -48,22 +51,30 @@ const UserList: React.FC = () => {
       }
     };
 
-    const handleEditClick = (userId: string, currentStatus: string) => {
+    const handleEditClick = (userId: string, currentStatus: string, currentRole: string) => {
       setEditingUserId(userId);
       setNewAccountStatus(currentStatus);
+      setNewRole(currentRole);
     };
 
     const handleNewAccountStatusChange = (event: SelectChangeEvent<string>) => {
       setNewAccountStatus(event.target.value as string);
     };
 
+    const handleNewRoleChange = (event: SelectChangeEvent<string>) => {
+      setNewRole(event.target.value);
+    };
+
     const handleSaveClick = () => {
       // Add functionality to save changes here
       setEditingUserId(null);
+      setNewRole("");
+      setNewAccountStatus("");
     };
 
     const handleCancelClick = () => {
       setEditingUserId(null);
+      setNewRole("");
       setNewAccountStatus("");
     };
 
@@ -154,7 +165,26 @@ const UserList: React.FC = () => {
                       user.accountStatus
                     )}
                   </TableCell>
-                  <TableCell>{user.role.role}</TableCell>
+                  <TableCell>
+                    {editingUserId === user.userId ? (
+                      <FormControl variant="outlined" size="small" sx={{ width: '150px' }}>
+                        <InputLabel>Role</InputLabel>
+                        <Select
+                          value={newRole}
+                          onChange={handleNewRoleChange}
+                          label="Role"
+                        >
+                         {
+                          userRoles.map((userRole: {roleId: string, role: string}) => (
+                            <MenuItem key={userRole.roleId} value={userRole.roleId}>{userRole.role}</MenuItem>
+                          ))
+                         }
+                        </Select>
+                      </FormControl>
+                    ) : (
+                      user.role.role
+                    )}
+                  </TableCell>
                   <TableCell>{user.membership?.expiryDate ? new Date(user.membership.expiryDate).toLocaleDateString() : 'N/A'}</TableCell>
                   <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
                   <TableCell>
@@ -168,7 +198,7 @@ const UserList: React.FC = () => {
                         </IconButton>
                       </>
                     ) : (
-                      <IconButton onClick={() => handleEditClick(user.userId, user.accountStatus)}>
+                      <IconButton onClick={() => handleEditClick(user.userId, user.accountStatus, user.role.roleId)}>
                         <EditIcon />
                       </IconButton>
                     )}
