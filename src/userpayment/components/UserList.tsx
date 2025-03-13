@@ -99,10 +99,7 @@ const UserList: React.FC = () => {
               <MenuItem value=""><em>None</em></MenuItem>
               <MenuItem value="Active">Active</MenuItem>
               <MenuItem value="Inactive">Inactive</MenuItem>
-              <MenuItem value="Pending">Pending</MenuItem>
-              <MenuItem value="Rejected">Rejected</MenuItem>
               <MenuItem value="Suspended">Suspended</MenuItem>
-              <MenuItem value="Expired">Expired</MenuItem>
             </Select>
           </FormControl>
         </Box>

@@ -13,7 +13,7 @@ const useUpdateAccountStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation<any, AxiosError<ErrorRes>, UpdateAccountStatusParams>({
-    mutationFn: ({ userId, status }: UpdateAccountStatusParams) => userService.put(`/account-status`, { userId, status }),
+    mutationFn: ({ userId, status }: UpdateAccountStatusParams) => userService.put(`/account-status/${userId}`, { status }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: USERS_CACHE_KEY }),
   });
 };
