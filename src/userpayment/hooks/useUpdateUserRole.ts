@@ -13,7 +13,7 @@ export const useUpdateUserRole = () => {
     { userId: string; roleId: string }
   >({
     mutationFn: ({ userId, roleId }) =>
-      userService.setSubroute("user-role").put(`${userId}/${roleId}`),
+      userService.setSubroute("/user-role").put(`${userId}/${roleId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: USERS_CACHE_KEY });
     },

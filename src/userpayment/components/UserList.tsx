@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Table, TableBody, TableCell, TableHead, TableRow, Box, Typography, TextField, Button, CircularProgress, Alert, MenuItem, Select, FormControl, InputLabel, SelectChangeEvent, IconButton } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Box, Typography, TextField, Button, CircularProgress, Alert, MenuItem, Select, FormControl, InputLabel, SelectChangeEvent, IconButton, Card, Modal } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import useUsers from "../hooks/useUsers";
 import PaginationParams from "../../entities/PaginationParams";
 import { user } from "../entities/UserManagement";
 import useUserRoles from "../hooks/useUserRoles";
+import useUpdateAccountStatus from "../hooks/useUpdateAccountStatus";
+import useUpdateUserRole from "../hooks/useUpdateUserRole";
 
 const UserList: React.FC = () => {
     const [userParams, setuserParams] = useState<PaginationParams>({ seed: '', page: 1, pageSize: 15 });
@@ -15,8 +16,14 @@ const UserList: React.FC = () => {
     const [editingUserId, setEditingUserId] = useState<string | null>(null);
     const [newAccountStatus, setNewAccountStatus] = useState<string>("");
     const [newRole, setNewRole] = useState<string>("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: userData, isLoading, error: userError } = useUsers(userParams);
     const searchInputRef = useRef<HTMLInputElement>(null);
+    const accountStatusRef = useRef<HTMLInputElement>(null);
+    const userRoleRef = useRef<HTMLInputElement>(null);
+    const { mutate: updateAccountStatus } = useUpdateAccountStatus();
+    const { mutate: updateUserRole } = useUpdateUserRole();
+
     const { data: userRoles } = useUserRoles();
 
     useEffect(() => {
@@ -55,6 +62,7 @@ const UserList: React.FC = () => {
       setEditingUserId(userId);
       setNewAccountStatus(currentStatus);
       setNewRole(currentRole);
+      setIsModalOpen(true);
     };
 
     const handleNewAccountStatusChange = (event: SelectChangeEvent<string>) => {
@@ -65,17 +73,25 @@ const UserList: React.FC = () => {
       setNewRole(event.target.value);
     };
 
-    const handleSaveClick = () => {
-      // Add functionality to save changes here
-      setEditingUserId(null);
-      setNewRole("");
-      setNewAccountStatus("");
+    const handleAccountStatusUpdate = () => {
+      if (editingUserId && newAccountStatus) {
+        updateAccountStatus({ userId: editingUserId, status: newAccountStatus });
+        setNewAccountStatus("");
+      }
+    };
+
+    const handleUserRoleUpdate = () => {
+      if (editingUserId && newRole) {
+        updateUserRole({ userId: editingUserId, roleId: newRole });
+        setNewRole("");
+      }
     };
 
     const handleCancelClick = () => {
       setEditingUserId(null);
       setNewRole("");
       setNewAccountStatus("");
+      setIsModalOpen(false);
     };
 
     return (
@@ -88,7 +104,7 @@ const UserList: React.FC = () => {
             size="small"
             value={searchInput}
             onChange={handleSearchInputChange}
-            sx={{ width: '350px' }}
+            sx={{ width: "350px" }}
           />
           <Button
             variant="contained"
@@ -100,30 +116,42 @@ const UserList: React.FC = () => {
           </Button>
         </Box>
         <Box display="flex" justifyContent="flex-end" sx={{ marginBottom: 2 }}>
-          <FormControl variant="outlined" size="small" sx={{ width: '200px' }}>
+          <FormControl variant="outlined" size="small" sx={{ width: "200px" }}>
             <InputLabel>Filter</InputLabel>
             <Select
               value={accountStatus}
               onChange={handleAccountStatusChange}
               label="Filter"
             >
-              <MenuItem value=""><em>None</em></MenuItem>
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="Pending">Pending</MenuItem>
               <MenuItem value="Active">Active</MenuItem>
               <MenuItem value="Inactive">Inactive</MenuItem>
+              <MenuItem value="Rejected">Rejected</MenuItem>
               <MenuItem value="Suspended">Suspended</MenuItem>
             </Select>
           </FormControl>
         </Box>
         {!userData?.data.length && (
-          <Box display="flex" flexDirection="column" alignItems="center" marginTop={4}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            marginTop={4}
+          >
             <Typography variant="h6" align="center">
               Sorry, no users found.
             </Typography>
           </Box>
         )}
-        <Box display="flex" justifyContent="space-between" sx={{ marginBottom: 2 }}>
-        </Box>
-        { userData && userData.data.length && (
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          sx={{ marginBottom: 2 }}
+        ></Box>
+        {userData && userData.data.length && (
           <Table>
             <TableHead>
               <TableRow>
@@ -147,7 +175,11 @@ const UserList: React.FC = () => {
                   <TableCell>{user.universityId}</TableCell>
                   <TableCell>
                     {editingUserId === user.userId ? (
-                      <FormControl variant="outlined" size="small" sx={{ width: '150px' }}>
+                      <FormControl
+                        variant="outlined"
+                        size="small"
+                        sx={{ width: "150px" }}
+                      >
                         <InputLabel>Account Status</InputLabel>
                         <Select
                           value={newAccountStatus}
@@ -156,7 +188,6 @@ const UserList: React.FC = () => {
                         >
                           <MenuItem value="Active">Active</MenuItem>
                           <MenuItem value="Inactive">Inactive</MenuItem>
-                          <MenuItem value="Pending">Pending</MenuItem>
                           <MenuItem value="Rejected">Rejected</MenuItem>
                           <MenuItem value="Suspended">Suspended</MenuItem>
                         </Select>
@@ -167,38 +198,60 @@ const UserList: React.FC = () => {
                   </TableCell>
                   <TableCell>
                     {editingUserId === user.userId ? (
-                      <FormControl variant="outlined" size="small" sx={{ width: '150px' }}>
+                      <FormControl
+                        variant="outlined"
+                        size="small"
+                        sx={{ width: "150px" }}
+                      >
                         <InputLabel>Role</InputLabel>
                         <Select
                           value={newRole}
                           onChange={handleNewRoleChange}
                           label="Role"
                         >
-                         {
-                          userRoles.map((userRole: {roleId: string, role: string}) => (
-                            <MenuItem key={userRole.roleId} value={userRole.roleId}>{userRole.role}</MenuItem>
-                          ))
-                         }
+                          {userRoles.map(
+                            (userRole: { roleId: string; role: string }) => (
+                              <MenuItem
+                                key={userRole.roleId}
+                                value={userRole.roleId}
+                              >
+                                {userRole.role}
+                              </MenuItem>
+                            )
+                          )}
                         </Select>
                       </FormControl>
                     ) : (
                       user.role.role
                     )}
                   </TableCell>
-                  <TableCell>{user.membership?.expiryDate ? new Date(user.membership.expiryDate).toLocaleDateString() : 'N/A'}</TableCell>
-                  <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    {user.membership?.expiryDate
+                      ? new Date(
+                          user.membership.expiryDate
+                        ).toLocaleDateString()
+                      : "N/A"}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(user.createdAt).toLocaleDateString()}
+                  </TableCell>
                   <TableCell>
                     {editingUserId === user.userId ? (
                       <>
-                        <IconButton onClick={handleSaveClick}>
-                          <SaveIcon />
-                        </IconButton>
                         <IconButton onClick={handleCancelClick}>
                           <CloseIcon />
                         </IconButton>
                       </>
                     ) : (
-                      <IconButton onClick={() => handleEditClick(user.userId, user.accountStatus, user.role.roleId)}>
+                      <IconButton
+                        onClick={() =>
+                          handleEditClick(
+                            user.userId,
+                            user.accountStatus,
+                            user.role.roleId
+                          )
+                        }
+                      >
                         <EditIcon />
                       </IconButton>
                     )}
@@ -208,8 +261,74 @@ const UserList: React.FC = () => {
             </TableBody>
           </Table>
         )}
+        <Modal
+          open={isModalOpen}
+          onClose={handleCancelClick}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Card sx={{ p: 4, minWidth: 300, maxWidth: 400 }}>
+            <Typography variant="h6" sx={{ mb: 3 }}>
+              Edit User
+            </Typography>
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel>Account Status</InputLabel>
+              <Select
+                inputRef={accountStatusRef}
+                value={newAccountStatus}
+                onChange={handleNewAccountStatusChange}
+                label="Account Status"
+              >
+                <MenuItem value="Active">Active</MenuItem>
+                <MenuItem value="Inactive">Inactive</MenuItem>
+                <MenuItem value="Pending">Pending</MenuItem>
+                <MenuItem value="Rejected">Rejected</MenuItem>
+                <MenuItem value="Suspended">Suspended</MenuItem>
+              </Select>
+            </FormControl>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={handleAccountStatusUpdate}
+              sx={{ mb: 2 }}
+            >
+              Save Account Status
+            </Button>
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel>Role</InputLabel>
+              <Select
+                inputRef={userRoleRef}
+                value={newRole}
+                onChange={handleNewRoleChange}
+                label="Role"
+              >
+                {userRoles?.map(
+                  (userRole: { roleId: string; role: string }) => (
+                    <MenuItem key={userRole.roleId} value={userRole.roleId}>
+                      {userRole.role}
+                    </MenuItem>
+                  )
+                )}
+              </Select>
+            </FormControl>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={handleUserRoleUpdate}
+              sx={{ mb: 2 }}
+            >
+              Save Role
+            </Button>
+            <Button fullWidth variant="outlined" onClick={handleCancelClick}>
+              Cancel
+            </Button>
+          </Card>
+        </Modal>
       </Box>
     );
-  };
+};
 
 export default UserList;
