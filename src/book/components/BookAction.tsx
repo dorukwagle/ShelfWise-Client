@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import { BookInfo } from '../entities/BookType';
 import { requestBook, reserveBook } from '../services/bookInfoService';
+import useReserveBook from '../../reservation/hooks/reserveBook';
 
 interface BookActionsProps {
   bookInfo: BookInfo;
@@ -33,6 +34,17 @@ export const BookActions: React.FC<BookActionsProps> = ({ bookInfo, userId }) =>
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const {
+    isPending: isSubmittingReserve,
+    isSuccess: successReserve,
+    isError: errorReserve,
+    mutate: handleReserveSubmit,
+    reset: resetReserve,
+    } = useReserveBook(() => {
+    // Optional success callback
+    console.log("Reservation successful!");
+});
 
   const availableBooks = bookInfo.books.filter(book => book.status === "Available");
   const hasAvailableBooks = availableBooks.length > 0;
@@ -51,27 +63,31 @@ export const BookActions: React.FC<BookActionsProps> = ({ bookInfo, userId }) =>
 
   const handleCloseReserveDialog = () => {
     setOpenReserveDialog(false);
+    resetReserve();
   };
 
   const handleCloseRequestDialog = () => {
     setOpenRequestDialog(false);
   };
 
-  const handleReserveSubmit = async () => {
+  const handleReserveSubmitClick = async () => {
     if (!selectedBookId) return;
-    
-    try {
-      setIsSubmitting(true);
-      setError(null);
-      await reserveBook(selectedBookId, userId);
-      setSuccess('Book reserved successfully!');
-      handleCloseReserveDialog();
-    } catch (err) {
-      setError('Failed to reserve book. Please try again.');
-      console.error(err);
-    } finally {
-      setIsSubmitting(false);
-    }
+
+    console.log('Selected Book ID:', selectedBookId);
+    console.log('Book Info ID:', bookInfo.bookInfoId);
+
+    setIsSubmitting(true);
+    setError(null);
+    handleReserveSubmit(bookInfo.bookInfoId, {
+      onError: (err) => {
+        setError('Failed to reserve book. Please try again.');
+        console.error(err);
+        setIsSubmitting(false);
+      },
+      onSettled: () => {
+        setIsSubmitting(false);
+      }
+    });
   };
 
   const handleRequestSubmit = async () => {
@@ -97,14 +113,14 @@ export const BookActions: React.FC<BookActionsProps> = ({ bookInfo, userId }) =>
             Book Actions
           </Typography>
           
-          {success && (
-            <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccess(null)}>
+          {successReserve && (
+            <Alert severity="success" sx={{ mb: 2 }} onClose={() => resetReserve()}>
               {success}
             </Alert>
           )}
           
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+          {errorReserve && (
+            <Alert severity="error" sx={{ mb: 2 }} onClose={() => resetReserve()}>
               {error}
             </Alert>
           )}
@@ -157,11 +173,11 @@ export const BookActions: React.FC<BookActionsProps> = ({ bookInfo, userId }) =>
         <DialogActions>
           <Button onClick={handleCloseReserveDialog}>Cancel</Button>
           <Button 
-            onClick={handleReserveSubmit} 
+            onClick={handleReserveSubmitClick} 
             color="primary" 
-            disabled={!selectedBookId || isSubmitting}
+            disabled={!selectedBookId || isSubmittingReserve}
           >
-            {isSubmitting ? <CircularProgress size={24} /> : 'Reserve'}
+            {isSubmittingReserve ? <CircularProgress size={24} /> : 'Reserve'}
           </Button>
         </DialogActions>
       </Dialog>

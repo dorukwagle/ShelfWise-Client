@@ -11,6 +11,7 @@ const GenreTable: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchInput, setSearchInput] = useState<string>("");
   const searchInputRef = useRef<HTMLInputElement>(null);
+  // const [test, setTest] = useState({ seed: '', page: 1, status: "Pending" });
   const { data: genresData, isLoading: genresLoading, error: genresError } = useTodos({ seed: '' });
   const { data: searchResults, error: searchError, isLoading: searchLoading } = useSearchGenres(searchTerm);
   const deleteGenreMutation = useDeleteGenre();

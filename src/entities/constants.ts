@@ -15,6 +15,7 @@ const GLOBAL_ATTRIBUTES_CACHE_KEY = ["global_attributes"];
 const DEFAULT_PAGE_SIZE = 15;
 const NOTIFICATION_CACHE_KEY = ["notifications"];
 const NOTIFICATION_COUNT_CACHE_KEY = ["notification_count"];
+const RESERVATION_CACHE_KEY = ["reservations"];
 
 
 enum EUserRoles {
@@ -46,6 +47,7 @@ export {
   DETAILED_MEMBER_TYPE_KEY,
   NOTIFICATION_CACHE_KEY,
   NOTIFICATION_COUNT_CACHE_KEY,
+  RESERVATION_CACHE_KEY,
   GLOBAL_ATTRIBUTES_CACHE_KEY, DEFAULT_PAGE_SIZE,
   
 };
