@@ -96,7 +96,8 @@ const UserList: React.FC = () => {
 
     return (
       <Box>
-        <Box display="flex" justifyContent="flex-end" sx={{ marginBottom: 2 }}>
+        <Box display="flex" justifyContent="space-between" sx={{ marginBottom: 2 }}>
+        <Box display="flex" justifyContent="flex-start" sx={{ marginBottom: 2 }}>
           <TextField
             inputRef={searchInputRef}
             label="Search User"
@@ -133,6 +134,7 @@ const UserList: React.FC = () => {
               <MenuItem value="Suspended">Suspended</MenuItem>
             </Select>
           </FormControl>
+        </Box>
         </Box>
         {!userData?.data.length && (
           <Box

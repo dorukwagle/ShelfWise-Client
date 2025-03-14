@@ -4,8 +4,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import UserList from '../components/UserList';
 import PaymentList from '../components/PaymentList';
 
-
-
 const UserPaymentPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
