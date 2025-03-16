@@ -183,7 +183,7 @@ const UserPenalties: React.FC<UserPenaltiesProps> = ({ open, onClose, user }) =>
           ) : (
             <>
               <Table>
-                <TableHead>
+                <TableHead sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>
                   <TableRow>
                     <TableCell>Description</TableCell>
                     <TableCell>Type</TableCell>

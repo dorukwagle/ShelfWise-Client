@@ -232,15 +232,15 @@ const UserList: React.FC = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Email</TableCell>
-                <TableCell>Full Name</TableCell>
-                <TableCell>College ID</TableCell>
-                <TableCell>University ID</TableCell>
-                <TableCell>Account Status</TableCell>
-                <TableCell>Role</TableCell>
-                <TableCell>Membership Expiry Date</TableCell>
-                <TableCell>Created At</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Email</TableCell>
+                <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Full Name</TableCell>
+                <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>College ID</TableCell>
+                <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>University ID</TableCell>
+                <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Account Status</TableCell>
+                <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Role</TableCell>
+                <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Membership Expiry Date</TableCell>
+                <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Created At</TableCell>
+                <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

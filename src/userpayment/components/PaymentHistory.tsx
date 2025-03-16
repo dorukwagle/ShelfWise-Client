@@ -105,7 +105,7 @@ const PaymentHistoryDialog: React.FC<PaymentHistoryDialogProps> = ({ open, onClo
           <>
             {/* Payment history table */}
             <Table>
-              <TableHead>
+              <TableHead sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>
                 <TableRow>
                   <TableCell>Payment ID</TableCell>
                   <TableCell>Amount</TableCell>
