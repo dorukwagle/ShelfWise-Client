@@ -2,18 +2,18 @@ import React from "react";
 import { TextField, Button } from "@mui/material";
 
 interface SearchBarProps {
-    searchQuery: string;
-    setSearchQuery: (query: string) => void;
-    onSearch: () => void;
+    value: string;
+    onChange: (query: string) => void; // Updates the local query state
+    onSearch: () => void; // Triggers the search action
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery, onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, onSearch }) => {
     return (
         <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
             <TextField
-                label="Search by Member Name or Book Title"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                label="Search by User Name, Book Title, or Reservation ID"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
                 fullWidth
             />
             <Button variant="contained" onClick={onSearch}>
@@ -22,3 +22,5 @@ export const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuer
         </div>
     );
 };
+
+export default SearchBar;

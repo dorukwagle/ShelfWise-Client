@@ -4,8 +4,9 @@ import User from "../../../entities/User";
 
 export enum EReservationStatus {
     Pending = "Pending",
-    Completed = "Completed",
     Cancelled = "Cancelled",
+    Confirmed = "Confirmed",
+    Resolved = "Resolved",
 }
 
 

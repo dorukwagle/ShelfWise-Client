@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from "@mui/material";
 import useIssueReservation from "../hooks/useIssueReservation";
-import { BookReservation } from "../entities/BookReservation";
 
 interface IssueBookDialogProps {
     open: boolean;
     onClose: () => void;
-    reservation: BookReservation;
+    reservation: any; // Replace `any` with the actual type of your reservation object
 }
 
 const IssueBookDialog: React.FC<IssueBookDialogProps> = ({ open, onClose, reservation }) => {
@@ -14,7 +13,7 @@ const IssueBookDialog: React.FC<IssueBookDialogProps> = ({ open, onClose, reserv
     const [error, setError] = useState<string | null>(null);
 
     const { mutate, isPending } = useIssueReservation(() => {
-        onClose(); // Close the dialog after successful issuance
+        onClose();
     });
 
     const handleIssue = () => {

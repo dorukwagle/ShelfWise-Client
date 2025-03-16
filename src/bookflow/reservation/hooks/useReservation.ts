@@ -2,20 +2,24 @@ import { useQuery } from "@tanstack/react-query";
 import PaginationParams from "../../../entities/PaginationParams";
 import PaginationResponse from "../../../entities/PaginationResponse";
 import { DAY, RESERVATION_CACHE_KEY } from "../../../entities/constants";
-import { BookReservation } from "../entities/BookReservation";
+import { BookReservation, EReservationStatus } from "../entities/BookReservation";
 import reservationService from "../services/reservationServices";
 
-interface Params {
-    seed?: string;
-    status?: "Pending" | "Completed";
+export interface ReservationFilterParams {
+    status?: EReservationStatus;
+    searchQuery?: string;
 }
 
-const useReservation = ({ seed }: Params) => {
+interface Params extends ReservationFilterParams {
+    seed?: string;
+}
 
-    const params: PaginationParams = {
+const useReservation = ({ status, searchQuery }: Params) => {
+    const params: PaginationParams & ReservationFilterParams = {
         page: 1,
         pageSize: 15,
-        seed,
+        status,
+        searchQuery,
     };
 
     return useQuery<PaginationResponse<BookReservation>>({
@@ -23,6 +27,6 @@ const useReservation = ({ seed }: Params) => {
         queryFn: () => reservationService.get('', params),
         staleTime: DAY,
     });
-}
+};
 
 export default useReservation;
