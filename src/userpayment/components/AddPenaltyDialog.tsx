@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Modal, Card, Typography, TextField, Button, Box, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Snackbar, Alert } from "@mui/material";
 import { user } from "../entities/UserManagement";
-import useMakePayment from "../hooks/useAddPenalties";
 import { AddPenalty as AddPenaltyType, EPenaltyTypes } from "../entities/payments";
+import useMakePenalties from "../hooks/useAddPenalties";
 
 interface AddPenaltyProps {
   open: boolean;
@@ -16,7 +16,7 @@ const AddPenalty: React.FC<AddPenaltyProps> = ({ open, onClose, user }) => {
   const [amount, setAmount] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<boolean>(false);
   
-  const { mutate: addPenalty, isPending } = useMakePayment();
+  const { mutate: addPenalty, isPending } = useMakePenalties();
   
   const handleSavePenalty = () => {
     if (!penaltyType) return;

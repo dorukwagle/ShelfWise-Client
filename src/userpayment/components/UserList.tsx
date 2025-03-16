@@ -3,14 +3,19 @@ import { Table, TableBody, TableCell, TableHead, TableRow, Box, Typography, Text
 import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import GavelIcon from '@mui/icons-material/Gavel';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import PaymentIcon from '@mui/icons-material/Payment';
 import useUsers from "../hooks/useUsers";
 import PaginationParams from "../../entities/PaginationParams";
 import { user } from "../entities/UserManagement";
 import useUserRoles from "../hooks/useUserRoles";
 import useUpdateAccountStatus from "../hooks/useUpdateAccountStatus";
 import useUpdateUserRole from "../hooks/useUpdateUserRole";
-// Import the AddPenalty component
+import HistoryIcon from '@mui/icons-material/History';
 import AddPenalty from "./AddPenaltyDialog";
+import UserPenalties from "./UserPenalty";
+import MakePaymentDialog from "./AddPaymentDialog";
+import PaymentHistoryDialog from "./PaymentHistory";
 
 const UserList: React.FC = () => {
     const [userParams, setuserParams] = useState<PaginationParams>({ seed: '', page: 1, pageSize: 15 });
@@ -21,6 +26,9 @@ const UserList: React.FC = () => {
     const [newRole, setNewRole] = useState<string>("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPenaltyModalOpen, setIsPenaltyModalOpen] = useState(false);
+    const [isPenaltiesViewOpen, setIsPenaltiesViewOpen] = useState(false);
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+    const [isPaymentHistoryModalOpen, setIsPaymentHistoryModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<user | null>(null);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     
@@ -93,6 +101,18 @@ const UserList: React.FC = () => {
       handleMenuClose();
     };
 
+    // Handle opening the penalties view
+    const handleViewPenaltiesClick = () => {
+      setIsPenaltiesViewOpen(true);
+      handleMenuClose();
+    };
+
+    // Handle opening the payment dialog
+    const handleMakePaymentClick = () => {
+      setIsPaymentModalOpen(true);
+      handleMenuClose();
+    };
+
     const handleNewAccountStatusChange = (event: SelectChangeEvent<string>) => {
       setNewAccountStatus(event.target.value as string);
     };
@@ -127,6 +147,25 @@ const UserList: React.FC = () => {
     // Close penalty modal
     const handleClosePenaltyModal = () => {
       setIsPenaltyModalOpen(false);
+    };
+
+    // Close penalties view
+    const handleClosePenaltiesView = () => {
+      setIsPenaltiesViewOpen(false);
+    };
+
+    // Close payment modal
+    const handleClosePaymentModal = () => {
+      setIsPaymentModalOpen(false);
+    };
+
+    const handleViewPaymentHistoryClick = () => {
+      setIsPaymentHistoryModalOpen(true);
+      handleMenuClose();
+    };
+
+    const handleClosePaymentHistoryModal = () => {
+      setIsPaymentHistoryModalOpen(false);
     };
 
     return (
@@ -167,6 +206,7 @@ const UserList: React.FC = () => {
               <MenuItem value="Inactive">Inactive</MenuItem>
               <MenuItem value="Rejected">Rejected</MenuItem>
               <MenuItem value="Suspended">Suspended</MenuItem>
+              <MenuItem value="Expired">Expired</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -214,9 +254,7 @@ const UserList: React.FC = () => {
                   <TableCell>{user.role.role}</TableCell>
                   <TableCell>
                     {user.membership?.expiryDate
-                      ? new Date(
-                          user.membership.expiryDate
-                        ).toLocaleDateString()
+                      ? new Date(user.membership.expiryDate).toLocaleDateString()
                       : "N/A"}
                   </TableCell>
                   <TableCell>
@@ -246,6 +284,18 @@ const UserList: React.FC = () => {
           <MenuItem onClick={handleAddPenaltyClick}>
             <GavelIcon fontSize="small" sx={{ mr: 1 }} />
             Add Penalty
+          </MenuItem>
+          <MenuItem onClick={handleViewPenaltiesClick}>
+            <ListAltIcon fontSize="small" sx={{ mr: 1 }} />
+            View Penalties
+          </MenuItem>
+          <MenuItem onClick={handleMakePaymentClick}>
+            <PaymentIcon fontSize="small" sx={{ mr: 1 }} />
+            Make Payment
+          </MenuItem>
+          <MenuItem onClick={handleViewPaymentHistoryClick}>
+            <HistoryIcon fontSize="small" sx={{ mr: 1 }} />
+            Payment History
           </MenuItem>
         </Menu>
 
@@ -324,6 +374,33 @@ const UserList: React.FC = () => {
             onClose={handleClosePenaltyModal} 
             user={selectedUser} 
           />
+        )}
+
+        {/* View Penalties Modal */}
+        {selectedUser && (
+          <UserPenalties
+            open={isPenaltiesViewOpen}
+            onClose={handleClosePenaltiesView}
+            user={selectedUser}
+          />
+        )}
+
+        {/* Make Payment Modal */}
+        {selectedUser && (
+          <MakePaymentDialog
+            open={isPaymentModalOpen}
+            onClose={handleClosePaymentModal}
+            user={selectedUser}
+          />
+        )}
+
+        {/* Payment History Modal */}
+        {selectedUser && (
+          <PaymentHistoryDialog
+            open={isPaymentHistoryModalOpen}
+            onClose={handleClosePaymentHistoryModal}
+            user={selectedUser}
+        />
         )}
       </Box>
     );

@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import PaginationParams from "../../entities/PaginationParams";
-import { PENALTIES_CACHE_KEY, DAY } from "../../entities/constants";
-import { getPenalties } from "../services/paymentService";
+import { DAY, PAYMENT_CACHE_KEY } from "../../entities/constants";
+import { getPaymentHistories} from "../services/paymentService";
 
-interface PenaltyParams extends PaginationParams {
+interface PaymentParams extends PaginationParams {
   userId?: string;
-  status?: "Pending" | "Resolved";
+  status?: "Pending" | "Completed";
 }
 
-const usePenalties = (params: PenaltyParams) => {
+const usePaymentHistory = (params: PaymentParams) => {
   const { userId, status, seed = '', page = 1, pageSize = 10 } = params;
   
   // Create the params object for the API call
@@ -21,12 +21,12 @@ const usePenalties = (params: PenaltyParams) => {
   
   return useQuery({
     // Include userId directly in the queryKey to ensure different cache entries per user
-    queryKey: [...PENALTIES_CACHE_KEY, userId, status, page, pageSize],
-    queryFn: () => getPenalties.get(`${userId}`, queryParams),
+    queryKey: [...PAYMENT_CACHE_KEY, userId, status, page, pageSize],
+    queryFn: () => getPaymentHistories.get(`${userId}`, queryParams),
     staleTime: DAY,
     // Only enable the query when we have a valid userId
     enabled: !!userId && userId !== "",
   });
 };
 
-export default usePenalties;
+export default usePaymentHistory;

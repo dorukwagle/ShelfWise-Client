@@ -24,7 +24,7 @@ export interface AddPenalty {
 }
 
 export interface MakePayment{
-    userId: string;
+    userId?: string;
     amountPaid: number;
     paymentType: EPaymentTypes;
 }
@@ -40,7 +40,44 @@ export interface Penalty {
     deletedAt: string | null;
     userId: string;
     user: User;
-  }
+}
+
+export interface PenaltiesResponse {
+    data: Penalty[];
+    info: {
+      total: number;
+      lastPage: number;
+      prev: number | null;
+      next: number | null;
+    }
+}
+
+export interface Payment {
+    paymentId: string;
+    amountPaid: number;
+    paymentType: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+    userId: string;
+    user: User;
+}
+
+export interface PaymentResponse {
+    data: Payment[];
+    info: {
+      total: number;
+      lastPage: number;
+      prev: number | null;
+      next: number | null;
+    }
+}
+
+
+
+
+  
+
 
 
 

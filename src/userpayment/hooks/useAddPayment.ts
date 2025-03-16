@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { postPenalties } from "../services/paymentService";
-import { PAYMENT_CACHE_KEY, NOTIFICATION_COUNT_CACHE_KEY, NOTIFICATION_CACHE_KEY, PENALTIES_CACHE_KEY } from "../../entities/constants";
+import { makePayment} from "../services/paymentService";
+import { PAYMENT_CACHE_KEY, NOTIFICATION_COUNT_CACHE_KEY, NOTIFICATION_CACHE_KEY, USERS_CACHE_KEY } from "../../entities/constants";
 import { ErrorRes } from "../../entities/ErrorRes";
-import { AddPenalty } from "../entities/payments";
+import { MakePayment } from "../entities/payments";
 
-const useMakePenalties = () => {
+const useMakePayment = () => {
   const queryClient = useQueryClient();
   
-  return useMutation<any, AxiosError<ErrorRes>, { userId: string; body: AddPenalty }>({
-    mutationFn: ({ userId, body }) => postPenalties.setSubroute(`${userId}`).post(body),
+  return useMutation<any, AxiosError<ErrorRes>, { userId: string; body: MakePayment }>({
+    mutationFn: ({ userId, body }) => makePayment.setSubroute(`${userId}`).post(body),
     onSuccess: () => {
       // Invalidate payment cache
       queryClient.invalidateQueries({ queryKey: PAYMENT_CACHE_KEY });
@@ -20,10 +20,11 @@ const useMakePenalties = () => {
       //Invalidae notification cache
       queryClient.invalidateQueries({ queryKey: NOTIFICATION_CACHE_KEY });
 
-      //Invalidate 
-      queryClient.invalidateQueries({queryKey: PENALTIES_CACHE_KEY})
+      //Invalidae user cache
+      queryClient.invalidateQueries({ queryKey: USERS_CACHE_KEY });
+
     },
   });
 };
     
-export default useMakePenalties;
+export default useMakePayment;
