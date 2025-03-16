@@ -17,6 +17,7 @@ import EnrollmentApprovePage from "./enrollment";
 import NotificationPage from "./notification/pages/notificationPage";
 import { BookInfoPage } from "./book/pages/BookInfoPage";
 import UserPaymentPage from "./userpayment/pages/UserPaymentPage";
+import ReservationPage from "./reservation/pages/ReservationPage";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
       { path: "/add-books", element: <MultiPageForm /> },
       { path: "/enroll-user", element: <EnrollmentRequestForm /> },
       {path: "/notifications", element: <NotificationPage/>},
+      {path: "/reservations", element: <ReservationPage/>},
       {
         element: <PrivateRoutes />,
         children: [{ path: "dashboard", element: <DashboardBranch /> },

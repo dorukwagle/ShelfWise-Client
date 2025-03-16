@@ -90,6 +90,7 @@ export interface BookWithGenres {
 export interface Books {
   bookId: string;
   status: string;
+  barcode: string;
 }
 
 export interface BookPurchases {

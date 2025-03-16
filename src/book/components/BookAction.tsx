@@ -10,16 +10,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
   Alert,
   CircularProgress
 } from '@mui/material';
 import { BookInfo } from '../entities/BookType';
-import { requestBook, reserveBook } from '../services/bookInfoService';
+import { requestBook } from '../services/bookInfoService';
+import useReserveBook from '../../reservation/hooks/reserveBook';
 
 interface BookActionsProps {
   bookInfo: BookInfo;
@@ -27,51 +23,55 @@ interface BookActionsProps {
 }
 
 export const BookActions: React.FC<BookActionsProps> = ({ bookInfo, userId }) => {
-  const [selectedBookId, setSelectedBookId] = useState<string>('');
-  const [openReserveDialog, setOpenReserveDialog] = useState(false);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [openRequestDialog, setOpenRequestDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const availableBooks = bookInfo.books.filter(book => book.status === "Available");
-  const hasAvailableBooks = availableBooks.length > 0;
+  const {
+    isPending: isSubmittingReserve,
+    isSuccess: successReserve,
+    isError: errorReserve,
+    mutate: handleReserveSubmit,
+    reset: resetReserve,
+  } = useReserveBook(() => {
+    // Success callback
+    setSuccess('Book reserved successfully!');
+    console.log("Reservation successful!");
+  });
 
-  const handleBookSelect = (event: SelectChangeEvent) => {
-    setSelectedBookId(event.target.value);
-  };
+  const hasAvailableBooks = bookInfo.books.some(book => book.status === "Available");
 
   const handleReserveClick = () => {
-    setOpenReserveDialog(true);
+    setOpenConfirmDialog(true);
   };
 
   const handleRequestClick = () => {
     setOpenRequestDialog(true);
   };
 
-  const handleCloseReserveDialog = () => {
-    setOpenReserveDialog(false);
+  const handleCloseConfirmDialog = () => {
+    setOpenConfirmDialog(false);
   };
 
   const handleCloseRequestDialog = () => {
     setOpenRequestDialog(false);
   };
 
-  const handleReserveSubmit = async () => {
-    if (!selectedBookId) return;
-    
-    try {
-      setIsSubmitting(true);
-      setError(null);
-      await reserveBook(selectedBookId, userId);
-      setSuccess('Book reserved successfully!');
-      handleCloseReserveDialog();
-    } catch (err) {
-      setError('Failed to reserve book. Please try again.');
-      console.error(err);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleReserveConfirm = () => {
+    console.log('Book Info ID to reserve:', bookInfo.bookInfoId);
+    setError(null);
+
+    handleReserveSubmit(bookInfo.bookInfoId, {
+      onError: (err) => {
+        setError('Failed to reserve book. Please try again.');
+        console.error(err);
+      },
+      onSuccess: () => {
+        handleCloseConfirmDialog();
+      }
+    });
   };
 
   const handleRequestSubmit = async () => {
@@ -89,6 +89,11 @@ export const BookActions: React.FC<BookActionsProps> = ({ bookInfo, userId }) =>
     }
   };
 
+  const handleCloseAlert = () => {
+    setSuccess(null);
+    resetReserve();
+  };
+
   return (
     <>
       <Card>
@@ -97,15 +102,15 @@ export const BookActions: React.FC<BookActionsProps> = ({ bookInfo, userId }) =>
             Book Actions
           </Typography>
           
-          {success && (
-            <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccess(null)}>
-              {success}
+          {(successReserve || success) && (
+            <Alert severity="success" sx={{ mb: 2 }} onClose={handleCloseAlert}>
+              {success || 'Book reserved successfully!'}
             </Alert>
           )}
           
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
-              {error}
+          {(errorReserve || error) && (
+            <Alert severity="error" sx={{ mb: 2 }} onClose={() => { setError(null); resetReserve(); }}>
+              {error || 'An error occurred during the operation.'}
             </Alert>
           )}
           
@@ -131,37 +136,22 @@ export const BookActions: React.FC<BookActionsProps> = ({ bookInfo, userId }) =>
         </CardContent>
       </Card>
 
-      {/* Reserve Dialog */}
-      <Dialog open={openReserveDialog} onClose={handleCloseReserveDialog}>
-        <DialogTitle>Reserve Book</DialogTitle>
+      {/* Confirmation Dialog */}
+      <Dialog open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
+        <DialogTitle>Confirm Reservation</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Please select one of the available copies to reserve:
+            Are you sure you want to reserve "{bookInfo.title}"? The system will automatically assign an available copy to you.
           </DialogContentText>
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="book-select-label">Available Copy</InputLabel>
-            <Select
-              labelId="book-select-label"
-              value={selectedBookId}
-              label="Available Copy"
-              onChange={handleBookSelect}
-            >
-              {availableBooks.map((book) => (
-                <MenuItem key={book.bookId} value={book.bookId}>
-                  Barcode: {book.status}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseReserveDialog}>Cancel</Button>
+          <Button onClick={handleCloseConfirmDialog}>Cancel</Button>
           <Button 
-            onClick={handleReserveSubmit} 
+            onClick={handleReserveConfirm} 
             color="primary" 
-            disabled={!selectedBookId || isSubmitting}
+            disabled={isSubmittingReserve}
           >
-            {isSubmitting ? <CircularProgress size={24} /> : 'Reserve'}
+            {isSubmittingReserve ? <CircularProgress size={24} /> : 'Confirm Reservation'}
           </Button>
         </DialogActions>
       </Dialog>
