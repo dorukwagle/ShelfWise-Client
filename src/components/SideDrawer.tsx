@@ -8,7 +8,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Backdrop from "@mui/material/Backdrop";
-import { BookOnline, Home, Info, Category, School, Payment } from "@mui/icons-material";
+import { BookOnline, Home, Info, Category, School, Payment, Book, BookOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { ColorModeContext } from "../ThemedApp";
@@ -24,7 +24,7 @@ interface Props {
 
 const SideDrawer = ({ isOpen = false, onNavigate, onClose }: Props) => {
   const navigate = useNavigate();
-  const { mode } = useContext(ColorModeContext); 
+  const { mode } = useContext(ColorModeContext);
   const { data: user } = useMe();
 
   const publicPages = [
@@ -39,6 +39,8 @@ const SideDrawer = ({ isOpen = false, onNavigate, onClose }: Props) => {
     { text: "Attributes", link: "/attributes", icon: <Category /> },
     { text: "Users", link: "/enrollments", icon: <School /> },
     { text: "Request List", link: "/enrollments-request", icon: <School /> },
+    { text: "Issued List", link: "/issuance", icon: <BookOutlined /> },
+    { text: "Book Issue", link: "/Reservation", icon: <Book /> },
     { text: "About", link: "", icon: <Info /> },
     { text: "User and Payment management", link: "/user-payment", icon: <Payment /> },
   ];

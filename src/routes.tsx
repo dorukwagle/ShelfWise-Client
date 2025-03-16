@@ -17,6 +17,8 @@ import EnrollmentApprovePage from "./enrollment";
 import NotificationPage from "./notification/pages/notificationPage";
 import { BookInfoPage } from "./book/pages/BookInfoPage";
 import UserPaymentPage from "./userpayment/pages/UserPaymentPage";
+import IssuancePage from "./bookflow/issuance/pages/IssuancePage";
+import ReservationPage from "./bookflow/reservation/Pages/ReservationPage";
 
 const router = createBrowserRouter([
   {
@@ -33,15 +35,17 @@ const router = createBrowserRouter([
       { path: "/book/:bookInfoId", element: <BookInfoPage /> },
       { path: "/add-books", element: <MultiPageForm /> },
       { path: "/enroll-user", element: <EnrollmentRequestForm /> },
-      {path: "/notifications", element: <NotificationPage/>},
+      { path: "/notifications", element: <NotificationPage /> },
       {
         element: <PrivateRoutes />,
         children: [{ path: "dashboard", element: <DashboardBranch /> },
         { path: "attributes", element: <AttributesPage /> },
         { path: "/enrollments", element: <EnrollmentList /> },
         { path: "/enrollments-request", element: <EnrollmentApprovePage /> },
-        { path: "/user-payment", element: <UserPaymentPage /> }
-        
+        { path: "/user-payment", element: <UserPaymentPage /> },
+        { path: "/issuance", element: <IssuancePage /> },
+        { path: "/reservation", element: <ReservationPage /> }
+
         ],
       },
     ],

@@ -7,7 +7,7 @@ const GENRES_CACHE_KEY = ["genres"];
 const PUBLISHERS_CACHE_KEY = ["publishers"];
 const DETAILED_USER_ROLES_KEY = ["roles_detailed"];
 const NET_ERR_KEY = ["net_err"];
-const BOOKS_CACHE_KEY = ["books"]; 
+const BOOKS_CACHE_KEY = ["books"];
 const ENROLL_CACHE_KEY = ["enrollments"]
 const ISBNS_CACHE_KEY = ["isbns"]
 const DETAILED_MEMBER_TYPE_KEY = ["memberTypes_detailed"]
@@ -15,8 +15,10 @@ const GLOBAL_ATTRIBUTES_CACHE_KEY = ["global_attributes"];
 const DEFAULT_PAGE_SIZE = 15;
 const NOTIFICATION_CACHE_KEY = ["notifications"];
 const NOTIFICATION_COUNT_CACHE_KEY = ["notification_count"];
-const USERS_CACHE_KEY = ["users"] ;
+const USERS_CACHE_KEY = ["users"];
 const USER_ROLES_CACHE_KEY = ["user_roles"];
+const ISSUANCE_CACHE_KEY = ["issuance"];
+const RESERVATION_CACHE_KEY = ["reservation"];
 
 
 enum EUserRoles {
@@ -50,5 +52,7 @@ export {
   NOTIFICATION_COUNT_CACHE_KEY,
   GLOBAL_ATTRIBUTES_CACHE_KEY, DEFAULT_PAGE_SIZE,
   USERS_CACHE_KEY,
-  USER_ROLES_CACHE_KEY
+  USER_ROLES_CACHE_KEY,
+  ISSUANCE_CACHE_KEY,
+  RESERVATION_CACHE_KEY
 };
