@@ -17,6 +17,9 @@ const NOTIFICATION_CACHE_KEY = ["notifications"];
 const NOTIFICATION_COUNT_CACHE_KEY = ["notification_count"];
 const USERS_CACHE_KEY = ["users"] ;
 const USER_ROLES_CACHE_KEY = ["user_roles"];
+const PAYMENT_CACHE_KEY = ["payments"];
+const PENALTIES_CACHE_KEY = ["penalties"];
+
 
 
 enum EUserRoles {
@@ -50,5 +53,7 @@ export {
   NOTIFICATION_COUNT_CACHE_KEY,
   GLOBAL_ATTRIBUTES_CACHE_KEY, DEFAULT_PAGE_SIZE,
   USERS_CACHE_KEY,
-  USER_ROLES_CACHE_KEY
+  USER_ROLES_CACHE_KEY,
+  PAYMENT_CACHE_KEY,
+  PENALTIES_CACHE_KEY
 };
