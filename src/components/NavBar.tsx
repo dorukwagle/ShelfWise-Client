@@ -9,7 +9,7 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Badge } from "@mui/material";
+import { Badge, Button } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useState, MouseEvent, useContext } from "react";
 import Logo from "../assets/shelfwise-logo-fancy.png";
@@ -82,7 +82,7 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <IconButton
+          {user?.userId && <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -91,7 +91,7 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
             onClick={onMenuBtnClick}
           >
             <MenuIcon sx={{ color: "text.primary" }} />
-          </IconButton>
+          </IconButton>}
           <IconButton size="large" sx={{ p: 0 }}>
             <Avatar src={Logo} />
           </IconButton>
@@ -113,6 +113,9 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
             ShelfWise
           </Typography>
           <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
+          {!(user?.userId) && <Button size="small" variant="contained" onClick={() => navigate("/sign-in")}>
+           Sign In
+          </Button>}
             <ThemeToggleButton />
             {user?.userId && (
               <>
@@ -132,6 +135,7 @@ const NavBar = ({ onMenuBtnClick }: Props) => {
                 </Tooltip>
               </>
             )}
+            
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"

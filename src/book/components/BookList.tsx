@@ -17,6 +17,10 @@ import { BookFilters } from './BookFIlters';
 import { RES_URL } from '../../entities/constants';
 import { useNavigate } from 'react-router-dom';
 
+interface BookListProps {
+  onBookClick?: (id: string) => void;
+}
+
 const LoadingSkeleton = () => (
   <Box display="flex" flexWrap="wrap" gap={3}>
     {[...Array(6)].map((_, index) => (
@@ -37,7 +41,7 @@ const LoadingSkeleton = () => (
   </Box>
 );
 
-const BookList: React.FC = () => {
+const BookList = ({onBookClick}: BookListProps) => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState<FilterState>({
     pageSize: 10,
@@ -87,7 +91,7 @@ console.log(books);
   }
 
   const handleBookClick = (bookInfoId: string) => {
-    navigate(`/book/${bookInfoId}`);
+    onBookClick && onBookClick(bookInfoId);
   };
 
   return (

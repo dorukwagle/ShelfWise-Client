@@ -4,6 +4,8 @@ import {
   Button,
   Card,
   CardContent,
+  IconButton,
+  InputAdornment,
   Stack,
   TextField,
   Typography,
@@ -13,13 +15,15 @@ import { useForm } from "react-hook-form";
 import useLogin from "../../auth/hooks/useLogin";
 import FlipCard from "../../components/FlipCard";
 import { ColorModeContext } from "../../ThemedApp";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
 
 const SignInPage = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [flipDirection, setFlipDirection] = useState<'left' | 'right'>('right');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { mutate: login, isError, error } = useLogin(() => {
-    navigate("/dashboard");
+    navigate("/");
   });
 
   const { register, handleSubmit } = useForm();
@@ -29,11 +33,11 @@ const SignInPage = () => {
     login(data);
   };
 
-  const handleRegisterClick = () => {
+  const handleEnrollRequestClick = () => {
     setFlipDirection('right');
     setIsFlipped(true);
     setTimeout(() => {
-      navigate("/registration");
+      navigate("/enroll-user");
     }, 400);
   };
 
@@ -88,9 +92,22 @@ const SignInPage = () => {
                 <TextField
                   {...register('password', { required: true })}
                   label="Password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   variant="outlined"
                   fullWidth
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 {isError && (
                   <Typography variant="body2" color="error" textAlign="center" mb={2}>
@@ -108,12 +125,12 @@ const SignInPage = () => {
               </Box>
               <Stack direction="column" spacing={1} mt={2} alignItems="center">
                 <Typography variant="body2">
-                  Don't have an account?{' '}
+                  Not a member? Click to Enroll{' '}
                   <Button
                     variant="text"
-                    onClick={handleRegisterClick}
+                    onClick={handleEnrollRequestClick}
                   >
-                    Register
+                    Enroll now
                   </Button>
                 </Typography>
                 <Link to="/" style={{ textDecoration: 'none', color: 'primary.main' }}>
