@@ -28,16 +28,15 @@ const SideDrawer = ({ isOpen = false, onNavigate, onClose }: Props) => {
   const { data: user } = useMe();
 
   const publicPages = [
-    { text: "Home", link: "/dashboard", icon: <Home /> },
-    { text: "Online Books", link: "/online-books", icon: <BookOnline /> },
-    { text: "About", link: "/about", icon: <Info /> },
+    { text: "Home", link: "/", icon: <Home /> },
+    // { text: "Online Books", link: "/online-books", icon: <BookOnline /> },
+    // { text: "About", link: "/about", icon: <Info /> },
   ];
 
   const privatePages = [
-    { text: "Home", link: "/dashboard", icon: <Home /> },
+    { text: "Home", link: "/", icon: <Home /> },
     { text: "Books", link: "/online-books", icon: <BookOnline /> },
     { text: "Attributes", link: "/attributes", icon: <Category /> },
-    { text: "Users", link: "/enrollments", icon: <School /> },
     { text: "Request List", link: "/enrollments-request", icon: <School /> },
     { text: "Issued List", link: "/issuance", icon: <BookOutlined /> },
     { text: "Book Issue", link: "/Reservation", icon: <Book /> },

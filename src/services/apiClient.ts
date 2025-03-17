@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "../entities/constants";
+import { AddPenalty } from "../userpayment/entities/payments";
 
 const client = axios.create({
     baseURL: BASE_URL,

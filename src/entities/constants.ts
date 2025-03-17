@@ -19,7 +19,9 @@ const USERS_CACHE_KEY = ["users"];
 const USER_ROLES_CACHE_KEY = ["user_roles"];
 const ISSUANCE_CACHE_KEY = ["issuance"];
 const RESERVATION_CACHE_KEY = ["reservation"];
-
+const PAYMENT_CACHE_KEY = ["payments"];
+const PENALTIES_CACHE_KEY = ["penalties"];
+const RESOLVE_CACHE_KEY = ["resolves"];
 
 enum EUserRoles {
   Manager = "Manager",
@@ -54,5 +56,8 @@ export {
   USERS_CACHE_KEY,
   USER_ROLES_CACHE_KEY,
   ISSUANCE_CACHE_KEY,
-  RESERVATION_CACHE_KEY
+  RESERVATION_CACHE_KEY,
+  PAYMENT_CACHE_KEY,
+  PENALTIES_CACHE_KEY,
+  RESOLVE_CACHE_KEY
 };

@@ -90,15 +90,15 @@ const EnrollmentTable: React.FC = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {filteredEnrollments.map((enrollment) => (
+                            {filteredEnrollments.map((enrollment: any) => (
                                 <React.Fragment key={enrollment.rollNumber}>
                                     <TableRow>
-                                        <TableCell>{enrollment.rollNumber}</TableCell>
-                                        <TableCell>{enrollment.fullName}</TableCell>
-                                        <TableCell>{enrollment.dob}</TableCell>
-                                        <TableCell>{enrollment.email}</TableCell>
-                                        <TableCell>{enrollment.contactNo}</TableCell>
-                                        <TableCell>{enrollment.enrollmentYear}</TableCell>
+                                        <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>{enrollment.rollNumber}</TableCell>
+                                        <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>{enrollment.fullName}</TableCell>
+                                        <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>{enrollment.dob}</TableCell>
+                                        <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>{enrollment.email}</TableCell>
+                                        <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>{enrollment.contactNo}</TableCell>
+                                        <TableCell sx={{ backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 'bold' }}>{enrollment.enrollmentYear}</TableCell>
                                         <TableCell>
                                             <FormControl fullWidth>
                                                 <Select
