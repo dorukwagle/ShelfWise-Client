@@ -18,21 +18,21 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { Reservation } from '../entities/reservations';
+import { BookReservation } from '../entities/BookReservation';
 
 interface ReservationsTableProps {
   isLoading: boolean;
-  reservations: Reservation[];
+  reservations: BookReservation[];
   page: number;
   pageSize: number;
   totalItems: number;
   totalPages: number;
   showActionColumns: boolean;
   showAssignableColumn: boolean;
-  handleOpenBookDetails: (reservation: Reservation) => void;
+  handleOpenBookDetails: (reservation: BookReservation) => void;
   handleOpenConfirmDialog: (reservationId: string) => void;
   handleOpenCancelDialog: (reservationId: string) => void;
-  handleOpenAssignableDialog: (reservationId: string) => void;
+  handleOpenAssignableDialog: (reservation: BookReservation) => void;
   handlePageChange: (event: React.ChangeEvent<unknown>, newPage: number) => void;
 }
 
@@ -87,7 +87,8 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
                 <TableRow key={reservation.reservationId}>
                   <TableCell>{reservation.reservationId}</TableCell>
                   <TableCell>{reservation.user.fullName}</TableCell>
-                  <TableCell>{new Date(reservation.reservationDate).toLocaleString()}</TableCell>
+                  <TableCell>{reservation.user.fullName}</TableCell>
+                  {/* <TableCell>{new Date(reservation.reservationDate).toLocaleString()}</TableCell> */}
                   <TableCell>
                     <Chip 
                       label={reservation.status} 
@@ -115,10 +116,10 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
                   {showAssignableColumn && (
                     <TableCell>
                       {/* Only show Assignable Books button for Pending status */}
-                      {reservation.status === 'Pending' && (
+                      {reservation.status === 'Confirmed' && (
                         <IconButton
                           color="info"
-                          onClick={() => handleOpenAssignableDialog(reservation.reservationId)}
+                          onClick={() => handleOpenAssignableDialog(reservation)}
                           title="View Assignable Books"
                         >
                           <AssignmentIcon />

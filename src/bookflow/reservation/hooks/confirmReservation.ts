@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { ErrorRes } from "../../entities/ErrorRes";
-
-import { RESERVATION_CACHE_KEY } from "../../entities/constants";
-import { BookInfo } from "../../book/entities/BookType";
+import { BookInfo } from "../../../book/entities/BookType";
+import { ErrorRes } from "../../../entities/ErrorRes";
 import reservationService from "../services/reservations";
+import { RESERVATION_CACHE_KEY } from "../../../entities/constants";
 
 const useConfirmReservation = (bookReservationId: string) => {
     const queryClient = useQueryClient();

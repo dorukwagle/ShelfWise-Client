@@ -3,7 +3,7 @@ import PaginationParams from "../../../entities/PaginationParams";
 import PaginationResponse from "../../../entities/PaginationResponse";
 import { DAY, RESERVATION_CACHE_KEY } from "../../../entities/constants";
 import { BookReservation, EReservationStatus } from "../entities/BookReservation";
-import reservationService from "../services/reservationServices";
+import reservationService from "../services/reservations";
 
 export interface ReservationFilterParams {
     status?: EReservationStatus;

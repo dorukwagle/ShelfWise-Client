@@ -11,13 +11,13 @@ import {
   Alert 
 } from '@mui/material';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import useAssignReservation from '../hooks/assginReservation';
-import { Reservation } from '../entities/reservations';
 import { AxiosError } from 'axios';
+import { BookReservation } from '../entities/BookReservation';
+import useAssignReservation from '../hooks/assginReservation';
 
 interface AssignBookDialogProps {
   open: boolean;
-  selectedBook: Reservation | null;
+  selectedBook: BookReservation | null;
   onClose: () => void;
   onSuccess: () => void;
 }
@@ -35,7 +35,7 @@ const AssignBookDialog: React.FC<AssignBookDialogProps> = ({
   const handleAssignBook = () => {
     if (selectedBook) {
       // Create assignment data with required fields
-      const assignmentData: Reservation = {
+      const assignmentData: BookReservation = {
         ...selectedBook,
         reservationId: selectedBook.reservationId,
         bookId: selectedBook.bookId,

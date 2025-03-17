@@ -8,16 +8,16 @@ import {
   ToggleButtonGroup, 
   CircularProgress 
 } from '@mui/material';
-import fetchReservation from '../hooks/getReservations';
-import useMe from '../../hooks/useMe';
+import useMe from '../../../hooks/useMe';
 import { AxiosError } from 'axios';
+import { BookReservation } from '../entities/BookReservation';
 import ReservationsTable from '../components/ReservationTable';
 import BookDetailsDialog from '../components/BookDetailsDialog';
 import ConfirmDialog from '../components/ConfirmDialog';
 import CancelDialog from '../components/CancelDialog';
 import AssignBookDialog from '../components/AssignBookDialog';
 import AssignableBooksDialog from '../components/AssignableBookDialog';
-import { Reservation } from '../entities/reservations';
+import fetchReservation from '../hooks/getReservations';
 
 const ReservationPage = () => {
   // State for pagination and filtering
@@ -41,7 +41,7 @@ const ReservationPage = () => {
   
   // State for book details dialog
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedBook, setSelectedBook] = useState<Reservation | null>(null);
+  const [selectedBook, setSelectedBook] = useState<BookReservation | null>(null);
   
   // State for confirmation dialog
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -59,7 +59,7 @@ const ReservationPage = () => {
   const [selectedReservationId, setSelectedReservationId] = useState<string | null>(null);
   
   // Handle opening the book details dialog
-  const handleOpenBookDetails = (reservation: Reservation) => {
+  const handleOpenBookDetails = (reservation: BookReservation) => {
     setSelectedBook(reservation);
     setOpenDialog(true);
   };
@@ -105,8 +105,9 @@ const ReservationPage = () => {
   };
   
   // Handle opening the assignable books dialog
-  const handleOpenAssignableDialog = (reservationId: string) => {
-    setSelectedReservationId(reservationId);
+  const handleOpenAssignableDialog = (reservation: BookReservation) => {
+    console.log('Opening Assignable Books Dialog with reservationId:', reservation.reservationId);
+    setSelectedBook(reservation);
     setAssignableDialogOpen(true);
   };
   
@@ -117,7 +118,7 @@ const ReservationPage = () => {
   };
 
   const handleFilterChange = (
-    event: React.MouseEvent<HTMLElement>,
+    _event: React.MouseEvent<HTMLElement>,
     newFilter: string | null
   ) => {
     if (newFilter !== null) {
@@ -126,12 +127,12 @@ const ReservationPage = () => {
     }
   };
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
   };
 
   // Calculate total pages from server response
-  const totalItems = data?.info.total || 0;
+  const totalItems = data?.info.itemsCount || 0;
   const totalPages = Math.ceil(totalItems / pageSize);
   
   // Get reservations from response
@@ -141,7 +142,7 @@ const ReservationPage = () => {
   const showActionColumns = isStaff && (filter === 'Pending' || filter === 'Confirmed');
   
   // Determine visibility of assignable books column
-  const showAssignableColumn = isStaff && (filter === 'Pending');
+  const showAssignableColumn = isStaff && (filter === 'Confirmed');
 
   // Handle user loading error
   if (userError) {
@@ -248,13 +249,8 @@ const ReservationPage = () => {
           
           <AssignableBooksDialog 
             open={assignableDialogOpen}
-            reservationId={selectedReservationId}
+            selectedBook={selectedBook}
             onClose={handleCloseAssignableDialog}
-            onSelectBook={(book) => {
-              setSelectedBook(book);
-              setAssignableDialogOpen(false);
-              setAssignDialogOpen(true);
-            }}
           />
         </>
       )}

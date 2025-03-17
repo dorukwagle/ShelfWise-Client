@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { ErrorRes } from "../../entities/ErrorRes";
-import { RESERVATION_CACHE_KEY } from "../../entities/constants";
+import { ErrorRes } from "../../../entities/ErrorRes";
 import { reserveBook } from "../services/reservations";
+import { RESERVATION_CACHE_KEY } from "../../../entities/constants";
 
 const useReserveBook = (onSuccess?: () => void) => {
     const queryClient = useQueryClient();

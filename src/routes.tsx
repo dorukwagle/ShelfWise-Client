@@ -15,7 +15,7 @@ import NotificationPage from "./notification/pages/notificationPage";
 import { BookInfoPage } from "./book/pages/BookInfoPage";
 import UserPaymentPage from "./userpayment/pages/UserPaymentPage";
 import IssuancePage from "./bookflow/issuance/pages/IssuancePage";
-import ReservationPage from "./reservation/pages/ReservationPage";
+import ReservationPage from "./bookflow/reservation/Pages/ReservationPage";
 import ReservationIssuePage from "./bookflow/reservation/Pages/ReservationIssuePage";
 
 const router = createBrowserRouter([

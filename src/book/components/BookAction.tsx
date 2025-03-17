@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { BookInfo } from '../entities/BookType';
 import { requestBook } from '../services/bookInfoService';
-import useReserveBook from '../../reservation/hooks/reserveBook';
+import useReserveBook from '../../bookflow/reservation/hooks/reserveBook';
 
 interface BookActionsProps {
   bookInfo: BookInfo;

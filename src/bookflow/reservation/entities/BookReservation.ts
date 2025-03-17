@@ -1,5 +1,4 @@
-import Book from "../../../book/entities/Book";
-import { BookInfo } from "../../../book/entities/BookType";
+import { BookInfo, Books } from "../../../book/entities/BookType";
 import User from "../../../entities/User";
 
 export enum EReservationStatus {
@@ -13,11 +12,11 @@ export enum EReservationStatus {
 export interface BookReservation {
     reservationId: string;
     userId: string;
-    reservationDate?: Date | null;
+    reservationDate?: string;
     status: EReservationStatus;
     bookId?: string | null;
     bookInfoId: string;
-    book?: Book;
+    book?: Books;
     user: User;
     bookInfo: BookInfo;
     createdAt: Date;

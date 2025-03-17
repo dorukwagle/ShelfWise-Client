@@ -6,10 +6,11 @@ interface IssueBookDialogProps {
     open: boolean;
     onClose: () => void;
     reservation: any; // Replace `any` with the actual type of your reservation object
+    barcode: string;
 }
 
-const IssueBookDialog: React.FC<IssueBookDialogProps> = ({ open, onClose, reservation }) => {
-    const [barcode, setBarcode] = useState("");
+const IssueBookDialog: React.FC<IssueBookDialogProps> = ({ open, onClose, reservation, barcode }) => {
+    // const [barcode, setBarcode] = useState("");
     const [error, setError] = useState<string | null>(null);
 
     const { mutate, isPending } = useIssueReservation(() => {
@@ -38,7 +39,7 @@ const IssueBookDialog: React.FC<IssueBookDialogProps> = ({ open, onClose, reserv
                 <TextField
                     label="Barcode"
                     value={barcode}
-                    onChange={(e) => setBarcode(e.target.value)}
+                    // onChange={(e) => setBarcode(e.target.value)}
                     fullWidth
                     margin="normal"
                 />

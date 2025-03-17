@@ -1,7 +1,7 @@
-import APIClient from "../../../services/apiClient";
-import { BookReservation } from "../entities/BookReservation";
+// import APIClient from "../../../services/apiClient";
+// import { BookReservation } from "../entities/BookReservation";
 
-const reservationService = new APIClient<any, BookReservation>("bookflow/reservations");
+// const reservationService = new APIClient<any, BookReservation>("bookflow/reservations");
 
-export default reservationService;
+// export default reservationService;
 

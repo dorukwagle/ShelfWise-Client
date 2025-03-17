@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { DAY, RESERVATION_CACHE_KEY } from "../../entities/constants";
+import PaginationParams from "../../../entities/PaginationParams";
+import PaginationResponse from "../../../entities/PaginationResponse";
+import { BookReservation } from "../entities/BookReservation";
+import { DAY, RESERVATION_CACHE_KEY } from "../../../entities/constants";
 import reservationService from "../services/reservations";
-import { ReservationsResponse } from "../entities/reservations";
-import PaginationParams from "../../entities/PaginationParams";
-import PaginationResponse from "../../entities/PaginationResponse";
 
 interface Params extends PaginationParams {
   status?: "Pending" | "Confirmed" | "Cancelled" | "Resolved";
@@ -21,7 +21,7 @@ const fetchReservation = (params: Params) => {
     ...(status && { status }) // Only add status if it's defined
   };
 
-  return useQuery<ReservationsResponse, AxiosError>({
+  return useQuery<PaginationResponse<BookReservation>, AxiosError>({
     queryKey: [...RESERVATION_CACHE_KEY, queryParams],
     queryFn: () => reservationService.get('', queryParams),
     staleTime: DAY,

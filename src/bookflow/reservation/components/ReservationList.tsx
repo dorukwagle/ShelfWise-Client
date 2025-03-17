@@ -95,6 +95,7 @@ const ReservationList: React.FC = () => {
                     open={openDialog}
                     onClose={() => setOpenDialog(false)}
                     reservation={selectedReservation}
+                    barcode="d"
                 />
             )}
         </div>
