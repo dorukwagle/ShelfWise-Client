@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Stack, Grid, Button } from "@mui/material";
 import useReservation from "../hooks/useReservation";
 import StatusFilter from "./StatusFilter";
-import IssueBookDialog from "./IssueBookDialog";
+import IssueBookDialog from "../../issuance/components/IssueBookDialog";
 import { BookReservation, EReservationStatus } from "../entities/BookReservation";
 import SearchBar from "../../issuance/components/SearchBar";
 

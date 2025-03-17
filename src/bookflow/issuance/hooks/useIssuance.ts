@@ -3,7 +3,7 @@ import PaginationParams from "../../../entities/PaginationParams";
 import PaginationResponse from "../../../entities/PaginationResponse";
 import { DAY, ISSUANCE_CACHE_KEY } from "../../../entities/constants";
 import issuanceService from "../services/issuanceService";
-import { Issue } from "../entities/issues";
+import { Issue } from "../entities/Issues";
 
 interface Params {
     seed?: string;

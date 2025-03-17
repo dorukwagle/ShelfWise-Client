@@ -1,5 +1,5 @@
 import User from "../../../entities/User";
-import { Issue } from "./issues";
+import { Issue } from "./Issues";
 
 export enum ERenewalStatus {
     Pending = "Pending",

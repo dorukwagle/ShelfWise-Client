@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import issuanceService from "../../issuance/services/issuanceService";
+import issuanceService from "../services/issuanceService";
 import { RESERVATION_CACHE_KEY } from "../../../entities/constants";
 import { ErrorRes } from "../../../entities/ErrorRes";
 
@@ -15,7 +15,7 @@ const useIssueReservation = (onSuccess?: () => void) => {
 
     return useMutation<void, AxiosError<ErrorRes>, IssueBookParams>({
         mutationFn: ({ reservationId, userId, barcode }) =>
-            issuanceService.setSubroute('/issue').put(`${reservationId}/${userId}`, { reservationId, userId, barcode }),
+            issuanceService.setSubroute('/issue').put(`${reservationId}/${userId}/${barcode}`, { reservationId, userId, barcode }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: RESERVATION_CACHE_KEY });
             onSuccess && onSuccess();
