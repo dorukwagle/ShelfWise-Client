@@ -1,40 +1,5 @@
-// import { Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
-// import useMe from "../hooks/useMe";
-// import LoadingProgress from "../components/LoadingProgress";
-// import { useNavigate } from "react-router-dom";
-
-
-// const HomePage = () => {
-//   const { data: user, isLoading } = useMe();
-//   const navigate = useNavigate();
-  
-
-//   const Actions = () => (
-//     <>
-//       <Button size="small" variant="contained" onClick={() => navigate("/sign-in")}>
-//         Sign In
-//       </Button>
-//     </>
-//   );
-
-//   if (isLoading) return <LoadingProgress />;
-
-//   return (
-//     <Container>
-//       <CardContent>
-//           <Typography variant="h5">Welcome to ShelfWise</Typography>
-//       </CardContent>
-//       <CardActions>{!user?.userId && <Actions />}</CardActions>
-
-//     </Container>
-//   );
-// };
-
-// export default HomePage;
-
-
-import React, { useState } from 'react';
-import { Button, Card, CardActions, CardContent, Container, Typography, Snackbar, Box } from "@mui/material";
+import { useState } from 'react';
+import { Container, Snackbar, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import BookList from "../book/components/BookList";
 import useMe from '../hooks/useMe';
