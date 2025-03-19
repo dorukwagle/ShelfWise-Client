@@ -20,24 +20,23 @@ import { AxiosError } from 'axios';
 import { BookReservation } from '../entities/BookReservation';
 import UseFetchAssignables from '../hooks/getAssignable';
 import IssueBookDialog from '../../issuance/components/IssueBookDialog';
+import { Books } from '../../../book/entities/BookType';
 
 interface AssignableBooksDialogProps {
   open: boolean;
   selectedBook: BookReservation | null;
   onClose: () => void;
+  onSelectBook: (book: Books) => void;
 }
 
 const AssignableBooksDialog: React.FC<AssignableBooksDialogProps> = ({
   open,
   selectedBook,
   onClose,
+  onSelectBook
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [barcode, setBarcode] = useState("");
-
-console.log('p');
-console.log(selectedBook);
-console.log('l');
 
   // Fetch assignable books when dialog is open and reservationId is set
   const {
@@ -55,6 +54,10 @@ console.log('l');
   const handleIssueBook = (book: any) => {
     setBarcode(book.barcode);
     setOpenDialog(true);
+  };
+  const handleIssueClose = (book: any) => {
+    setOpenDialog(false)
+    onClose;
   };
 
   return (
@@ -100,8 +103,9 @@ console.log('l');
                       </>
                     }
                   />
-                  <ListItemSecondaryAction>
-                    <Button
+                  {( book.status=='Available' &&
+                    <ListItemSecondaryAction>
+                    {/* <Button
                       variant="outlined"
                       color="primary"
                       size="small"
@@ -109,8 +113,17 @@ console.log('l');
                       onClick={() => handleIssueBook(book)}
                     >
                       Select
-                    </Button>
+                    </Button> */}
+                    <Button 
+                    variant="outlined" 
+                    color="primary"
+                    size="small"
+                    onClick={() => onSelectBook(book)}
+                  >
+                    Select
+                  </Button>
                   </ListItemSecondaryAction>
+                  )}
                 </ListItem>
               ))}
             </List>
@@ -125,14 +138,14 @@ console.log('l');
       <DialogActions>
         <Button onClick={onClose} color="primary">Close</Button>
       </DialogActions>
-      {selectedBook?.reservationId && (
+      {/* {selectedBook?.reservationId && (
         <IssueBookDialog
           open={openDialog}
-          onClose={() => setOpenDialog(false)}
+          onClose={() => handleIssueClose}
           reservation={selectedBook}
           barcode={barcode}
         />
-      )}
+      )} */}
     </Dialog>
 
   );

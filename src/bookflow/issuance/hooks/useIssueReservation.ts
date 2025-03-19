@@ -15,7 +15,7 @@ const useIssueReservation = (onSuccess?: () => void) => {
 
     return useMutation<void, AxiosError<ErrorRes>, IssueBookParams>({
         mutationFn: ({ reservationId, userId, barcode }) =>
-            issuanceService.setSubroute('/issue').put(`${reservationId}/${userId}/${barcode}`, { reservationId, userId, barcode }),
+            issuanceService.setSubroute('/issue').put(`${reservationId}/${userId}/${barcode}`),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: RESERVATION_CACHE_KEY });
             onSuccess && onSuccess();

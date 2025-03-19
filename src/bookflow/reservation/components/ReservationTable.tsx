@@ -1,14 +1,14 @@
-import React from 'react';
-import { 
-  Box, 
-  Paper, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
-  CircularProgress, 
+import React, { useState } from 'react';
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  CircularProgress,
   Pagination,
   IconButton,
   Chip,
@@ -19,6 +19,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { BookReservation } from '../entities/BookReservation';
+import { Book } from '@mui/icons-material';
+import IssueBookDialog from '../../issuance/components/IssueBookDialog';
 
 interface ReservationsTableProps {
   isLoading: boolean;
@@ -33,6 +35,7 @@ interface ReservationsTableProps {
   handleOpenConfirmDialog: (reservationId: string) => void;
   handleOpenCancelDialog: (reservationId: string) => void;
   handleOpenAssignableDialog: (reservation: BookReservation) => void;
+  // handleOpenIssueBookDialog: (reservation: BookReservation) => void;
   handlePageChange: (event: React.ChangeEvent<unknown>, newPage: number) => void;
 }
 
@@ -49,8 +52,23 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
   handleOpenConfirmDialog,
   handleOpenCancelDialog,
   handleOpenAssignableDialog,
+  // handleOpenIssueBookDialog,
   handlePageChange
 }) => {
+  const [issueDialogOpen, setIssueDialogOpen] = useState(false);
+
+  // const [selectedBook, setSelectedBook] = useState<BookReservation | null>(null);
+  const [issueBook, setBook] = useState<BookReservation | null>(null);
+
+  const handleOpenIssueBookDialog = (book: BookReservation) => {
+    setBook(book);
+    setIssueDialogOpen(true);
+  };
+
+  const handleCloseIssueBookDialog = () => {
+    setIssueDialogOpen(false);
+  };
+
   return (
     <Paper sx={{ p: 2 }}>
       <TableContainer component={Paper}>
@@ -90,12 +108,12 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
                   <TableCell>{reservation.user.fullName}</TableCell>
                   {/* <TableCell>{new Date(reservation.reservationDate).toLocaleString()}</TableCell> */}
                   <TableCell>
-                    <Chip 
-                      label={reservation.status} 
+                    <Chip
+                      label={reservation.status}
                       color={
-                        reservation.status === 'Confirmed' ? 'success' : 
-                        reservation.status === 'Pending' ? 'warning' :
-                        reservation.status === 'Cancelled' ? 'error' : 'default'
+                        reservation.status === 'Confirmed' ? 'success' :
+                          reservation.status === 'Pending' ? 'warning' :
+                            reservation.status === 'Cancelled' ? 'error' : 'default'
                       }
                       size="small"
                     />
@@ -103,20 +121,20 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
                   <TableCell>{reservation.bookInfo?.title || 'Untitled'}</TableCell>
                   <TableCell>
                     {/* Book Details Column */}
-                    <IconButton 
-                      color="primary" 
+                    <IconButton
+                      color="primary"
                       onClick={() => handleOpenBookDetails(reservation)}
                       title="View Book Details"
                     >
                       <MenuBookIcon />
                     </IconButton>
                   </TableCell>
-                  
+
                   {/* Only render Assignable Books cell if we're showing that column */}
                   {showAssignableColumn && (
                     <TableCell>
                       {/* Only show Assignable Books button for Pending status */}
-                      {reservation.status === 'Confirmed' && (
+                      {reservation.status === 'Pending' && (
                         <IconButton
                           color="info"
                           onClick={() => handleOpenAssignableDialog(reservation)}
@@ -127,7 +145,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
                       )}
                     </TableCell>
                   )}
-                  
+
                   {/* Only render Actions cell if we're showing action columns */}
                   {showActionColumns && (
                     <TableCell>
@@ -144,7 +162,16 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
                               <CheckCircleIcon />
                             </IconButton>
                           )}
-                          
+
+                          {reservation.status === 'Confirmed' && (
+                            <IconButton
+                              color="success"
+                              onClick={() => handleOpenIssueBookDialog(reservation)}
+                              title="Issue Book"
+                            >
+                              <Book />
+                            </IconButton>
+                          )}
                           {/* Show cancel button for both Pending and Confirmed reservations */}
                           <IconButton
                             color="error"
@@ -163,15 +190,15 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
           </TableBody>
         </Table>
       </TableContainer>
-      
+
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2, mb: 1 }}>
         <Typography variant="body2" color="text.secondary">
-          {isLoading ? 'Loading...' : 
+          {isLoading ? 'Loading...' :
             `Showing ${reservations.length ? (page - 1) * pageSize + 1 : 0} to 
             ${Math.min(page * pageSize, totalItems)} of ${totalItems} entries`
           }
         </Typography>
-        <Pagination 
+        <Pagination
           count={totalPages}
           page={page}
           onChange={handlePageChange}
@@ -179,6 +206,13 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
           disabled={isLoading}
         />
       </Box>
+      {issueBook && (
+        <IssueBookDialog
+          open={issueDialogOpen}
+          onClose={handleCloseIssueBookDialog}
+          reservation={issueBook}
+        />
+      )}
     </Paper>
   );
 };

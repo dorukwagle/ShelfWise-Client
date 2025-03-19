@@ -18,6 +18,8 @@ import CancelDialog from '../components/CancelDialog';
 import AssignBookDialog from '../components/AssignBookDialog';
 import AssignableBooksDialog from '../components/AssignableBookDialog';
 import fetchReservation from '../hooks/getReservations';
+import { Books } from '../../../book/entities/BookType';
+import IssueBookDialog from '../../issuance/components/IssueBookDialog';
 
 const ReservationPage = () => {
   // State for pagination and filtering
@@ -42,6 +44,7 @@ const ReservationPage = () => {
   // State for book details dialog
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedBook, setSelectedBook] = useState<BookReservation | null>(null);
+  const [book, setBook] = useState<Books | null>(null);
   
   // State for confirmation dialog
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -56,6 +59,7 @@ const ReservationPage = () => {
   
   // State for assignable books dialog
   const [assignableDialogOpen, setAssignableDialogOpen] = useState(false);
+  const [issueDialogOpen, setIssueDialogOpen] = useState(false);
   const [selectedReservationId, setSelectedReservationId] = useState<string | null>(null);
   
   // Handle opening the book details dialog
@@ -116,6 +120,17 @@ const ReservationPage = () => {
     setAssignableDialogOpen(false);
     setSelectedReservationId(null);
   };
+  
+  // Handle opening the assignable books dialog
+  const handleOpenIssueBookDialog = () => {
+    setIssueDialogOpen(true);
+  };
+  
+  // Handle closing the assignable books dialog
+  const handleCloseIssueBookDialog = () => {
+    setIssueDialogOpen(false);
+    setSelectedReservationId(null);
+  };
 
   const handleFilterChange = (
     _event: React.MouseEvent<HTMLElement>,
@@ -142,7 +157,7 @@ const ReservationPage = () => {
   const showActionColumns = isStaff && (filter === 'Pending' || filter === 'Confirmed');
   
   // Determine visibility of assignable books column
-  const showAssignableColumn = isStaff && (filter === 'Confirmed');
+  const showAssignableColumn = isStaff && (filter === 'Pending');
 
   // Handle user loading error
   if (userError) {
@@ -208,6 +223,7 @@ const ReservationPage = () => {
         handleOpenConfirmDialog={handleOpenConfirmDialog}
         handleOpenCancelDialog={handleOpenCancelDialog}
         handleOpenAssignableDialog={handleOpenAssignableDialog}
+        // handleOpenIssueBookDialog={handleOpenIssueBookDialog}
         handlePageChange={handlePageChange}
       />
       
@@ -238,8 +254,9 @@ const ReservationPage = () => {
           
           <AssignBookDialog 
             open={assignDialogOpen}
-            selectedBook={selectedBook}
+            selectedBook={book}
             onClose={handleCloseAssignDialog}
+            reservation={selectedBook}
             onSuccess={() => {
               refetch();
               setAssignDialogOpen(false);
@@ -247,11 +264,27 @@ const ReservationPage = () => {
             }}
           />
           
+          {/* <AssignableBooksDialog 
+            open={assignableDialogOpen}
+            selectedBook={selectedBook}
+            onClose={handleCloseAssignableDialog}
+          /> */}
           <AssignableBooksDialog 
             open={assignableDialogOpen}
             selectedBook={selectedBook}
             onClose={handleCloseAssignableDialog}
+            onSelectBook={(book) => {
+              setBook(book);
+              setAssignableDialogOpen(false);
+              setAssignDialogOpen(true);
+            }}
           />
+          {/* <IssueBookDialog
+          open={issueDialogOpen}
+          onClose={() => handleCloseIssueBookDialog}
+          reservation={selectedBook}
+          book={issueBook}
+        /> */}
         </>
       )}
       

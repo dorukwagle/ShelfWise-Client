@@ -16,7 +16,6 @@ import { BookInfoPage } from "./book/pages/BookInfoPage";
 import UserPaymentPage from "./userpayment/pages/UserPaymentPage";
 import IssuancePage from "./bookflow/issuance/pages/IssuancePage";
 import ReservationPage from "./bookflow/reservation/Pages/ReservationPage";
-import ReservationIssuePage from "./bookflow/reservation/Pages/ReservationIssuePage";
 
 const router = createBrowserRouter([
   {
@@ -39,7 +38,6 @@ const router = createBrowserRouter([
         { path: "/enrollments-request", element: <EnrollmentApprovePage /> },
         { path: "/user-payment", element: <UserPaymentPage /> },
         { path: "/issuance", element: <IssuancePage /> },
-        { path: "/reservation-issue", element: <ReservationIssuePage /> },
         { path: "/online-books", element: <OnlineBooksPage /> },
         { path: "/user-payment", element: <UserPaymentPage /> },
         { path: "/book-list", element: <BookList /> },

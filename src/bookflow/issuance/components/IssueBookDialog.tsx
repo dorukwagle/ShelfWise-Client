@@ -6,11 +6,10 @@ interface IssueBookDialogProps {
     open: boolean;
     onClose: () => void;
     reservation: any; // Replace `any` with the actual type of your reservation object
-    barcode: string;
 }
 
-const IssueBookDialog: React.FC<IssueBookDialogProps> = ({ open, onClose, reservation, barcode }) => {
-    // const [barcode, setBarcode] = useState("");
+const IssueBookDialog: React.FC<IssueBookDialogProps> = ({ open, onClose, reservation }) => {
+    const [updateBarcode, setBarcode] = useState(reservation.book?.barcode || "");
     const [error, setError] = useState<string | null>(null);
 
     const { mutate, isPending } = useIssueReservation(() => {
@@ -18,7 +17,7 @@ const IssueBookDialog: React.FC<IssueBookDialogProps> = ({ open, onClose, reserv
     });
 
     const handleIssue = () => {
-        if (!barcode) {
+        if (!updateBarcode) { 
             setError("Please enter a valid barcode.");
             return;
         }
@@ -27,7 +26,7 @@ const IssueBookDialog: React.FC<IssueBookDialogProps> = ({ open, onClose, reserv
         mutate({
             reservationId: reservation.reservationId,
             userId: reservation.userId,
-            barcode,
+            barcode: updateBarcode,
         });
     };
 
@@ -38,8 +37,8 @@ const IssueBookDialog: React.FC<IssueBookDialogProps> = ({ open, onClose, reserv
                 <p>Are you sure you want to issue the book "{reservation.bookInfo?.title}"?</p>
                 <TextField
                     label="Barcode"
-                    value={barcode}
-                    // onChange={(e) => setBarcode(e.target.value)}
+                    value={updateBarcode}
+                    onChange={(e) => setBarcode(e.target.value)}
                     fullWidth
                     margin="normal"
                 />

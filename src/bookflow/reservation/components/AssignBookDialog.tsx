@@ -14,10 +14,12 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import { AxiosError } from 'axios';
 import { BookReservation } from '../entities/BookReservation';
 import useAssignReservation from '../hooks/assginReservation';
+import { Books } from '../../../book/entities/BookType';
 
 interface AssignBookDialogProps {
   open: boolean;
-  selectedBook: BookReservation | null;
+  selectedBook: Books | null;
+  reservation: BookReservation | null;
   onClose: () => void;
   onSuccess: () => void;
 }
@@ -25,6 +27,7 @@ interface AssignBookDialogProps {
 const AssignBookDialog: React.FC<AssignBookDialogProps> = ({
   open,
   selectedBook,
+  reservation,
   onClose,
   onSuccess
 }) => {
@@ -33,16 +36,25 @@ const AssignBookDialog: React.FC<AssignBookDialogProps> = ({
   
   // Handle assigning the book
   const handleAssignBook = () => {
-    if (selectedBook) {
+    if (reservation) {
       // Create assignment data with required fields
       const assignmentData: BookReservation = {
-        ...selectedBook,
-        reservationId: selectedBook.reservationId,
-        bookId: selectedBook.bookId,
-        reservationDate: selectedBook.reservationDate
+        ...reservation,
+        reservationId: reservation.reservationId,
+        bookId: selectedBook?.bookId,
+        reservationDate: reservation.reservationDate
       };
       
       // Call the mutation
+      console.log(selectedBook);
+      
+      
+      console.log(assignmentData);
+
+      console.log('asdf');
+      console.log(reservation);
+      
+      
       assignReservation.mutate(assignmentData);
     }
   };
