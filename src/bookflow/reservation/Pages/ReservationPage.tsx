@@ -19,7 +19,6 @@ import AssignBookDialog from '../components/AssignBookDialog';
 import AssignableBooksDialog from '../components/AssignableBookDialog';
 import fetchReservation from '../hooks/getReservations';
 import { Books } from '../../../book/entities/BookType';
-import IssueBookDialog from '../../issuance/components/IssueBookDialog';
 
 const ReservationPage = () => {
   // State for pagination and filtering
@@ -59,7 +58,6 @@ const ReservationPage = () => {
   
   // State for assignable books dialog
   const [assignableDialogOpen, setAssignableDialogOpen] = useState(false);
-  const [issueDialogOpen, setIssueDialogOpen] = useState(false);
   const [selectedReservationId, setSelectedReservationId] = useState<string | null>(null);
   
   // Handle opening the book details dialog
@@ -118,17 +116,6 @@ const ReservationPage = () => {
   // Handle closing the assignable books dialog
   const handleCloseAssignableDialog = () => {
     setAssignableDialogOpen(false);
-    setSelectedReservationId(null);
-  };
-  
-  // Handle opening the assignable books dialog
-  const handleOpenIssueBookDialog = () => {
-    setIssueDialogOpen(true);
-  };
-  
-  // Handle closing the assignable books dialog
-  const handleCloseIssueBookDialog = () => {
-    setIssueDialogOpen(false);
     setSelectedReservationId(null);
   };
 
@@ -263,12 +250,6 @@ const ReservationPage = () => {
               setOpenDialog(false);
             }}
           />
-          
-          {/* <AssignableBooksDialog 
-            open={assignableDialogOpen}
-            selectedBook={selectedBook}
-            onClose={handleCloseAssignableDialog}
-          /> */}
           <AssignableBooksDialog 
             open={assignableDialogOpen}
             selectedBook={selectedBook}
@@ -279,12 +260,6 @@ const ReservationPage = () => {
               setAssignDialogOpen(true);
             }}
           />
-          {/* <IssueBookDialog
-          open={issueDialogOpen}
-          onClose={() => handleCloseIssueBookDialog}
-          reservation={selectedBook}
-          book={issueBook}
-        /> */}
         </>
       )}
       

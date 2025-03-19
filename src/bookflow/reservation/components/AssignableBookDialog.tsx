@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -19,7 +19,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { AxiosError } from 'axios';
 import { BookReservation } from '../entities/BookReservation';
 import UseFetchAssignables from '../hooks/getAssignable';
-import IssueBookDialog from '../../issuance/components/IssueBookDialog';
 import { Books } from '../../../book/entities/BookType';
 
 interface AssignableBooksDialogProps {
@@ -35,8 +34,6 @@ const AssignableBooksDialog: React.FC<AssignableBooksDialogProps> = ({
   onClose,
   onSelectBook
 }) => {
-  const [openDialog, setOpenDialog] = useState(false);
-  const [barcode, setBarcode] = useState("");
 
   // Fetch assignable books when dialog is open and reservationId is set
   const {
@@ -50,15 +47,6 @@ const AssignableBooksDialog: React.FC<AssignableBooksDialogProps> = ({
     reservationId: selectedBook?.reservationId || undefined,
     status: 'Pending'
   });
-
-  const handleIssueBook = (book: any) => {
-    setBarcode(book.barcode);
-    setOpenDialog(true);
-  };
-  const handleIssueClose = (book: any) => {
-    setOpenDialog(false)
-    onClose;
-  };
 
   return (
     <Dialog
@@ -105,15 +93,6 @@ const AssignableBooksDialog: React.FC<AssignableBooksDialogProps> = ({
                   />
                   {( book.status=='Available' &&
                     <ListItemSecondaryAction>
-                    {/* <Button
-                      variant="outlined"
-                      color="primary"
-                      size="small"
-                      // onClick={() => onSelectBook(book)}
-                      onClick={() => handleIssueBook(book)}
-                    >
-                      Select
-                    </Button> */}
                     <Button 
                     variant="outlined" 
                     color="primary"
@@ -138,14 +117,6 @@ const AssignableBooksDialog: React.FC<AssignableBooksDialogProps> = ({
       <DialogActions>
         <Button onClick={onClose} color="primary">Close</Button>
       </DialogActions>
-      {/* {selectedBook?.reservationId && (
-        <IssueBookDialog
-          open={openDialog}
-          onClose={() => handleIssueClose}
-          reservation={selectedBook}
-          barcode={barcode}
-        />
-      )} */}
     </Dialog>
 
   );
