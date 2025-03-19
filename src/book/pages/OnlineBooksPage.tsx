@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Typography, Button, TextField, Dialog, DialogContent, Tabs, Tab, Paper, useTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AddBookForm from '../components/AddBookForm';
@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import BookInfoTable from '../components/BookInfoTable';
 import BookClassificationTable from '../components/BookClassificationTable';
 
-const OnlineBooksPage = () => {
+const OnlineBooksPage: React.FC = () => {
   const [openBookDialog, setOpenBookDialog] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [searchInput, setSearchInput] = useState('');

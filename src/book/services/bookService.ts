@@ -35,7 +35,6 @@ export const BookService = {
   }
 };
 
-
 export const addExistingBook = async (bookData: BookAddition) => {
   const api = new APIClient<any, BookAddition>(`/books/add-existing/${bookData.bookInfoId}`);
   const data = await api.post(bookData);
@@ -44,5 +43,10 @@ export const addExistingBook = async (bookData: BookAddition) => {
 
 export const addBookService = new APIClient<any, FormData>("/books");
 
-export const updateGenreService = new APIClient<any, FormData>("/books/info/:infoId/genres")
+export const coverPhotoService = new APIClient<any, FormData>("/books/info");
+
+export const updateGenreService = new APIClient<any, FormData>("/books/info/:infoId/genres");
+
+// Add new service for book deletion
+export const bookDeleteService = new APIClient<any, any>("/books");
 
