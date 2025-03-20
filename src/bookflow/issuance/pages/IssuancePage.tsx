@@ -1,6 +1,7 @@
 import React from "react";
 import useIssuance from "../hooks/useIssuance";
 import { IssuanceTable } from "../components/IssuanceTable";
+import RenewalList from "../../renewal/component/renewalList";
 
 const IssuancePage: React.FC = () => {
     const { data, isLoading, isError, error } = useIssuance({});
@@ -16,6 +17,8 @@ const IssuancePage: React.FC = () => {
             <IssuanceTable issuances={issuances} loading={isLoading} />
             <p>Total Items: {info.itemsCount}</p>
             {info.hasNextPage && <button onClick={() => console.log("Load more...")}>Load More</button>}
+
+            <RenewalList />
         </div>
     );
 };

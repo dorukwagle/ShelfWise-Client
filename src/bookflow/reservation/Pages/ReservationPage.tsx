@@ -58,7 +58,6 @@ const ReservationPage = () => {
   
   // State for assignable books dialog
   const [assignableDialogOpen, setAssignableDialogOpen] = useState(false);
-  const [selectedReservationId, setSelectedReservationId] = useState<string | null>(null);
   
   // Handle opening the book details dialog
   const handleOpenBookDetails = (reservation: BookReservation) => {
@@ -116,7 +115,6 @@ const ReservationPage = () => {
   // Handle closing the assignable books dialog
   const handleCloseAssignableDialog = () => {
     setAssignableDialogOpen(false);
-    setSelectedReservationId(null);
   };
 
   const handleFilterChange = (

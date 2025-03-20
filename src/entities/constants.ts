@@ -18,6 +18,7 @@ const NOTIFICATION_COUNT_CACHE_KEY = ["notification_count"];
 const USERS_CACHE_KEY = ["users"];
 const USER_ROLES_CACHE_KEY = ["user_roles"];
 const ISSUANCE_CACHE_KEY = ["issuance"];
+const RENEWAL_CACHE_KEY = ["renewal"];
 const RESERVATION_CACHE_KEY = ["reservations"];
 const ASSIGNABLE_RESERVATION_CACHE_KEY = ["assignable_reservations"];
 const PAYMENT_CACHE_KEY = ["payments"];
@@ -57,6 +58,7 @@ export {
   USERS_CACHE_KEY,
   USER_ROLES_CACHE_KEY,
   ISSUANCE_CACHE_KEY,
+  RENEWAL_CACHE_KEY,
   RESERVATION_CACHE_KEY,
   ASSIGNABLE_RESERVATION_CACHE_KEY,
   PAYMENT_CACHE_KEY,
