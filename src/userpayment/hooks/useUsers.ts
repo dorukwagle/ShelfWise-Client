@@ -7,13 +7,7 @@ import PaginationParams from "../../entities/PaginationParams";
 import PaginationResponse from "../../entities/PaginationResponse";
 
 const useUsers = ({ seed, accountStatus, expired }: PaginationParams) => {
-  const params: PaginationParams = {
-    page: 1,
-    pageSize: 15,
-    seed,
-    accountStatus,
-    expired,
-  };
+  const params = { page: 1, pageSize: 15, seed, accountStatus, expired };
 
   return useQuery<PaginationResponse<user>, AxiosError>({
     queryKey: [...USERS_CACHE_KEY, params],

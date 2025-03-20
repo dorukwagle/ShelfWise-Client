@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Table, TableBody, TableCell, TableHead, TableRow, Box, Typography, TextField, Button, CircularProgress, Alert, MenuItem, Select, FormControl, InputLabel, SelectChangeEvent, IconButton, Card, Modal, Menu } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Box, Typography, TextField, Button, CircularProgress, Alert, MenuItem, Select, FormControl, InputLabel, SelectChangeEvent, IconButton, Card, Modal, Menu, Pagination } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import GavelIcon from '@mui/icons-material/Gavel';
@@ -18,7 +18,7 @@ import MakePaymentDialog from "./AddPaymentDialog";
 import PaymentHistoryDialog from "./PaymentHistory";
 
 const UserList: React.FC = () => {
-    const [userParams, setuserParams] = useState<PaginationParams>({ seed: '', page: 1, pageSize: 15 });
+    const [userParams, setUserParams] = useState<PaginationParams>({ seed: '', page: 1, pageSize: 15 });
     const [searchInput, setSearchInput] = useState("");
     const [accountStatus, setAccountStatus] = useState("");
     const [editingUserId, setEditingUserId] = useState<string | null>(null);
@@ -53,24 +53,28 @@ const UserList: React.FC = () => {
     const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setSearchInput(event.target.value);
       if (event.target.value === "") {
-        setuserParams({ ...userParams, seed: '' });
+        setUserParams({ ...userParams, seed: '' });
       }
     };
 
     const handleSearch = () => {
-      setuserParams({ ...userParams, seed: searchInput });
+      setUserParams({ ...userParams, seed: searchInput });
     };
 
     const handleAccountStatusChange = (event: SelectChangeEvent<string>) => {
       const selectedStatus = event.target.value as string;
       setAccountStatus(selectedStatus);
       if (selectedStatus === "") {
-        setuserParams({ ...userParams, accountStatus: undefined, expired: undefined });
+        setUserParams({ ...userParams, accountStatus: undefined, expired: undefined });
       } else if (selectedStatus === "Expired") {
-        setuserParams({ ...userParams, expired: true, accountStatus: undefined });
+        setUserParams({ ...userParams, expired: true, accountStatus: undefined });
       } else {
-        setuserParams({ ...userParams, accountStatus: selectedStatus, expired: undefined });
+        setUserParams({ ...userParams, accountStatus: selectedStatus, expired: undefined });
       }
+    };
+
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+      setUserParams((prev) => ({ ...prev, page: value }));
     };
 
     // Handle opening the action menu
@@ -270,6 +274,15 @@ const UserList: React.FC = () => {
             </TableBody>
           </Table>
         )}
+
+        <Box display="flex" justifyContent="center" mt={2}>
+          <Pagination
+            count={Math.ceil((userData?.data.length || 0) / userParams.pageSize)}
+            page={userParams.page}
+            onChange={handlePageChange}
+            color="primary"
+          />
+        </Box>
 
         {/* Action Menu */}
         <Menu

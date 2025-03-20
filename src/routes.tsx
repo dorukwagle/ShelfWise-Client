@@ -27,7 +27,7 @@ const router = createBrowserRouter([
       { path: "/about", element: <AboutPage /> },
       { path: "/enroll-user", element: <EnrollmentRequestForm /> },
       {path: "/notifications", element: <NotificationPage/>},
-      {path: "/reservations", element: <ReservationPage/>},
+      
       
       {
         element: <PrivateRoutes />,
@@ -40,6 +40,7 @@ const router = createBrowserRouter([
         { path: "/book/:bookInfoId", element: <BookInfoPage /> },
         { path: "/add-books", element: <MultiPageForm /> },
         {path: "/notifications", element: <NotificationPage/>},
+        {path: "/reservations", element: <ReservationPage/>},
         
         ],
       },
