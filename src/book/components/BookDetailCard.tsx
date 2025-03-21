@@ -23,7 +23,7 @@ interface BookDetailsCardProps {
 
 export const BookDetailsCard: React.FC<BookDetailsCardProps> = ({ bookInfo }) => {
   // Calculate average rating
-  const averageRating = bookInfo.score.length
+  const averageRating = Array.isArray(bookInfo.score) && bookInfo.score.length
     ? bookInfo.score.reduce((acc, curr) => acc + curr.score, 0) / bookInfo.score.length
     : 0;
 
@@ -48,7 +48,7 @@ export const BookDetailsCard: React.FC<BookDetailsCardProps> = ({ bookInfo }) =>
               <Typography variant="body1" component="span" mr={1}>
                 Authors:
               </Typography>
-              {bookInfo.bookAuthors.map((bookAuthor) => (
+              {bookInfo.bookAuthors?.map((bookAuthor) => (
                 <StyledChip
                   key={bookAuthor.authorId}
                   label={`${bookAuthor.author.title} ${bookAuthor.author.fullName}`}
@@ -65,7 +65,7 @@ export const BookDetailsCard: React.FC<BookDetailsCardProps> = ({ bookInfo }) =>
               <Typography variant="body1" component="span" mr={1}>
                 Genres:
               </Typography>
-              {bookInfo.bookGenres.map((bookGenre) => (
+              {bookInfo.bookGenres?.map((bookGenre) => (
                 <StyledChip
                   key={bookGenre.genreId}
                   label={bookGenre.genre.genre}
@@ -106,7 +106,7 @@ export const BookDetailsCard: React.FC<BookDetailsCardProps> = ({ bookInfo }) =>
               <strong>Book Number:</strong> {bookInfo.bookNumber}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              <strong>ISBN:</strong> {bookInfo.isbns.map(isbn => isbn.isbn).join(", ") || "N/A"}
+              <strong>ISBN:</strong> {bookInfo.isbns?.map(isbn => isbn.isbn).join(", ") || "N/A"}
             </Typography>
             <Typography variant="body1" gutterBottom>
               <strong>Available Copies:</strong> {bookInfo.books.filter(book => book.status === "Available").length} of {bookInfo.books.length}

@@ -15,11 +15,11 @@ import {
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CloseIcon from '@mui/icons-material/Close';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import { Reservation } from '../entities/reservations';
+import { BookReservation } from '../entities/BookReservation';
 
 interface BookDetailsDialogProps {
   open: boolean;
-  selectedBook: Reservation | null;
+  selectedBook: BookReservation | null;
   onClose: () => void;
   onAssign: () => void;
   isStaff: boolean;

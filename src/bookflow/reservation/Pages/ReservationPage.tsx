@@ -8,16 +8,17 @@ import {
   ToggleButtonGroup, 
   CircularProgress 
 } from '@mui/material';
-import fetchReservation from '../hooks/getReservations';
-import useMe from '../../hooks/useMe';
+import useMe from '../../../hooks/useMe';
 import { AxiosError } from 'axios';
+import { BookReservation } from '../entities/BookReservation';
 import ReservationsTable from '../components/ReservationTable';
 import BookDetailsDialog from '../components/BookDetailsDialog';
 import ConfirmDialog from '../components/ConfirmDialog';
 import CancelDialog from '../components/CancelDialog';
 import AssignBookDialog from '../components/AssignBookDialog';
 import AssignableBooksDialog from '../components/AssignableBookDialog';
-import { Reservation } from '../entities/reservations';
+import fetchReservation from '../hooks/getReservations';
+import { Books } from '../../../book/entities/BookType';
 
 const ReservationPage = () => {
   // State for pagination and filtering
@@ -41,7 +42,8 @@ const ReservationPage = () => {
   
   // State for book details dialog
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedBook, setSelectedBook] = useState<Reservation | null>(null);
+  const [selectedBook, setSelectedBook] = useState<BookReservation | null>(null);
+  const [book, setBook] = useState<Books | null>(null);
   
   // State for confirmation dialog
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -56,10 +58,9 @@ const ReservationPage = () => {
   
   // State for assignable books dialog
   const [assignableDialogOpen, setAssignableDialogOpen] = useState(false);
-  const [selectedReservationId, setSelectedReservationId] = useState<string | null>(null);
   
   // Handle opening the book details dialog
-  const handleOpenBookDetails = (reservation: Reservation) => {
+  const handleOpenBookDetails = (reservation: BookReservation) => {
     setSelectedBook(reservation);
     setOpenDialog(true);
   };
@@ -105,19 +106,19 @@ const ReservationPage = () => {
   };
   
   // Handle opening the assignable books dialog
-  const handleOpenAssignableDialog = (reservationId: string) => {
-    setSelectedReservationId(reservationId);
+  const handleOpenAssignableDialog = (reservation: BookReservation) => {
+    console.log('Opening Assignable Books Dialog with reservationId:', reservation.reservationId);
+    setSelectedBook(reservation);
     setAssignableDialogOpen(true);
   };
   
   // Handle closing the assignable books dialog
   const handleCloseAssignableDialog = () => {
     setAssignableDialogOpen(false);
-    setSelectedReservationId(null);
   };
 
   const handleFilterChange = (
-    event: React.MouseEvent<HTMLElement>,
+    _event: React.MouseEvent<HTMLElement>,
     newFilter: string | null
   ) => {
     if (newFilter !== null) {
@@ -126,12 +127,12 @@ const ReservationPage = () => {
     }
   };
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
   };
 
   // Calculate total pages from server response
-  const totalItems = data?.info.total || 0;
+  const totalItems = data?.info.itemsCount || 0;
   const totalPages = Math.ceil(totalItems / pageSize);
   
   // Get reservations from response
@@ -207,6 +208,7 @@ const ReservationPage = () => {
         handleOpenConfirmDialog={handleOpenConfirmDialog}
         handleOpenCancelDialog={handleOpenCancelDialog}
         handleOpenAssignableDialog={handleOpenAssignableDialog}
+        // handleOpenIssueBookDialog={handleOpenIssueBookDialog}
         handlePageChange={handlePageChange}
       />
       
@@ -237,21 +239,21 @@ const ReservationPage = () => {
           
           <AssignBookDialog 
             open={assignDialogOpen}
-            selectedBook={selectedBook}
+            selectedBook={book}
             onClose={handleCloseAssignDialog}
+            reservation={selectedBook}
             onSuccess={() => {
               refetch();
               setAssignDialogOpen(false);
               setOpenDialog(false);
             }}
           />
-          
           <AssignableBooksDialog 
             open={assignableDialogOpen}
-            reservationId={selectedReservationId}
+            selectedBook={selectedBook}
             onClose={handleCloseAssignableDialog}
             onSelectBook={(book) => {
-              setSelectedBook(book);
+              setBook(book);
               setAssignableDialogOpen(false);
               setAssignDialogOpen(true);
             }}

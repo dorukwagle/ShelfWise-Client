@@ -34,6 +34,8 @@ class APIClient<R = {}, S = {}, F = {}> {
     }
 
     get = (routerParam?: string | number, queryParam?: F) => {
+        console.log(routerParam);
+        
         return client
             .get<R>(`${this.endpoint()}${routerParam ? "/" + routerParam : ""}`, {
                 params: queryParam,

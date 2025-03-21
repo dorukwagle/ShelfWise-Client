@@ -1,14 +1,14 @@
 import React from 'react';
-import { 
-  Dialog, 
-  DialogTitle, 
-  DialogContent, 
-  DialogActions, 
-  Button, 
-  Typography, 
-  Box, 
-  CircularProgress, 
-  Alert, 
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+  Box,
+  CircularProgress,
+  Alert,
   IconButton,
   List,
   ListItem,
@@ -16,33 +16,35 @@ import {
   ListItemSecondaryAction
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import fetchAssignables from '../hooks/get_assignable';
-import { Reservation } from '../entities/reservations';
 import { AxiosError } from 'axios';
+import { BookReservation } from '../entities/BookReservation';
+import UseFetchAssignables from '../hooks/getAssignable';
+import { Books } from '../../../book/entities/BookType';
 
 interface AssignableBooksDialogProps {
   open: boolean;
-  reservationId: string | null;
+  selectedBook: BookReservation | null;
   onClose: () => void;
-  onSelectBook: (book: Reservation) => void;
+  onSelectBook: (book: Books) => void;
 }
 
 const AssignableBooksDialog: React.FC<AssignableBooksDialogProps> = ({
   open,
-  reservationId,
+  selectedBook,
   onClose,
   onSelectBook
 }) => {
+
   // Fetch assignable books when dialog is open and reservationId is set
-  const { 
-    data: assignableBooks, 
-    error: assignableBooksError, 
-    isLoading: assignableBooksLoading 
-  } = fetchAssignables({ 
+  const {
+    data: assignableBooks,
+    error: assignableBooksError,
+    isPending: assignableBooksLoading
+  } = UseFetchAssignables({
     seed: '',
     page: 1,
     pageSize: 10,
-    reservationId: reservationId || undefined,
+    reservationId: selectedBook?.reservationId || undefined,
     status: 'Pending'
   });
 
@@ -68,31 +70,30 @@ const AssignableBooksDialog: React.FC<AssignableBooksDialogProps> = ({
           <Alert severity="error">
             Error loading assignable books: {(assignableBooksError as AxiosError)?.message || 'Something went wrong'}
           </Alert>
-        ) : assignableBooks?.data.length === 0 ? (
+        ) : !Array.isArray(assignableBooks) || assignableBooks?.length === 0 ? (
           <Alert severity="info">No assignable books found for this reservation.</Alert>
         ) : (
-          <List>
-            {assignableBooks?.data.map((book) => (
-              <ListItem 
-                key={book.bookId} 
-                divider
-              >
-                <ListItemText 
-                  primary={book.bookInfo?.title || 'Untitled'} 
-                  secondary={
-                    <>
-                      <Typography variant="body2" component="span">
-                        Barcode: {book.book?.barcode || 'N/A'}
-                      </Typography>
-                      <br />
-                      <Typography variant="body2" component="span">
-                        Status: {book.book?.status || 'Unknown'}
-                      </Typography>
-                    </>
-                  }
-                />
-                <ListItemSecondaryAction>
-                  <Button 
+          <>
+            <List>
+              {assignableBooks.map((book) => (
+                <ListItem key={book.bookId} divider>
+                  <ListItemText
+                    primary={`Barcode: ${book.barcode}`}
+                    secondary={
+                      <>
+                        <Typography variant="body2" component="span">
+                          Status: {book.status || 'Unknown'}
+                        </Typography>
+                        <br />
+                        <Typography variant="body2" component="span">
+                          Book ID: {book.bookId}
+                        </Typography>
+                      </>
+                    }
+                  />
+                  {( book.status=='Available' &&
+                    <ListItemSecondaryAction>
+                    <Button 
                     variant="outlined" 
                     color="primary"
                     size="small"
@@ -100,16 +101,24 @@ const AssignableBooksDialog: React.FC<AssignableBooksDialogProps> = ({
                   >
                     Select
                   </Button>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-          </List>
+                  </ListItemSecondaryAction>
+                  )}
+                </ListItem>
+              ))}
+            </List>
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="body2" color="text.secondary">
+                Showing {assignableBooks.length} of {assignableBooks.length} results
+              </Typography>
+            </Box>
+          </>
         )}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">Close</Button>
       </DialogActions>
     </Dialog>
+
   );
 };
 
