@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { BookInfo } from "../../../book/entities/BookType";
 import { ErrorRes } from "../../../entities/ErrorRes";
 import reservationService from "../services/reservations";
-import { RESERVATION_CACHE_KEY } from "../../../entities/constants";
+import { NOTIFICATION_COUNT_CACHE_KEY, RESERVATION_CACHE_KEY } from "../../../entities/constants";
 
 const useConfirmReservation = (bookReservationId: string) => {
     const queryClient = useQueryClient();
@@ -13,6 +13,7 @@ const useConfirmReservation = (bookReservationId: string) => {
         mutationFn: () => reservationService.setSubroute(`confirm/${bookReservationId}`,).post(),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: RESERVATION_CACHE_KEY });  
+            queryClient.invalidateQueries({ queryKey: NOTIFICATION_COUNT_CACHE_KEY });
         }
     });
 }
