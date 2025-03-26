@@ -73,6 +73,7 @@ const EnrollmentRequestForm = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        console.log(formData);
         enrollUser.mutate(formData as Enrollment);
     };
 
@@ -156,7 +157,10 @@ const EnrollmentRequestForm = () => {
                                         <Grid item xs={12} sm={6}>
                                         <TextField
                                             label="Password"
+                                            name = "password"
                                             type={showPassword ? 'text' : 'password'}
+                                            value = {formData.password}
+                                            onChange={handleChange}
                                             fullWidth
                                             variant="outlined"
                                             InputProps={{
@@ -199,7 +203,7 @@ const EnrollmentRequestForm = () => {
                                     </Grid>
                                     <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
                                         <Button variant="contained" type="submit" disabled={enrollUser.isPending}>
-                                            {enrollUser.isPending ? <CircularProgress size={24} /> : "Submit Enrollment"}
+                                            {enrollUser.isPending ? <CircularProgress size={24} onClick={handleSubmit}/> : "Submit Enrollment"}
                                         </Button>
                                     </Box>
                                 </form>
