@@ -138,7 +138,7 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
                                 variant="outlined"
                             />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        {/* <Grid item xs={12} md={6}>
                             <TextField
                                 fullWidth
                                 label="Roll Number"
@@ -147,7 +147,7 @@ const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({
                                 helperText={errors.rollNumber?.message}
                                 variant="outlined"
                             />
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12} md={6}>
                             <TextField
                                 fullWidth

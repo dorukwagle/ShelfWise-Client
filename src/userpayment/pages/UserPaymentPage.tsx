@@ -50,7 +50,7 @@ const UserPaymentPage: React.FC = () => {
           TabIndicatorProps={{ sx: { height: 4 } }}
         >
           <Tab label="User Management" value="user-management" sx={{ mx: 3 }} />
-          <Tab label="Payments" value="payments" sx={{ mx: 3 }} />
+          {/* <Tab label="Payments" value="payments" sx={{ mx: 3 }} /> */}
         </Tabs>
       </Paper>
       <Box sx={{ p: 3 }}>

@@ -64,9 +64,9 @@ const EnrollmentApprovePage: React.FC = () => {
                         <TableHead>
                             <TableRow>
                                 {[
-                                    'Full Name', 'Email', 'Roll Number',
+                                    'Full Name', 'Email', 'College ID',
                                     'Contact Number', 'Enrollment Year',
-                                    'Account Status', 'Actions'
+                                    'University ID', 'Actions'
                                 ].map(header => (
                                     <TableCell key={header}>{header}</TableCell>
                                 ))}
@@ -77,10 +77,10 @@ const EnrollmentApprovePage: React.FC = () => {
                                 <TableRow key={enrollment.email}>
                                     <TableCell>{enrollment.fullName}</TableCell>
                                     <TableCell>{enrollment.email}</TableCell>
-                                    <TableCell>{enrollment.rollNumber}</TableCell>
+                                    <TableCell>{enrollment.collegeId}</TableCell>
                                     <TableCell>{enrollment.contactNo}</TableCell>
                                     <TableCell>{enrollment.enrollmentYear}</TableCell>
-                                    <TableCell>{enrollment.accountStatus}</TableCell>
+                                    <TableCell>{enrollment.universityId}</TableCell>
                                     <TableCell>
                                         <Box sx={{ display: 'flex', gap: 1 }}>
                                             <Button

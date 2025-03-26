@@ -5,7 +5,8 @@ import Enrollment from "../entities/enrollements";
 import enrollmentService from "../services/enrollmentService";
 import { ENROLL_CACHE_KEY } from "../../entities/constants";
 
-const useEnrollUser = (onSuccess?: () => void) => {
+const 
+useEnrollUser = (onSuccess?: () => void) => {
     const queryClient = useQueryClient();
 
     return useMutation<Enrollment, AxiosError<ErrorRes>, Enrollment>({
